@@ -48,12 +48,12 @@ extension MPSerializer {
 
     public mutating func pack(_ value: Float) {
         write(code: 0xca)
-        write(unsafeBitCast(value, to: UInt32.self))
+        write(value.bitPattern)
     }
 
     public mutating func pack(_ value: Double) {
         write(code: 0xcb)
-        write(unsafeBitCast(value, to: UInt64.self))
+        write(value.bitPattern)
     }
 
     public mutating func pack(_ value: String) {
