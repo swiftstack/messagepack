@@ -134,51 +134,29 @@ extension UInt64 {
     }
 }
 
-//
-// TODO:
-// https://github.com/apple/swift/blob/master/docs/GenericsManifesto.md#concrete-same-type-requirements
-//
-//extension Array where Element == UInt8 {
-//    public init?(_ value: MessagePack) {
-//        if case let .binary(data) = value {
-//            self.init(data)
-//        }
-//        return nil
-//    }
-//}
-
-extension Sequence where Iterator.Element == UInt8 {
+extension Array where Element == UInt8 {
     public init?(_ value: MessagePack) {
         guard case let .binary(data) = value else {
             return nil
         }
-        guard let binary = data as? Self else {
-            return nil
-        }
-        self = binary
+        self = data
     }
 }
 
-extension Sequence where Iterator.Element == MessagePack {
+extension Array where Element == MessagePack {
     public init?(_ value: MessagePack) {
         guard case let .array(items) = value else {
             return nil
         }
-        guard let array = items as? Self else {
-            return nil
-        }
-        self = array
+        self = items
     }
 }
 
-extension Sequence where Iterator.Element == (key: MessagePack, value: MessagePack) {
+extension Dictionary where Key == MessagePack, Value == MessagePack {
     public init?(_ value: MessagePack) {
         guard case let .map(items) = value else {
             return nil
         }
-        guard let map = items as? Self else {
-            return nil
-        }
-        self = map
+        self = items
     }
 }
