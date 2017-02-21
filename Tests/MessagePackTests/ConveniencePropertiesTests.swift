@@ -1,17 +1,17 @@
 import MessagePack
 
 class ConveniencePropertiesTests: TestCase {
-    func testNilProperty() {
+    func testHasValueProperty() {
         let nilValue = MessagePack.nil
-        assertTrue(nilValue.isNil)
-        assertFalse(MessagePack.int(0).isNil)
-        assertFalse(MessagePack.string("").isNil)
-        assertFalse(MessagePack.float(0).isNil)
-        assertFalse(MessagePack.double(0).isNil)
-        assertFalse(MessagePack.array([]).isNil)
-        assertFalse(MessagePack.map([:]).isNil)
-        assertFalse(MessagePack.binary([]).isNil)
-        assertFalse(MessagePack.extended(MessagePack.Extended(type: 0, data: [])).isNil)
+        assertFalse(nilValue.hasValue)
+        assertTrue(MessagePack.int(0).hasValue)
+        assertTrue(MessagePack.string("").hasValue)
+        assertTrue(MessagePack.float(0).hasValue)
+        assertTrue(MessagePack.double(0).hasValue)
+        assertTrue(MessagePack.array([]).hasValue)
+        assertTrue(MessagePack.map([:]).hasValue)
+        assertTrue(MessagePack.binary([]).hasValue)
+        assertTrue(MessagePack.extended(MessagePack.Extended(type: 0, data: [])).hasValue)
     }
 
     func testArrayProperty() {

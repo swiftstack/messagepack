@@ -1,8 +1,8 @@
 extension MessagePack {
-    public var isNil: Bool {
+    public var hasValue: Bool {
         switch self {
-        case .nil: return true
-        default: return false
+        case .nil: return false
+        default: return true
         }
     }
 
