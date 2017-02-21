@@ -1,4 +1,8 @@
-extension Bool {
+public protocol MessagePackInitializable {
+    init?(_ value: MessagePack)
+}
+
+extension Bool: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         guard case let .bool(value) = value else {
             return nil
@@ -7,7 +11,7 @@ extension Bool {
     }
 }
 
-extension String {
+extension String: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         guard case let .string(string) = value else {
             return nil
@@ -16,7 +20,7 @@ extension String {
     }
 }
 
-extension Float {
+extension Float: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
         case let .float(value): self.init(value)
@@ -25,7 +29,7 @@ extension Float {
     }
 }
 
-extension Double {
+extension Double: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
         case let .double(value): self.init(value)
@@ -34,7 +38,7 @@ extension Double {
     }
 }
 
-extension Int {
+extension Int: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value): self.init(value)
@@ -44,7 +48,7 @@ extension Int {
     }
 }
 
-extension Int8 {
+extension Int8: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value) where value <= Int(Int8.max): self.init(value)
@@ -54,7 +58,7 @@ extension Int8 {
     }
 }
 
-extension Int16 {
+extension Int16: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value) where value <= Int(Int16.max): self.init(value)
@@ -64,7 +68,7 @@ extension Int16 {
     }
 }
 
-extension Int32 {
+extension Int32: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value) where value <= Int(Int32.max): self.init(value)
@@ -74,7 +78,7 @@ extension Int32 {
     }
 }
 
-extension Int64 {
+extension Int64: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value): self.init(value)
@@ -84,7 +88,7 @@ extension Int64 {
     }
 }
 
-extension UInt {
+extension UInt: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value) where value >= 0 : self.init(value)
@@ -94,7 +98,7 @@ extension UInt {
     }
 }
 
-extension UInt8 {
+extension UInt8: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value) where value >= 0 && UInt(value) <= UInt(UInt8.max): self.init(value)
@@ -104,7 +108,7 @@ extension UInt8 {
     }
 }
 
-extension UInt16 {
+extension UInt16: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value) where value >= 0 && UInt(value) <= UInt(UInt16.max): self.init(value)
@@ -114,7 +118,7 @@ extension UInt16 {
     }
 }
 
-extension UInt32 {
+extension UInt32: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value) where value >= 0 && UInt(value) <= UInt(UInt32.max): self.init(value)
@@ -124,7 +128,7 @@ extension UInt32 {
     }
 }
 
-extension UInt64 {
+extension UInt64: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value)  where value >= 0 : self.init(value)
@@ -133,6 +137,16 @@ extension UInt64 {
         }
     }
 }
+
+extension MessagePack.Extended: MessagePackInitializable {
+    public init?(_ value: MessagePack) {
+        guard case let .extended(data) = value else {
+            return nil
+        }
+        self = data
+    }
+}
+
 
 extension Array where Element == UInt8 {
     public init?(_ value: MessagePack) {
@@ -158,5 +172,37 @@ extension Dictionary where Key == MessagePack, Value == MessagePack {
             return nil
         }
         self = items
+    }
+}
+
+// MARK: Optionals
+
+extension MessagePackInitializable {
+    public init?(_ optional: MessagePack?) {
+        guard case let .some(some) = optional,
+            let value = Self(some) else {
+                return nil
+        }
+        self = value
+    }
+}
+
+extension Array where Element == MessagePack {
+    public init?(_ optional: MessagePack?) {
+        guard case let .some(some) = optional,
+            let value = Array(some) else {
+                return nil
+        }
+        self = value
+    }
+}
+
+extension Dictionary where Key == MessagePack, Value == MessagePack {
+    public init?(_ optional: MessagePack?) {
+        guard case let .some(some) = optional,
+            let value = Dictionary(some) else {
+                return nil
+        }
+        self = value
     }
 }
