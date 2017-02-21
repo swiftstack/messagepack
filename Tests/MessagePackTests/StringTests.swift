@@ -2,59 +2,59 @@ import XCTest
 import MessagePack
 
 class StringTests: XCTestCase {
-    func testSerializerFixStr() {
+    func testEncodeFixStr() {
         let expected = [0xaa] + [UInt8](repeating: 0x20, count: 0x0a)
         let string = String(repeating: " ", count: 0x0a)
-        let packed = MessagePack.serialize(.string(string))
-        XCTAssertEqual(packed, expected)
+        let encoded = MessagePack.encode(.string(string))
+        XCTAssertEqual(encoded, expected)
     }
 
-    func testDeserializerFixStr() {
+    func testDecodeFixStr() {
         let expected = MessagePack.string(String(repeating: " ", count: 0x0a))
-        let packed = [0xaa] + [UInt8](repeating: 0x20, count: 0x0a)
-        let unpacked = try? MessagePack.deserialize(bytes: packed)
-        XCTAssertEqual(unpacked, expected)
+        let encoded = [0xaa] + [UInt8](repeating: 0x20, count: 0x0a)
+        let decoded = try? MessagePack.decode(bytes: encoded)
+        XCTAssertEqual(decoded, expected)
     }
 
-    func testSerializerStr8() {
+    func testEncodeStr8() {
         let expected = [0xd9, 0xff] + [UInt8](repeating: 0x20, count: Int(UInt8.max))
         let string = String(repeating: " ", count: Int(UInt8.max))
-        let packed = MessagePack.serialize(.string(string))
-        XCTAssertEqual(packed, expected)
+        let encoded = MessagePack.encode(.string(string))
+        XCTAssertEqual(encoded, expected)
     }
 
-    func testDeserializerStr8() {
+    func testDecodeStr8() {
         let expected = MessagePack.string(String(repeating: " ", count: Int(UInt8.max)))
-        let packed = [0xd9, 0xff] + [UInt8](repeating: 0x20, count: Int(UInt8.max))
-        let unpacked = try? MessagePack.deserialize(bytes: packed)
-        XCTAssertEqual(unpacked, expected)
+        let encoded = [0xd9, 0xff] + [UInt8](repeating: 0x20, count: Int(UInt8.max))
+        let decoded = try? MessagePack.decode(bytes: encoded)
+        XCTAssertEqual(decoded, expected)
     }
 
-    func testSerializerStr16() {
+    func testEncodeStr16() {
         let expected = [0xda, 0xff, 0xff] + [UInt8](repeating: 0x20, count: Int(UInt16.max))
         let string = String(repeating: " ", count: Int(UInt16.max))
-        let packed = MessagePack.serialize(.string(string))
-        XCTAssertEqual(packed, expected)
+        let encoded = MessagePack.encode(.string(string))
+        XCTAssertEqual(encoded, expected)
     }
 
-    func testDeserializerStr16() {
+    func testDecodeStr16() {
         let expected = MessagePack.string(String(repeating: " ", count: Int(UInt16.max)))
-        let packed = [0xda, 0xff, 0xff] + [UInt8](repeating: 0x20, count: Int(UInt16.max))
-        let unpacked = try? MessagePack.deserialize(bytes: packed)
-        XCTAssertEqual(unpacked, expected)
+        let encoded = [0xda, 0xff, 0xff] + [UInt8](repeating: 0x20, count: Int(UInt16.max))
+        let decoded = try? MessagePack.decode(bytes: encoded)
+        XCTAssertEqual(decoded, expected)
     }
 
-    func testSerializerStr32() {
+    func testEncodeStr32() {
         let expected = [0xdb, 0x00, 0x01, 0x00, 0x00] + [UInt8](repeating: 0x20, count: Int(UInt16.max) + 1)
         let string = String(repeating: " ", count: Int(UInt16.max) + 1)
-        let packed = MessagePack.serialize(.string(string))
-        XCTAssertEqual(packed, expected)
+        let encoded = MessagePack.encode(.string(string))
+        XCTAssertEqual(encoded, expected)
     }
 
-    func testDeserializerStr32() {
+    func testDecodeStr32() {
         let expected = MessagePack.string(String(repeating: " ", count: Int(UInt16.max) + 1))
-        let packed = [0xdb, 0x00, 0x01, 0x00, 0x00] + [UInt8](repeating: 0x20, count: Int(UInt16.max) + 1)
-        let unpacked = try? MessagePack.deserialize(bytes: packed)
-        XCTAssertEqual(unpacked, expected)
+        let encoded = [0xdb, 0x00, 0x01, 0x00, 0x00] + [UInt8](repeating: 0x20, count: Int(UInt16.max) + 1)
+        let decoded = try? MessagePack.decode(bytes: encoded)
+        XCTAssertEqual(decoded, expected)
     }
 }

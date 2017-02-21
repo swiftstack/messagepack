@@ -1,5 +1,5 @@
-extension MPDeserializer {
-    public mutating func unpack() throws -> MessagePack {
+extension Decoder {
+    public mutating func decode() throws -> MessagePack {
         let code = try readCode()
         switch code {
         // positive fixint
@@ -41,36 +41,36 @@ extension MPDeserializer {
         }
     }
 
-    public mutating func unpack() throws -> Int {
+    public mutating func decode() throws -> Int {
         let code = try readCode()
         return try readInt(code: code)
     }
 
-    public mutating func unpack() throws -> UInt {
+    public mutating func decode() throws -> UInt {
         let code = try readCode()
         return try readUInt(code: code)
     }
 
-    public mutating func unpack() throws -> Bool {
+    public mutating func decode() throws -> Bool {
         let code = try readCode()
         return try readBool(code: code)
     }
 
-    public mutating func unpack() throws -> Float {
+    public mutating func decode() throws -> Float {
         switch try readCode() {
         case 0xca: return try readFloat()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func unpack() throws -> Double {
+    public mutating func decode() throws -> Double {
         switch try readCode() {
         case 0xcb: return try readDouble()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func unpack() throws -> String {
+    public mutating func decode() throws -> String {
         let code = try readCode()
         switch code {
         case 0xa0...0xbf: fallthrough
@@ -79,7 +79,7 @@ extension MPDeserializer {
         }
     }
 
-    public mutating func unpack() throws -> UInt8 {
+    public mutating func decode() throws -> UInt8 {
         let code = try readCode()
         switch code {
         case 0x00...0x7f: return code
@@ -88,28 +88,28 @@ extension MPDeserializer {
         }
     }
 
-    public mutating func unpack() throws -> UInt16 {
+    public mutating func decode() throws -> UInt16 {
         switch try readCode() {
         case 0xcd: return try readUInt16()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func unpack() throws -> UInt32 {
+    public mutating func decode() throws -> UInt32 {
         switch try readCode() {
         case 0xce: return try readUInt32()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func unpack() throws -> UInt64 {
+    public mutating func decode() throws -> UInt64 {
         switch try readCode() {
         case 0xcf: return try readUInt64()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func unpack() throws -> Int8 {
+    public mutating func decode() throws -> Int8 {
         let code = try readCode()
         switch code {
         case 0xe0...0xff: return Int8(numericCast(code) - 0x100)
@@ -118,28 +118,28 @@ extension MPDeserializer {
         }
     }
 
-    public mutating func unpack() throws -> Int16 {
+    public mutating func decode() throws -> Int16 {
         switch try readCode() {
         case 0xd1: return try readInt16()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func unpack() throws -> Int32 {
+    public mutating func decode() throws -> Int32 {
         switch try readCode() {
         case 0xd2: return try readInt32()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func unpack() throws -> Int64 {
+    public mutating func decode() throws -> Int64 {
         switch try readCode() {
         case 0xd3: return try readInt64()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func unpack() throws -> [MessagePack] {
+    public mutating func decode() throws -> [MessagePack] {
         let code = try readCode()
         switch code {
         case 0x90...0x9f: fallthrough
@@ -148,7 +148,7 @@ extension MPDeserializer {
         }
     }
 
-    public mutating func unpack() throws -> [MessagePack : MessagePack] {
+    public mutating func decode() throws -> [MessagePack : MessagePack] {
         let code = try readCode()
         switch code {
         case 0x80...0x8f: fallthrough

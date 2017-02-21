@@ -1,4 +1,4 @@
-public struct MPSerializer {
+public struct Encoder {
     public var bytes = [UInt8]()
 
     public init(reservingCapacity capacity: Int = 1024) {
@@ -41,7 +41,7 @@ public struct MPSerializer {
     }
 }
 
-extension MPSerializer {
+extension Encoder {
     mutating func write(_ value: Int8) {
         write(UInt8(bitPattern: value))
     }
@@ -59,7 +59,7 @@ extension MPSerializer {
     }
 }
 
-extension MPSerializer {
+extension Encoder {
     mutating func write(code value: UInt8) {
         write(value)
     }

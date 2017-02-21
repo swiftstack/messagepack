@@ -1,4 +1,4 @@
-public struct MPDeserializer {
+public struct Decoder {
     private let bytes: [UInt8]!
     private let buffer: UnsafeBufferPointer<UInt8>
     private var position = 0
@@ -66,7 +66,7 @@ public struct MPDeserializer {
     }
 }
 
-extension MPDeserializer {
+extension Decoder {
     mutating func readInt8() throws -> Int8 {
         return Int8(bitPattern: try readUInt8())
     }
@@ -84,13 +84,13 @@ extension MPDeserializer {
     }
 }
 
-extension MPDeserializer {
+extension Decoder {
     mutating func readCode() throws -> UInt8 {
         return try readUInt8()
     }
 }
 
-extension MPDeserializer {
+extension Decoder {
     mutating func readInt(code: UInt8) throws -> Int {
         switch code {
         case 0xd0: return Int(try readInt8())
@@ -132,7 +132,7 @@ extension MPDeserializer {
     }
 
     mutating func readString(code: UInt8) throws -> String {
-        let count = try readStringLength(code: code)
+        let count = try readStringHeader(code: code)
 
         // TODO: Optimize iterator
         // let buffer = try read(count: count)
@@ -153,24 +153,24 @@ extension MPDeserializer {
     }
 
     mutating func readArray(code: UInt8) throws -> [MessagePack] {
-        let count = try readArrayLength(code: code)
+        let count = try readArrayHeader(code: code)
         var array = [MessagePack]()
 
         array.reserveCapacity(count)
         for _ in 0..<count {
-            array.append(try unpack())
+            array.append(try decode())
         }
 
         return array
     }
 
     mutating func readMap(code: UInt8) throws -> [MessagePack: MessagePack] {
-        let count = try readMapLength(code: code)
+        let count = try readMapHeader(code: code)
         var dictionary = [MessagePack: MessagePack]()
 
         for _ in 0..<count {
-            let key = try unpack() as MessagePack
-            let value = try unpack() as MessagePack
+            let key = try decode() as MessagePack
+            let value = try decode() as MessagePack
             dictionary[key] = value
         }
 
@@ -178,12 +178,12 @@ extension MPDeserializer {
     }
 
     mutating func readBinary(code: UInt8) throws -> [UInt8] {
-        let count = try readBinaryLength(code: code)
+        let count = try readBinaryHeader(code: code)
         return [UInt8](try read(count: count))
     }
 
     mutating func readExtended(code: UInt8) throws -> MessagePack.Extended {
-        let count = try readExtendedLength(code: code)
+        let count = try readExtendedHeader(code: code)
 
         let type = try readInt8()
         let data = [UInt8](try read(count: count))

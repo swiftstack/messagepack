@@ -2,40 +2,40 @@ import XCTest
 import MessagePack
 
 class ArrayTests: XCTestCase {
-    func testSerializerFixArray() {
+    func testEncodeFixArray() {
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
-        let packed = MessagePack.serialize(.array([.int(1), .int(2), .int(3)]))
-        XCTAssertEqual(packed, expected)
+        let encoded = MessagePack.encode(.array([.int(1), .int(2), .int(3)]))
+        XCTAssertEqual(encoded, expected)
     }
 
-    func testDeserializerFixarray() {
+    func testDecodeFixarray() {
         let expected = MessagePack.array([.int(1), .int(2), .int(3)])
-        let unpacked = try? MessagePack.deserialize(bytes: [0x93, 0x01, 0x02, 0x03])
-        XCTAssertEqual(unpacked, expected)
+        let decoded = try? MessagePack.decode(bytes: [0x93, 0x01, 0x02, 0x03])
+        XCTAssertEqual(decoded, expected)
     }
 
-    func testSerializerArray16() {
+    func testEncodeArray16() {
         let expected = [0xdc, 0xff, 0xff] + [UInt8](repeating: 0xc0, count: Int(UInt16.max))
-        let packed = MessagePack.serialize(.array([MessagePack](repeating: nil, count: Int(UInt16.max))))
-        XCTAssertEqual(packed, expected)
+        let encoded = MessagePack.encode(.array([MessagePack](repeating: nil, count: Int(UInt16.max))))
+        XCTAssertEqual(encoded, expected)
     }
 
-    func testDeserializerArray16() {
+    func testDecodeArray16() {
         let expected = MessagePack.array([MessagePack](repeating: nil, count: Int(UInt16.max)))
-        let unpacked = try? MessagePack.deserialize(bytes: [0xdc, 0xff, 0xff] + [UInt8](repeating: 0xc0, count: Int(UInt16.max)))
-        XCTAssertEqual(unpacked, expected)
+        let decoded = try? MessagePack.decode(bytes: [0xdc, 0xff, 0xff] + [UInt8](repeating: 0xc0, count: Int(UInt16.max)))
+        XCTAssertEqual(decoded, expected)
     }
 
-    func testSerializerArray32() {
+    func testEncodeArray32() {
         let expected = [0xdd, 0x00, 0x01, 0x00, 0x00] + [UInt8](repeating: 0xc0, count: Int(UInt16.max)+1)
-        let packed = MessagePack.serialize(.array([MessagePack](repeating: nil, count: Int(UInt16.max)+1)))
-        XCTAssertEqual(packed, expected)
+        let encoded = MessagePack.encode(.array([MessagePack](repeating: nil, count: Int(UInt16.max)+1)))
+        XCTAssertEqual(encoded, expected)
     }
 
-    func testDeserializerArray32() {
+    func testDecodeArray32() {
         let expected = MessagePack.array([MessagePack](repeating: nil, count: Int(UInt16.max)+1))
-        let unpacked = try? MessagePack.deserialize(bytes: [0xdd, 0x00, 0x01, 0x00, 0x00] + [UInt8](repeating: 0xc0, count: Int(UInt16.max)+1))
-        XCTAssertEqual(unpacked, expected)
+        let decoded = try? MessagePack.decode(bytes: [0xdd, 0x00, 0x01, 0x00, 0x00] + [UInt8](repeating: 0xc0, count: Int(UInt16.max)+1))
+        XCTAssertEqual(decoded, expected)
     }
 
     func testEmptyArray() {
@@ -45,7 +45,7 @@ class ArrayTests: XCTestCase {
             [0xdd, 0x00, 0x00, 0x00, 0x00]
         ]
         for bytes in arrayArray {
-            if let empty = try? MessagePack.deserialize(bytes: bytes) {
+            if let empty = try? MessagePack.decode(bytes: bytes) {
                 XCTAssertEqual(empty.array!, [])
             } else {
                 XCTFail("deserialize failed")

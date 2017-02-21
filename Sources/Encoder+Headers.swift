@@ -1,4 +1,4 @@
-extension MPSerializer {
+extension Encoder {
     mutating func writeStringHeader(count: Int) {
         precondition(count <= 0xffff_ffff)
         switch count {

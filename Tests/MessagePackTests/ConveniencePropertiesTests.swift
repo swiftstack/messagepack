@@ -44,11 +44,11 @@ class ConveniencePropertiesTests: XCTestCase {
 
     func testExtendedProperty() {
         let extended = MessagePack.Extended(type: 1, data: [0x01, 0x02, 0x03])
-        guard let packed = MessagePack.extended(extended).extended else {
+        guard let encoded = MessagePack.extended(extended).extended else {
             XCTFail("extended property shouldn't be nil")
             return
         }
-        XCTAssertEqual(packed.type, 1)
-        XCTAssertEqual(packed.data, [0x01, 0x02, 0x03])
+        XCTAssertEqual(encoded.type, 1)
+        XCTAssertEqual(encoded.data, [0x01, 0x02, 0x03])
     }
 }

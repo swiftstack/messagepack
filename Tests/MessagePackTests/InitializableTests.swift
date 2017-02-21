@@ -55,8 +55,8 @@ class InitializableTests: XCTestCase {
 
     func testArray() {
         let expected: [MessagePack] = [MessagePack(1), MessagePack(2.0), MessagePack("three")]
-        let packed = MessagePack.array(expected)
-        let array = [MessagePack](packed)
+        let encoded = MessagePack.array(expected)
+        let array = [MessagePack](encoded)
         XCTAssertNotNil(array)
         if array != nil {
             XCTAssertEqual(array!, expected)
@@ -65,8 +65,8 @@ class InitializableTests: XCTestCase {
 
     func testMap() {
         let expected: [MessagePack : MessagePack] = [1:2, 3:4]
-        let packed = MessagePack.map(expected)
-        let map = [MessagePack : MessagePack](packed)
+        let encoded = MessagePack.map(expected)
+        let map = [MessagePack : MessagePack](encoded)
         XCTAssertNotNil(map)
         if map != nil {
             XCTAssertEqual(map!, expected)
@@ -75,8 +75,8 @@ class InitializableTests: XCTestCase {
 
     func testBinary() {
         let expected: [UInt8] = [1,2,3]
-        let packed = MessagePack.binary(expected)
-        let bytes = [UInt8](packed)
+        let encoded = MessagePack.binary(expected)
+        let bytes = [UInt8](encoded)
         XCTAssertNotNil(bytes)
         if bytes != nil {
             XCTAssertEqual(bytes!, expected)
