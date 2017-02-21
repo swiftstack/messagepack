@@ -21,6 +21,15 @@ public enum MessagePack {
     }
 }
 
+extension MessagePack {
+    public var hasValue: Bool {
+        switch self {
+        case .nil: return false
+        default: return true
+        }
+    }
+}
+
 extension MessagePack: CustomStringConvertible {
     public var description: String {
         switch self {

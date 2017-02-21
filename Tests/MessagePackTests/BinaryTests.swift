@@ -50,11 +50,12 @@ class BinaryTests: TestCase {
             [0xc6, 0x00, 0x00, 0x00, 0x00],
         ]
         for bytes in binArray {
-            if let empty = try? MessagePack.decode(bytes: bytes) {
-                assertEqual(empty.binary!, [])
-            } else {
-                fail("deserialize failed")
+            guard let object = try? MessagePack.decode(bytes: bytes),
+                let binary = [UInt8](object) else {
+                    fail()
+                    return
             }
+            assertEqual(binary, [])
         }
     }
 }

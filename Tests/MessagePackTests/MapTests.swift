@@ -63,11 +63,13 @@ class MapTests: TestCase {
             [0xdf, 0x00, 0x00, 0x00, 0x00]
         ]
         for bytes in mapArray {
-            if let empty = try? MessagePack.decode(bytes: bytes) {
-                assertEqual(empty.map!, [:])
-            } else {
-                fail("deserialize failed")
+            guard let object = try? MessagePack.decode(bytes: bytes),
+                let map = [MessagePack : MessagePack](object) else {
+                    fail()
+                    return
+
             }
+            assertEqual(map, [:])
         }
     }
 }

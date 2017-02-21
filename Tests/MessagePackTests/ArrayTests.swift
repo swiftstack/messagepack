@@ -44,11 +44,12 @@ class ArrayTests: TestCase {
             [0xdd, 0x00, 0x00, 0x00, 0x00]
         ]
         for bytes in arrayArray {
-            if let empty = try? MessagePack.decode(bytes: bytes) {
-                assertEqual(empty.array!, [])
-            } else {
-                fail("deserialize failed")
+            guard let object = try? MessagePack.decode(bytes: bytes),
+                let array = [MessagePack](object) else {
+                    fail()
+                    return
             }
+            assertEqual(array, [])
         }
     }
 }
