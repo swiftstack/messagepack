@@ -1,7 +1,6 @@
-import XCTest
 import MessagePack
 
-class EncodeArrayTests: XCTestCase {
+class EncodeArrayTests: TestCase {
     func testEncodeBoolArray() {
         let booleans: [Bool] = [true, false]
         let expected: [UInt8] = [0x92, 0xc3, 0xc2]
@@ -9,7 +8,7 @@ class EncodeArrayTests: XCTestCase {
         var encoder = Encoder()
         encoder.encode(array: booleans)
 
-        XCTAssertEqual(encoder.bytes, expected)
+        assertEqual(encoder.bytes, expected)
     }
 
     func testEncodeUIntArray() {
@@ -19,7 +18,7 @@ class EncodeArrayTests: XCTestCase {
         var encoder = Encoder()
         encoder.encode(array: bytes)
 
-        XCTAssertEqual(encoder.bytes, expected)
+        assertEqual(encoder.bytes, expected)
     }
 
     func testEncodeUInt8Array() {
@@ -29,7 +28,7 @@ class EncodeArrayTests: XCTestCase {
         var encoder = Encoder()
         encoder.encode(array: bytes)
 
-        XCTAssertEqual(encoder.bytes, expected)
+        assertEqual(encoder.bytes, expected)
     }
 
     func testEncodeUInt16Array() {
@@ -39,7 +38,7 @@ class EncodeArrayTests: XCTestCase {
         var encoder = Encoder()
         encoder.encode(array: bytes)
 
-        XCTAssertEqual(encoder.bytes, expected)
+        assertEqual(encoder.bytes, expected)
     }
 
     func testEncodeUInt32Array() {
@@ -49,7 +48,7 @@ class EncodeArrayTests: XCTestCase {
         var encoder = Encoder()
         encoder.encode(array: bytes)
 
-        XCTAssertEqual(encoder.bytes, expected)
+        assertEqual(encoder.bytes, expected)
     }
 
     func testEncodeUInt64Array() {
@@ -59,7 +58,7 @@ class EncodeArrayTests: XCTestCase {
         var encoder = Encoder()
         encoder.encode(array: bytes)
 
-        XCTAssertEqual(encoder.bytes, expected)
+        assertEqual(encoder.bytes, expected)
     }
 
     func testEncodeIntArray() {
@@ -69,7 +68,7 @@ class EncodeArrayTests: XCTestCase {
         var encoder = Encoder()
         encoder.encode(array: bytes)
 
-        XCTAssertEqual(encoder.bytes, expected)
+        assertEqual(encoder.bytes, expected)
     }
 
     func testEncodeInt8Array() {
@@ -79,7 +78,7 @@ class EncodeArrayTests: XCTestCase {
         var encoder = Encoder()
         encoder.encode(array: bytes)
 
-        XCTAssertEqual(encoder.bytes, expected)
+        assertEqual(encoder.bytes, expected)
     }
 
     func testEncodeInt16Array() {
@@ -89,7 +88,7 @@ class EncodeArrayTests: XCTestCase {
         var encoder = Encoder()
         encoder.encode(array: bytes)
 
-        XCTAssertEqual(encoder.bytes, expected)
+        assertEqual(encoder.bytes, expected)
     }
 
     func testEncodeInt32Array() {
@@ -99,7 +98,7 @@ class EncodeArrayTests: XCTestCase {
         var encoder = Encoder()
         encoder.encode(array: bytes)
 
-        XCTAssertEqual(encoder.bytes, expected)
+        assertEqual(encoder.bytes, expected)
     }
 
     func testEncodeInt64Array() {
@@ -109,6 +108,6 @@ class EncodeArrayTests: XCTestCase {
         var encoder = Encoder()
         encoder.encode(array: bytes)
 
-        XCTAssertEqual(encoder.bytes, expected)
+        assertEqual(encoder.bytes, expected)
     }
 }

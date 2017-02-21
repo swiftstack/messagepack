@@ -1,54 +1,52 @@
-import XCTest
 import MessagePack
 
-class ConveniencePropertiesTests: XCTestCase {
+class ConveniencePropertiesTests: TestCase {
     func testNilProperty() {
         let nilValue = MessagePack.nil
-        XCTAssertTrue(nilValue.isNil)
-
-        XCTAssertFalse(MessagePack.int(0).isNil)
-        XCTAssertFalse(MessagePack.string("").isNil)
-        XCTAssertFalse(MessagePack.float(0).isNil)
-        XCTAssertFalse(MessagePack.double(0).isNil)
-        XCTAssertFalse(MessagePack.array([]).isNil)
-        XCTAssertFalse(MessagePack.map([:]).isNil)
-        XCTAssertFalse(MessagePack.binary([]).isNil)
-        XCTAssertFalse(MessagePack.extended(MessagePack.Extended(type: 0, data: [])).isNil)
+        assertTrue(nilValue.isNil)
+        assertFalse(MessagePack.int(0).isNil)
+        assertFalse(MessagePack.string("").isNil)
+        assertFalse(MessagePack.float(0).isNil)
+        assertFalse(MessagePack.double(0).isNil)
+        assertFalse(MessagePack.array([]).isNil)
+        assertFalse(MessagePack.map([:]).isNil)
+        assertFalse(MessagePack.binary([]).isNil)
+        assertFalse(MessagePack.extended(MessagePack.Extended(type: 0, data: [])).isNil)
     }
 
     func testArrayProperty() {
         guard let array = MessagePack.array([1, 2, 3]).array else {
-            XCTFail("array property shouldn't be nil")
+            fail("array property shouldn't be nil")
             return
         }
-        XCTAssertEqual(array[0], 1)
-        XCTAssertEqual(array[1], 2)
-        XCTAssertEqual(array[2], 3)
+        assertEqual(array[0], 1)
+        assertEqual(array[1], 2)
+        assertEqual(array[2], 3)
     }
 
     func testMapProperty() {
         guard let map = MessagePack.map(["Hello": "World"]).map else {
-            XCTFail("map property shouldn't be nil")
+            fail("map property shouldn't be nil")
             return
         }
-        XCTAssertEqual(map["Hello"]!, "World")
+        assertEqual(map["Hello"]!, "World")
     }
 
     func testBinaryProperty() {
         guard let binary = MessagePack.binary([0x01, 0x02, 0x03]).binary else {
-            XCTFail("binary property shouldn't be nil")
+            fail("binary property shouldn't be nil")
             return
         }
-        XCTAssertEqual(binary, [0x01, 0x02, 0x03])
+        assertEqual(binary, [0x01, 0x02, 0x03])
     }
 
     func testExtendedProperty() {
         let extended = MessagePack.Extended(type: 1, data: [0x01, 0x02, 0x03])
         guard let encoded = MessagePack.extended(extended).extended else {
-            XCTFail("extended property shouldn't be nil")
+            fail("extended property shouldn't be nil")
             return
         }
-        XCTAssertEqual(encoded.type, 1)
-        XCTAssertEqual(encoded.data, [0x01, 0x02, 0x03])
+        assertEqual(encoded.type, 1)
+        assertEqual(encoded.data, [0x01, 0x02, 0x03])
     }
 }

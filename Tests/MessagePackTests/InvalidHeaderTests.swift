@@ -1,29 +1,28 @@
-import XCTest
 @testable import MessagePack
 
-class InvalidHeaderTests: XCTestCase {
+class InvalidHeaderTests: TestCase {
     func testStringHeader() {
         var decoder = Decoder(bytes: [0xff])
-        XCTAssertThrowsError(try decoder.readStringHeader(code: decoder.readCode()))
+        assertThrowsError(try decoder.readStringHeader(code: decoder.readCode()))
     }
 
     func testArrayHeader() {
         var decoder = Decoder(bytes: [0xff])
-        XCTAssertThrowsError(try decoder.readArrayHeader(code: decoder.readCode()))
+        assertThrowsError(try decoder.readArrayHeader(code: decoder.readCode()))
     }
 
     func testMapHeader() {
         var decoder = Decoder(bytes: [0xff])
-        XCTAssertThrowsError(try decoder.readMapHeader(code: decoder.readCode()))
+        assertThrowsError(try decoder.readMapHeader(code: decoder.readCode()))
     }
 
     func testBinaryHeader() {
         var decoder = Decoder(bytes: [0xff])
-        XCTAssertThrowsError(try decoder.readBinaryHeader(code: decoder.readCode()))
+        assertThrowsError(try decoder.readBinaryHeader(code: decoder.readCode()))
     }
 
     func testExtendedHeader() {
         var decoder = Decoder(bytes: [0xff])
-        XCTAssertThrowsError(try decoder.readExtendedHeader(code: decoder.readCode()))
+        assertThrowsError(try decoder.readExtendedHeader(code: decoder.readCode()))
     }
 }

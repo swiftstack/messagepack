@@ -1,41 +1,40 @@
-import XCTest
 import MessagePack
 
-class ArrayTests: XCTestCase {
+class ArrayTests: TestCase {
     func testEncodeFixArray() {
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
         let encoded = MessagePack.encode(.array([.int(1), .int(2), .int(3)]))
-        XCTAssertEqual(encoded, expected)
+        assertEqual(encoded, expected)
     }
 
     func testDecodeFixarray() {
         let expected = MessagePack.array([.int(1), .int(2), .int(3)])
         let decoded = try? MessagePack.decode(bytes: [0x93, 0x01, 0x02, 0x03])
-        XCTAssertEqual(decoded, expected)
+        assertEqual(decoded, expected)
     }
 
     func testEncodeArray16() {
         let expected = [0xdc, 0xff, 0xff] + [UInt8](repeating: 0xc0, count: Int(UInt16.max))
         let encoded = MessagePack.encode(.array([MessagePack](repeating: nil, count: Int(UInt16.max))))
-        XCTAssertEqual(encoded, expected)
+        assertEqual(encoded, expected)
     }
 
     func testDecodeArray16() {
         let expected = MessagePack.array([MessagePack](repeating: nil, count: Int(UInt16.max)))
         let decoded = try? MessagePack.decode(bytes: [0xdc, 0xff, 0xff] + [UInt8](repeating: 0xc0, count: Int(UInt16.max)))
-        XCTAssertEqual(decoded, expected)
+        assertEqual(decoded, expected)
     }
 
     func testEncodeArray32() {
         let expected = [0xdd, 0x00, 0x01, 0x00, 0x00] + [UInt8](repeating: 0xc0, count: Int(UInt16.max)+1)
         let encoded = MessagePack.encode(.array([MessagePack](repeating: nil, count: Int(UInt16.max)+1)))
-        XCTAssertEqual(encoded, expected)
+        assertEqual(encoded, expected)
     }
 
     func testDecodeArray32() {
         let expected = MessagePack.array([MessagePack](repeating: nil, count: Int(UInt16.max)+1))
         let decoded = try? MessagePack.decode(bytes: [0xdd, 0x00, 0x01, 0x00, 0x00] + [UInt8](repeating: 0xc0, count: Int(UInt16.max)+1))
-        XCTAssertEqual(decoded, expected)
+        assertEqual(decoded, expected)
     }
 
     func testEmptyArray() {
@@ -46,9 +45,9 @@ class ArrayTests: XCTestCase {
         ]
         for bytes in arrayArray {
             if let empty = try? MessagePack.decode(bytes: bytes) {
-                XCTAssertEqual(empty.array!, [])
+                assertEqual(empty.array!, [])
             } else {
-                XCTFail("deserialize failed")
+                fail("deserialize failed")
             }
         }
     }

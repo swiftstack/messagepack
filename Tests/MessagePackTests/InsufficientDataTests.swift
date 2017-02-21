@@ -1,15 +1,13 @@
-import XCTest
 import MessagePack
 
-class InsufficientDataTests: XCTestCase {
-
+class InsufficientDataTests: TestCase {
     func testInvalidData() {
         let bytes: [UInt8] = [0xc1]
         do {
             _ = try MessagePack.decode(bytes: bytes)
-            XCTFail("Expected deserializer to throw")
+            fail("Expected deserializer to throw")
         } catch {
-            XCTAssertEqual(error as? MessagePackError, .invalidData)
+            assertEqual(error as? MessagePackError, .invalidData)
         }
     }
 
@@ -21,9 +19,9 @@ class InsufficientDataTests: XCTestCase {
         for bytes in testCollection {
             do {
                 _ = try MessagePack.decode(bytes: bytes)
-                XCTFail("Expected deserializer to throw")
+                fail("Expected deserializer to throw")
             } catch {
-                XCTAssertEqual(error as? MessagePackError, .insufficientData)
+                assertEqual(error as? MessagePackError, .insufficientData)
             }
         }
     }
@@ -35,9 +33,9 @@ class InsufficientDataTests: XCTestCase {
         for bytes in testCollection {
             do {
                 _ = try MessagePack.decode(bytes: bytes)
-                XCTFail("Expected deserializer to throw")
+                fail("Expected deserializer to throw")
             } catch {
-                XCTAssertEqual(error as? MessagePackError, .insufficientData)
+                assertEqual(error as? MessagePackError, .insufficientData)
             }
         }
     }
@@ -57,9 +55,9 @@ class InsufficientDataTests: XCTestCase {
         for bytes in testCollection {
             do {
                 _ = try MessagePack.decode(bytes: bytes)
-                XCTFail("Expected deserializer to throw")
+                fail("Expected deserializer to throw")
             } catch {
-                XCTAssertEqual(error as? MessagePackError, .insufficientData)
+                assertEqual(error as? MessagePackError, .insufficientData)
             }
         }
     }
@@ -76,9 +74,9 @@ class InsufficientDataTests: XCTestCase {
         for bytes in testCollection {
             do {
                 _ = try MessagePack.decode(bytes: bytes)
-                XCTFail("Expected deserializer to throw")
+                fail("Expected deserializer to throw")
             } catch {
-                XCTAssertEqual(error as? MessagePackError, .insufficientData)
+                assertEqual(error as? MessagePackError, .insufficientData)
             }
         }
     }
@@ -95,9 +93,9 @@ class InsufficientDataTests: XCTestCase {
         for bytes in testCollection {
             do {
                 _ = try MessagePack.decode(bytes: bytes)
-                XCTFail("Expected deserializer to throw")
+                fail("Expected deserializer to throw")
             } catch {
-                XCTAssertEqual(error as? MessagePackError, .insufficientData)
+                assertEqual(error as? MessagePackError, .insufficientData)
             }
         }
     }
@@ -114,9 +112,9 @@ class InsufficientDataTests: XCTestCase {
         for bytes in testCollection {
             do {
                 _ = try MessagePack.decode(bytes: bytes)
-                XCTFail("Expected deserializer to throw")
+                fail("Expected deserializer to throw")
             } catch {
-                XCTAssertEqual(error as? MessagePackError, .insufficientData)
+                assertEqual(error as? MessagePackError, .insufficientData)
             }
         }
     }
@@ -135,9 +133,9 @@ class InsufficientDataTests: XCTestCase {
         for bytes in testCollection {
             do {
                 _ = try MessagePack.decode(bytes: bytes)
-                XCTFail("Expected deserializer to throw")
+                fail("Expected deserializer to throw")
             } catch {
-                XCTAssertEqual(error as? MessagePackError, .insufficientData)
+                assertEqual(error as? MessagePackError, .insufficientData)
             }
         }
     }
