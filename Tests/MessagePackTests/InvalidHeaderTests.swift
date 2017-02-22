@@ -2,27 +2,32 @@
 
 class InvalidHeaderTests: TestCase {
     func testStringHeader() {
-        var decoder = Decoder(bytes: [0xff])
+        let header: [UInt8] = [0xff]
+        var decoder = Decoder(bytes: header, count: header.count)
         assertThrowsError(try decoder.readStringHeader(code: decoder.readCode()))
     }
 
     func testArrayHeader() {
-        var decoder = Decoder(bytes: [0xff])
+        let header: [UInt8] = [0xff]
+        var decoder = Decoder(bytes: header, count: header.count)
         assertThrowsError(try decoder.readArrayHeader(code: decoder.readCode()))
     }
 
     func testMapHeader() {
-        var decoder = Decoder(bytes: [0xff])
+        let header: [UInt8] = [0xff]
+        var decoder = Decoder(bytes: header, count: header.count)
         assertThrowsError(try decoder.readMapHeader(code: decoder.readCode()))
     }
 
     func testBinaryHeader() {
-        var decoder = Decoder(bytes: [0xff])
+        let header: [UInt8] = [0xff]
+        var decoder = Decoder(bytes: header, count: header.count)
         assertThrowsError(try decoder.readBinaryHeader(code: decoder.readCode()))
     }
 
     func testExtendedHeader() {
-        var decoder = Decoder(bytes: [0xff])
+        let header: [UInt8] = [0xff]
+        var decoder = Decoder(bytes: header, count: header.count)
         assertThrowsError(try decoder.readExtendedHeader(code: decoder.readCode()))
     }
 }

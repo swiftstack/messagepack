@@ -1,19 +1,11 @@
 import MessagePack
 
 class InitTests: TestCase {
-    func testBytes() {
-        let expected: MessagePack = [1,2,3]
-        var decoder = Decoder(bytes: [0x93, 0x01, 0x02, 0x03])
-        guard let decoded = try? decoder.decode() as MessagePack else {
-            fail("decode error")
-            return
-        }
-        assertEqual(decoded, expected)
-    }
-
     func testUnsafeBufferPointer() {
         let expected: MessagePack = [1,2,3]
-        var decoder = Decoder(bytes: UnsafeBufferPointer(start: UnsafePointer([0x93, 0x01, 0x02, 0x03]), count: 4))
+        let bytes: [UInt8] = [0x93, 0x01, 0x02, 0x03]
+        let buffer = UnsafeRawBufferPointer(start: bytes, count: bytes.count)
+        var decoder = Decoder(buffer: buffer)
         guard let decoded = try? decoder.decode() as MessagePack else {
             fail("decode error")
             return
@@ -23,7 +15,8 @@ class InitTests: TestCase {
 
     func testUnsafePointer() {
         let expected: MessagePack = [1,2,3]
-        var decoder = Decoder(bytes: UnsafePointer([0x93, 0x01, 0x02, 0x03]), count: 4)
+        let bytes: [UInt8] = [0x93, 0x01, 0x02, 0x03]
+        var decoder = Decoder(bytes: UnsafeRawPointer(bytes), count: 4)
         guard let decoded = try? decoder.decode() as MessagePack else {
             fail("decode error")
             return

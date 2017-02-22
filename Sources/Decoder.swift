@@ -1,31 +1,13 @@
 public struct Decoder {
-    private let bytes: [UInt8]!
-    private let buffer: UnsafeBufferPointer<UInt8>
+    private let buffer: UnsafeRawBufferPointer
     private var position = 0
 
-    public init(bytes: [UInt8]) {
-        self.bytes = bytes
-        self.buffer = UnsafeBufferPointer(start: self.bytes!, count: bytes.count)
-    }
-
-    public init(bytes: UnsafeBufferPointer<UInt8>) {
-        let copiedBytes = [UInt8](bytes)
-        self.init(bytes: copiedBytes)
-    }
-
-    public init(bytes: UnsafePointer<UInt8>, count: Int) {
-        let copiedBytes = [UInt8](UnsafeBufferPointer(start: bytes, count: count))
-        self.init(bytes: copiedBytes)
-    }
-
-    public init(bytesNoCopy buffer: UnsafeBufferPointer<UInt8>) {
-        self.bytes = nil
+    public init(buffer: UnsafeRawBufferPointer) {
         self.buffer = buffer
     }
 
-    public init(bytesNoCopy pointer: UnsafePointer<UInt8>, count: Int) {
-        self.bytes = nil
-        self.buffer = UnsafeBufferPointer(start: pointer, count: count)
+    public init(bytes: UnsafeRawPointer, count: Int) {
+        self.buffer = UnsafeRawBufferPointer(start: bytes, count: count)
     }
 
     public mutating func rewind() {
