@@ -72,4 +72,13 @@ class MapTests: TestCase {
             assertEqual(map, [:])
         }
     }
+
+    func testFixMapSize() {
+        var items = [MessagePack : MessagePack]()
+        for i in 1...15 {
+            items[.int(i)] = .int(i)
+        }
+        let bytes = MessagePack.encode(.map(items))
+        assertEqual(bytes.count, 31)
+    }
 }

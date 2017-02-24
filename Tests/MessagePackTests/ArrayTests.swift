@@ -52,4 +52,10 @@ class ArrayTests: TestCase {
             assertEqual(array, [])
         }
     }
+
+    func testFixArraySize() {
+        let items = [MessagePack](repeating: .int(1), count: 15)
+        let bytes = MessagePack.encode(.array(items))
+        assertEqual(bytes.count, 16)
+    }
 }
