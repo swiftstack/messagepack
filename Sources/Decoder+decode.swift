@@ -41,36 +41,40 @@ extension Decoder {
         }
     }
 
-    public mutating func decode() throws -> Int {
+    // TODO: consider implicit Int <-> UInt conversion
+    // or remove this api cause it's different from the others
+    public mutating func decode(as type: Int.Type) throws -> Int {
         let code = try readCode()
         return try readInt(code: code)
     }
 
-    public mutating func decode() throws -> UInt {
+    // TODO: consider implicit Int <-> UInt conversion
+    // or remove this api cause it's different from the others
+    public mutating func decode(as type: UInt.Type) throws -> UInt {
         let code = try readCode()
         return try readUInt(code: code)
     }
 
-    public mutating func decode() throws -> Bool {
+    public mutating func decode(as type: Bool.Type) throws -> Bool {
         let code = try readCode()
         return try readBool(code: code)
     }
 
-    public mutating func decode() throws -> Float {
+    public mutating func decode(as type: Float.Type) throws -> Float {
         switch try readCode() {
         case 0xca: return try readFloat()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode() throws -> Double {
+    public mutating func decode(as type: Double.Type) throws -> Double {
         switch try readCode() {
         case 0xcb: return try readDouble()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode() throws -> String {
+    public mutating func decode(as type: String.Type) throws -> String {
         let code = try readCode()
         switch code {
         case 0xa0...0xbf: fallthrough
@@ -79,7 +83,7 @@ extension Decoder {
         }
     }
 
-    public mutating func decode() throws -> UInt8 {
+    public mutating func decode(as type: UInt8.Type) throws -> UInt8 {
         let code = try readCode()
         switch code {
         case 0x00...0x7f: return code
@@ -88,28 +92,28 @@ extension Decoder {
         }
     }
 
-    public mutating func decode() throws -> UInt16 {
+    public mutating func decode(as type: UInt16.Type) throws -> UInt16 {
         switch try readCode() {
         case 0xcd: return try readUInt16()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode() throws -> UInt32 {
+    public mutating func decode(as type: UInt32.Type) throws -> UInt32 {
         switch try readCode() {
         case 0xce: return try readUInt32()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode() throws -> UInt64 {
+    public mutating func decode(as type: UInt64.Type) throws -> UInt64 {
         switch try readCode() {
         case 0xcf: return try readUInt64()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode() throws -> Int8 {
+    public mutating func decode(as type: Int8.Type) throws -> Int8 {
         let code = try readCode()
         switch code {
         case 0xe0...0xff: return Int8(numericCast(code) - 0x100)
@@ -118,28 +122,36 @@ extension Decoder {
         }
     }
 
-    public mutating func decode() throws -> Int16 {
+    public mutating func decode(as type: Int16.Type) throws -> Int16 {
         switch try readCode() {
         case 0xd1: return try readInt16()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode() throws -> Int32 {
+    public mutating func decode(as type: Int32.Type) throws -> Int32 {
         switch try readCode() {
         case 0xd2: return try readInt32()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode() throws -> Int64 {
+    public mutating func decode(as type: Int64.Type) throws -> Int64 {
         switch try readCode() {
         case 0xd3: return try readInt64()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode() throws -> [MessagePack] {
+    public mutating func decode(as type: [UInt8].Type) throws -> [UInt8] {
+        let code = try readCode()
+        switch code {
+        case 0xc4...0xc6: return try readBinary(code: code)
+        default: throw MessagePackError.invalidData
+        }
+    }
+
+    public mutating func decode(as type: [MessagePack].Type) throws -> [MessagePack] {
         let code = try readCode()
         switch code {
         case 0x90...0x9f: fallthrough
@@ -148,11 +160,20 @@ extension Decoder {
         }
     }
 
-    public mutating func decode() throws -> [MessagePack : MessagePack] {
+    public mutating func decode(as type: [MessagePack : MessagePack].Type) throws -> [MessagePack : MessagePack] {
         let code = try readCode()
         switch code {
         case 0x80...0x8f: fallthrough
         case 0xde...0xdf: return try readMap(code: code)
+        default: throw MessagePackError.invalidData
+        }
+    }
+
+    public mutating func decode(as type: MessagePack.Extended.Type) throws -> MessagePack.Extended {
+        let code = try readCode()
+        switch code {
+        case 0xc7...0xc9: fallthrough
+        case 0xd4...0xd8: return try readExtended(code: code)
         default: throw MessagePackError.invalidData
         }
     }
