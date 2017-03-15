@@ -151,7 +151,9 @@ extension Decoder {
         }
     }
 
-    public mutating func decode(as type: [MessagePack].Type) throws -> [MessagePack] {
+    public mutating func decode(
+        as type: [MessagePack].Type
+    ) throws -> [MessagePack] {
         let code = try readCode()
         switch code {
         case 0x90...0x9f: fallthrough
@@ -160,7 +162,9 @@ extension Decoder {
         }
     }
 
-    public mutating func decode(as type: [MessagePack : MessagePack].Type) throws -> [MessagePack : MessagePack] {
+    public mutating func decode(
+        as type: [MessagePack : MessagePack].Type
+    ) throws -> [MessagePack : MessagePack] {
         let code = try readCode()
         switch code {
         case 0x80...0x8f: fallthrough
@@ -169,7 +173,9 @@ extension Decoder {
         }
     }
 
-    public mutating func decode(as type: MessagePack.Extended.Type) throws -> MessagePack.Extended {
+    public mutating func decode(
+        as type: MessagePack.Extended.Type
+    ) throws -> MessagePack.Extended {
         let code = try readCode()
         switch code {
         case 0xc7...0xc9: fallthrough

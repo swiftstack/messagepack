@@ -10,12 +10,16 @@ extension MessagePack {
         return try decoder.decode() as MessagePack
     }
 
-    public static func decode(buffer: UnsafeRawBufferPointer) throws -> MessagePack {
+    public static func decode(
+        buffer: UnsafeRawBufferPointer
+    ) throws -> MessagePack {
         var decoder = Decoder(buffer: buffer)
         return try decoder.decode()
     }
 
-    public static func decode(bytes: UnsafeRawPointer, count: Int) throws -> MessagePack {
+    public static func decode(
+        bytes: UnsafeRawPointer, count: Int
+    ) throws -> MessagePack {
         var decoder = Decoder(bytes: bytes, count: count)
         return try decoder.decode()
     }

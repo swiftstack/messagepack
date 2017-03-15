@@ -81,8 +81,10 @@ extension Int32: MessagePackInitializable {
 extension Int64: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
-        case let .int(value): self.init(value)
-        case let .uint(value) where UInt64(value) <= UInt64(Int64.max): self.init(value)
+        case let .int(value):
+            self.init(value)
+        case let .uint(value) where UInt64(value) <= UInt64(Int64.max):
+           self.init(value)
         default: return nil
         }
     }
@@ -101,8 +103,10 @@ extension UInt: MessagePackInitializable {
 extension UInt8: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
-        case let .int(value) where value >= 0 && UInt(value) <= UInt(UInt8.max): self.init(value)
-        case let .uint(value) where value <= UInt(UInt8.max): self.init(value)
+        case let .int(value) where value >= 0 && UInt(value) <= UInt(UInt8.max):
+            self.init(value)
+        case let .uint(value) where value <= UInt(UInt8.max):
+            self.init(value)
         default: return nil
         }
     }
@@ -111,8 +115,12 @@ extension UInt8: MessagePackInitializable {
 extension UInt16: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
-        case let .int(value) where value >= 0 && UInt(value) <= UInt(UInt16.max): self.init(value)
-        case let .uint(value) where value <= UInt(UInt16.max): self.init(value)
+        case let .int(value)
+            where value >= 0 && UInt(value) <= UInt(UInt16.max):
+                self.init(value)
+        case let .uint(value)
+            where value <= UInt(UInt16.max):
+                self.init(value)
         default: return nil
         }
     }
@@ -121,8 +129,12 @@ extension UInt16: MessagePackInitializable {
 extension UInt32: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
-        case let .int(value) where value >= 0 && UInt(value) <= UInt(UInt32.max): self.init(value)
-        case let .uint(value) where value <= UInt(UInt32.max): self.init(value)
+        case let .int(value)
+            where value >= 0 && UInt(value) <= UInt(UInt32.max):
+                self.init(value)
+        case let .uint(value)
+            where value <= UInt(UInt32.max):
+                self.init(value)
         default: return nil
         }
     }
@@ -131,8 +143,8 @@ extension UInt32: MessagePackInitializable {
 extension UInt64: MessagePackInitializable {
     public init?(_ value: MessagePack) {
         switch value {
-        case let .int(value)  where value >= 0 : self.init(value)
-        case let .uint(value)                  : self.init(value)
+        case let .int(value) where value >= 0: self.init(value)
+        case let .uint(value): self.init(value)
         default: return nil
         }
     }

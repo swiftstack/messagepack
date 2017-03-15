@@ -22,7 +22,7 @@ extension Encoder {
         }
     }
 
-    public mutating func encode(_ dictionary: [MessagePack: MessagePack]) {
+    public mutating func encode(_ dictionary: [MessagePack : MessagePack]) {
         writeMapHeader(count: dictionary.count)
         for (key, value) in dictionary {
             encode(key)
