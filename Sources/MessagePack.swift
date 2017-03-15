@@ -43,16 +43,18 @@ extension MessagePack: CustomStringConvertible {
         case let .binary(data): return data.hexDescription
         case let .array(array): return array.description
         case let .map(dict): return dict.description
-        case let .extended(extended): return "{\(extended.type), \(extended.data.hexDescription)}"
+        case let .extended(extended): return extended.description
         }
     }
 }
 
-extension MessagePack.Extended: Hashable {
-    public var hashValue: Int {
-        return type.hashValue ^ data.hashValue
+extension MessagePack.Extended: CustomStringConvertible {
+    public var description: String {
+        return "{\(type), \(data.hexDescription)}"
     }
+
 }
+
 extension MessagePack: Hashable {
     public var hashValue: Int {
         switch self {
@@ -64,10 +66,30 @@ extension MessagePack: Hashable {
         case .double(let value): return value.hashValue
         case .string(let string): return string.hashValue
         case .binary(let bytes): return bytes.hashValue
-        case .array(let items): return items.reduce(items.count.hashValue) { $0 ^ $1.hashValue }
-        case .map(let items): return items.reduce(items.count.hashValue) { $0 ^ $1.key.hashValue ^ $1.value.hashValue }
+        case .array(let items): return items.hashValue
+        case .map(let items): return items.hashValue
         case .extended(let value): return value.hashValue
         }
+    }
+}
+
+extension Array where Element == MessagePack {
+    public var hashValue: Int {
+        return self.reduce(self.count.hashValue) { $0 ^ $1.hashValue }
+    }
+}
+
+extension Dictionary where Key == MessagePack, Value == MessagePack {
+    public var hashValue: Int {
+        return self.reduce(self.count.hashValue) {
+            $0 ^ $1.key.hashValue ^ $1.value.hashValue
+        }
+    }
+}
+
+extension MessagePack.Extended: Hashable {
+    public var hashValue: Int {
+        return type.hashValue ^ data.hashValue
     }
 }
 

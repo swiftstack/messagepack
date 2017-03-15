@@ -42,17 +42,17 @@ class HashValueTests: TestCase {
     }
 
     func testArrayHashValue() {
-        let first = MessagePack.array([0, 1, 2, 3])
-        let second = MessagePack.array([0, 1, 2, 3])
-        assertNotEqual(first.hashValue, 0)
-        assertEqual(first.hashValue, second.hashValue)
+        let unpackedArray: [MessagePack] = [0, 1, 2, 3]
+        let packedArray = MessagePack.array([0, 1, 2, 3])
+        assertNotEqual(unpackedArray.hashValue, 0)
+        assertEqual(unpackedArray.hashValue, packedArray.hashValue)
     }
 
     func testMapHashValue() {
-        let first = MessagePack.map(["zero": 0, "one": 1, "two": 2, "three": 3])
-        let second = MessagePack.map(["zero": 0, "one": 1, "two": 2, "three": 3])
-        assertNotEqual(first.hashValue, 0)
-        assertEqual(first.hashValue, second.hashValue)
+        let packedMap = MessagePack.map(["zero": 0, "one": 1, "two": 2, "three": 3])
+        let unpackedMap: [MessagePack : MessagePack] = ["zero": 0, "one": 1, "two": 2, "three": 3]
+        assertNotEqual(unpackedMap.hashValue, 0)
+        assertEqual(unpackedMap.hashValue, packedMap.hashValue)
     }
 
     func testExtendedHashValue() {
