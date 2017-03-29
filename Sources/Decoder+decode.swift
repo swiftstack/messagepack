@@ -41,15 +41,11 @@ extension Decoder {
         }
     }
 
-    // TODO: consider implicit Int <-> UInt conversion
-    // or remove this api cause it's different from the others
     public mutating func decode(as type: Int.Type) throws -> Int {
         let code = try readCode()
         return try readInt(code: code)
     }
 
-    // TODO: consider implicit Int <-> UInt conversion
-    // or remove this api cause it's different from the others
     public mutating func decode(as type: UInt.Type) throws -> UInt {
         let code = try readCode()
         return try readUInt(code: code)

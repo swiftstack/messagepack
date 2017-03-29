@@ -49,6 +49,21 @@ class DecodeAsTests: TestCase {
         assertEqual(decoded, expected)
     }
 
+    func testUIntToInt() {
+        let expected: UInt = 1
+        let encoded = try! MessagePack.encode(.uint(expected))
+        var decoder = Decoder(bytes: encoded, count: encoded.count)
+        let decoded = try! decoder.decode(as: Int.self)
+        assertEqual(UInt(decoded), expected)
+    }
+
+    func testUIntMaxToInt() {
+        let expected = UInt.max
+        let encoded = try! MessagePack.encode(.uint(expected))
+        var decoder = Decoder(bytes: encoded, count: encoded.count)
+        assertThrowsError(try decoder.decode(as: Int.self))
+    }
+
     func testBinary() {
         let expected: [UInt8] = [0x01, 0x02, 0x03]
         let encoded = try! MessagePack.encode(.binary(expected))
