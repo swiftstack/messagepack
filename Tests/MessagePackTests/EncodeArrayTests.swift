@@ -6,7 +6,7 @@ class EncodeArrayTests: TestCase {
         let expected: [UInt8] = [0x92, 0xc3, 0xc2]
 
         var encoder = Encoder()
-        encoder.encode(array: booleans)
+        encoder.encode(booleans)
 
         assertEqual(encoder.bytes, expected)
     }
@@ -16,7 +16,7 @@ class EncodeArrayTests: TestCase {
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
         var encoder = Encoder()
-        encoder.encode(array: bytes)
+        encoder.encode(bytes)
 
         assertEqual(encoder.bytes, expected)
     }
@@ -26,7 +26,7 @@ class EncodeArrayTests: TestCase {
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
         var encoder = Encoder()
-        encoder.encode(array: bytes)
+        encoder.encode(bytes)
 
         assertEqual(encoder.bytes, expected)
     }
@@ -36,7 +36,7 @@ class EncodeArrayTests: TestCase {
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
         var encoder = Encoder()
-        encoder.encode(array: bytes)
+        encoder.encode(bytes)
 
         assertEqual(encoder.bytes, expected)
     }
@@ -46,7 +46,7 @@ class EncodeArrayTests: TestCase {
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
         var encoder = Encoder()
-        encoder.encode(array: bytes)
+        encoder.encode(bytes)
 
         assertEqual(encoder.bytes, expected)
     }
@@ -56,7 +56,7 @@ class EncodeArrayTests: TestCase {
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
         var encoder = Encoder()
-        encoder.encode(array: bytes)
+        encoder.encode(bytes)
 
         assertEqual(encoder.bytes, expected)
     }
@@ -66,7 +66,7 @@ class EncodeArrayTests: TestCase {
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
         var encoder = Encoder()
-        encoder.encode(array: bytes)
+        encoder.encode(bytes)
 
         assertEqual(encoder.bytes, expected)
     }
@@ -76,7 +76,7 @@ class EncodeArrayTests: TestCase {
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
         var encoder = Encoder()
-        encoder.encode(array: bytes)
+        encoder.encode(bytes)
 
         assertEqual(encoder.bytes, expected)
     }
@@ -86,7 +86,7 @@ class EncodeArrayTests: TestCase {
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
         var encoder = Encoder()
-        encoder.encode(array: bytes)
+        encoder.encode(bytes)
 
         assertEqual(encoder.bytes, expected)
     }
@@ -96,7 +96,7 @@ class EncodeArrayTests: TestCase {
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
         var encoder = Encoder()
-        encoder.encode(array: bytes)
+        encoder.encode(bytes)
 
         assertEqual(encoder.bytes, expected)
     }
@@ -106,7 +106,7 @@ class EncodeArrayTests: TestCase {
         let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
         var encoder = Encoder()
-        encoder.encode(array: bytes)
+        encoder.encode(bytes)
 
         assertEqual(encoder.bytes, expected)
     }

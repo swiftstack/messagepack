@@ -41,36 +41,36 @@ extension Decoder {
         }
     }
 
-    public mutating func decode(as type: Int.Type) throws -> Int {
+    public mutating func decode(_ type: Int.Type) throws -> Int {
         let code = try readCode()
         return try readInt(code: code)
     }
 
-    public mutating func decode(as type: UInt.Type) throws -> UInt {
+    public mutating func decode(_ type: UInt.Type) throws -> UInt {
         let code = try readCode()
         return try readUInt(code: code)
     }
 
-    public mutating func decode(as type: Bool.Type) throws -> Bool {
+    public mutating func decode(_ type: Bool.Type) throws -> Bool {
         let code = try readCode()
         return try readBool(code: code)
     }
 
-    public mutating func decode(as type: Float.Type) throws -> Float {
+    public mutating func decode(_ type: Float.Type) throws -> Float {
         switch try readCode() {
         case 0xca: return try readFloat()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode(as type: Double.Type) throws -> Double {
+    public mutating func decode(_ type: Double.Type) throws -> Double {
         switch try readCode() {
         case 0xcb: return try readDouble()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode(as type: String.Type) throws -> String {
+    public mutating func decode(_ type: String.Type) throws -> String {
         let code = try readCode()
         switch code {
         case 0xa0...0xbf: fallthrough
@@ -79,7 +79,7 @@ extension Decoder {
         }
     }
 
-    public mutating func decode(as type: UInt8.Type) throws -> UInt8 {
+    public mutating func decode(_ type: UInt8.Type) throws -> UInt8 {
         let code = try readCode()
         switch code {
         case 0x00...0x7f: return code
@@ -88,28 +88,28 @@ extension Decoder {
         }
     }
 
-    public mutating func decode(as type: UInt16.Type) throws -> UInt16 {
+    public mutating func decode(_ type: UInt16.Type) throws -> UInt16 {
         switch try readCode() {
         case 0xcd: return try readUInt16()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode(as type: UInt32.Type) throws -> UInt32 {
+    public mutating func decode(_ type: UInt32.Type) throws -> UInt32 {
         switch try readCode() {
         case 0xce: return try readUInt32()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode(as type: UInt64.Type) throws -> UInt64 {
+    public mutating func decode(_ type: UInt64.Type) throws -> UInt64 {
         switch try readCode() {
         case 0xcf: return try readUInt64()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode(as type: Int8.Type) throws -> Int8 {
+    public mutating func decode(_ type: Int8.Type) throws -> Int8 {
         let code = try readCode()
         switch code {
         case 0xe0...0xff: return Int8(numericCast(code) - 0x100)
@@ -118,28 +118,28 @@ extension Decoder {
         }
     }
 
-    public mutating func decode(as type: Int16.Type) throws -> Int16 {
+    public mutating func decode(_ type: Int16.Type) throws -> Int16 {
         switch try readCode() {
         case 0xd1: return try readInt16()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode(as type: Int32.Type) throws -> Int32 {
+    public mutating func decode(_ type: Int32.Type) throws -> Int32 {
         switch try readCode() {
         case 0xd2: return try readInt32()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode(as type: Int64.Type) throws -> Int64 {
+    public mutating func decode(_ type: Int64.Type) throws -> Int64 {
         switch try readCode() {
         case 0xd3: return try readInt64()
         default: throw MessagePackError.invalidData
         }
     }
 
-    public mutating func decode(as type: [UInt8].Type) throws -> [UInt8] {
+    public mutating func decode(_ type: [UInt8].Type) throws -> [UInt8] {
         let code = try readCode()
         switch code {
         case 0xc4...0xc6: return try readBinary(code: code)
@@ -148,7 +148,7 @@ extension Decoder {
     }
 
     public mutating func decode(
-        as type: [MessagePack].Type
+        _ type: [MessagePack].Type
     ) throws -> [MessagePack] {
         let code = try readCode()
         switch code {
@@ -159,7 +159,7 @@ extension Decoder {
     }
 
     public mutating func decode(
-        as type: [MessagePack : MessagePack].Type
+        _ type: [MessagePack : MessagePack].Type
     ) throws -> [MessagePack : MessagePack] {
         let code = try readCode()
         switch code {
@@ -170,7 +170,7 @@ extension Decoder {
     }
 
     public mutating func decode(
-        as type: MessagePack.Extended.Type
+        _ type: MessagePack.Extended.Type
     ) throws -> MessagePack.Extended {
         let code = try readCode()
         switch code {

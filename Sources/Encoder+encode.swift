@@ -160,72 +160,72 @@ extension Encoder {
         }
     }
 
-    public mutating func encode(array: [Bool]) {
+    public mutating func encode(_ array: [Bool]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
 
-    public mutating func encode(array: [Float]) {
+    public mutating func encode(_ array: [Float]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
 
-    public mutating func encode(array: [Double]) {
+    public mutating func encode(_ array: [Double]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
 
-    public mutating func encode(array: [String]) {
+    public mutating func encode(_ array: [String]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
 
-    public mutating func encode(array: [Int]) {
+    public mutating func encode(_ array: [Int]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
 
-    public mutating func encode(array: [UInt]) {
+    public mutating func encode(_ array: [UInt]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
 
-    public mutating func encode(array: [Int8]) {
+    public mutating func encode(_ array: [Int8]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
 
-    public mutating func encode(array: [UInt8]) {
+    public mutating func encode(_ array: [UInt8]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
 
-    public mutating func encode(array: [Int16]) {
+    public mutating func encode(_ array: [Int16]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
 
-    public mutating func encode(array: [UInt16]) {
+    public mutating func encode(_ array: [UInt16]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
 
-    public mutating func encode(array: [Int32]) {
+    public mutating func encode(_ array: [Int32]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
 
-    public mutating func encode(array: [UInt32]) {
+    public mutating func encode(_ array: [UInt32]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
 
-    public mutating func encode(array: [Int64]) {
+    public mutating func encode(_ array: [Int64]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
 
-    public mutating func encode(array: [UInt64]) {
+    public mutating func encode(_ array: [UInt64]) {
         writeArrayHeader(count: array.count)
         for item in array { encode(item) }
     }
