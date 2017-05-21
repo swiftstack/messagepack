@@ -89,7 +89,7 @@ extension Encoder {
         case let value where value >= 0:
             encode(UInt16(bitPattern: value))
         case let value where value >= -0x7f:
-            encode(Int8(truncatingBitPattern: value))
+            encode(Int8(extendingOrTruncating: value))
         default:
             write(code: 0xd1)
             write(value)
@@ -101,7 +101,7 @@ extension Encoder {
         case let value where value >= 0:
             encode(UInt32(bitPattern: value))
         case let value where value >= -0x7fff:
-            encode(Int16(truncatingBitPattern: value))
+            encode(Int16(extendingOrTruncating: value))
         default:
             write(code: 0xd2)
             write(value)
@@ -113,7 +113,7 @@ extension Encoder {
         case let value where value >= 0:
             encode(UInt64(bitPattern: value))
         case let value where value >= -0x7fff_ffff:
-            encode(Int32(truncatingBitPattern: value))
+            encode(Int32(extendingOrTruncating: value))
         default:
             write(code: 0xd3)
             write(value)
@@ -133,7 +133,7 @@ extension Encoder {
     public mutating func encode(_ value: UInt16) {
         switch value {
         case let value where value <= 0xff:
-            encode(UInt8(truncatingBitPattern: value))
+            encode(UInt8(extendingOrTruncating: value))
         default:
             write(code: 0xcd)
             write(value)
@@ -143,7 +143,7 @@ extension Encoder {
     public mutating func encode(_ value: UInt32) {
         switch value {
         case let value where value <= 0xffff:
-            encode(UInt16(truncatingBitPattern: value))
+            encode(UInt16(extendingOrTruncating: value))
         default:
             write(code: 0xce)
             write(value)
@@ -153,7 +153,7 @@ extension Encoder {
     public mutating func encode(_ value: UInt64) {
         switch value {
         case let value where value <= 0xffff_ffff:
-            encode(UInt32(truncatingBitPattern: value))
+            encode(UInt32(extendingOrTruncating: value))
         default:
             write(code: 0xcf)
             write(value)

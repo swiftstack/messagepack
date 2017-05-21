@@ -1,6 +1,7 @@
+import Test
 import MessagePack
 
-class DecodeAsTests: TestCase {
+class DecodeTests: TestCase {
     func testBool() {
         let expected = true
         let encoded = MessagePack.encode(.bool(expected))

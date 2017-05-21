@@ -1,3 +1,4 @@
+import Test
 @testable import MessagePack
 
 class InvalidHeaderTests: TestCase {

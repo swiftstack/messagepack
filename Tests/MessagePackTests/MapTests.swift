@@ -1,3 +1,4 @@
+import Test
 import MessagePack
 
 func makeMap(repeating: MessagePack, count: Int) -> [MessagePack: MessagePack] {

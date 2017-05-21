@@ -14,26 +14,26 @@ public struct Encoder {
     }
 
     mutating func write(_ value: UInt16) {
-        bytes.append(UInt8(truncatingBitPattern: value >> 8))
-        bytes.append(UInt8(truncatingBitPattern: value))
+        bytes.append(UInt8(extendingOrTruncating: value >> 8))
+        bytes.append(UInt8(extendingOrTruncating: value))
     }
 
     mutating func write(_ value: UInt32) {
-        bytes.append(UInt8(truncatingBitPattern: value >> 24))
-        bytes.append(UInt8(truncatingBitPattern: value >> 16))
-        bytes.append(UInt8(truncatingBitPattern: value >> 8))
-        bytes.append(UInt8(truncatingBitPattern: value))
+        bytes.append(UInt8(extendingOrTruncating: value >> 24))
+        bytes.append(UInt8(extendingOrTruncating: value >> 16))
+        bytes.append(UInt8(extendingOrTruncating: value >> 8))
+        bytes.append(UInt8(extendingOrTruncating: value))
     }
 
     mutating func write(_ value: UInt64) {
-        bytes.append(UInt8(truncatingBitPattern: value >> 56))
-        bytes.append(UInt8(truncatingBitPattern: value >> 48))
-        bytes.append(UInt8(truncatingBitPattern: value >> 40))
-        bytes.append(UInt8(truncatingBitPattern: value >> 32))
-        bytes.append(UInt8(truncatingBitPattern: value >> 24))
-        bytes.append(UInt8(truncatingBitPattern: value >> 16))
-        bytes.append(UInt8(truncatingBitPattern: value >> 8))
-        bytes.append(UInt8(truncatingBitPattern: value))
+        bytes.append(UInt8(extendingOrTruncating: value >> 56))
+        bytes.append(UInt8(extendingOrTruncating: value >> 48))
+        bytes.append(UInt8(extendingOrTruncating: value >> 40))
+        bytes.append(UInt8(extendingOrTruncating: value >> 32))
+        bytes.append(UInt8(extendingOrTruncating: value >> 24))
+        bytes.append(UInt8(extendingOrTruncating: value >> 16))
+        bytes.append(UInt8(extendingOrTruncating: value >> 8))
+        bytes.append(UInt8(extendingOrTruncating: value))
     }
 
     mutating func write(_ bytes: [UInt8]) {

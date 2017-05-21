@@ -1,3 +1,4 @@
+import Test
 import MessagePack
 
 class ArrayTests: TestCase {
