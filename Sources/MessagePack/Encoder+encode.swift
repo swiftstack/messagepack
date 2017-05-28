@@ -30,6 +30,14 @@ extension Encoder {
         }
     }
 
+    public mutating func encodeArrayItemsCount(_ itemsCount: Int) {
+        writeArrayHeader(count: itemsCount)
+    }
+
+    public mutating func encodeMapItemsCount(_ itemsCount: Int) {
+        writeMapHeader(count: itemsCount)
+    }
+
     public mutating func encodeNil() {
         write(UInt8(0xc0))
     }

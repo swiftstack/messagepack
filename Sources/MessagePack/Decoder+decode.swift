@@ -41,6 +41,16 @@ extension Decoder {
         }
     }
 
+    public mutating func decodeArrayItemsCount() throws -> Int {
+        let code = try readCode()
+        return try readArrayHeader(code: code)
+    }
+
+    public mutating func decodeMapItemsCount() throws -> Int {
+        let code = try readCode()
+        return try readMapHeader(code: code)
+    }
+
     public mutating func decode(_ type: Int.Type) throws -> Int {
         let code = try readCode()
         return try readInt(code: code)
