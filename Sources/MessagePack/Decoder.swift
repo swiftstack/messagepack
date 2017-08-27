@@ -1,4 +1,4 @@
-public struct Decoder {
+public struct UnsafeMessagePackDecoder {
     private let buffer: UnsafeRawBufferPointer
     private var position = 0
 
@@ -48,7 +48,7 @@ public struct Decoder {
     }
 }
 
-extension Decoder {
+extension UnsafeMessagePackDecoder {
     mutating func readInt8() throws -> Int8 {
         return Int8(bitPattern: try readUInt8())
     }
@@ -66,13 +66,13 @@ extension Decoder {
     }
 }
 
-extension Decoder {
+extension UnsafeMessagePackDecoder {
     mutating func readCode() throws -> UInt8 {
         return try readUInt8()
     }
 }
 
-extension Decoder {
+extension UnsafeMessagePackDecoder {
     mutating func readInt(code: UInt8) throws -> Int {
         // positive integers encoded as unsigned
         // since they're used more often,
