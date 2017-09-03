@@ -1,4 +1,4 @@
-public struct MessagePackEncoder {
+public struct RawMessagePackEncoder {
     public var bytes = [UInt8]()
 
     public init(reservingCapacity capacity: Int = 1024) {
@@ -41,7 +41,7 @@ public struct MessagePackEncoder {
     }
 }
 
-extension MessagePackEncoder {
+extension RawMessagePackEncoder {
     mutating func write(_ value: Int8) {
         write(UInt8(bitPattern: value))
     }
@@ -59,7 +59,7 @@ extension MessagePackEncoder {
     }
 }
 
-extension MessagePackEncoder {
+extension RawMessagePackEncoder {
     mutating func write(code value: UInt8) {
         write(value)
     }
