@@ -4,14 +4,14 @@ import MessagePack
 class IntegerTests: TestCase {
     func testEncodeNegativeIntToFixInt() {
         let expected: [UInt8] = [0xff]
-        let encoded = MessagePack.encode(.int(-1))
-        assertEqual(encoded, expected)
+        let encoded = try? MessagePack.encode(.int(-1))
+        assertEqual(encoded ?? [], expected)
     }
 
     func testEncodePositiveIntToFixInt() {
         let expected: [UInt8] = [0x01]
-        let encoded = MessagePack.encode(.uint(1))
-        assertEqual(encoded, expected)
+        let encoded = try? MessagePack.encode(.uint(1))
+        assertEqual(encoded ?? [], expected)
     }
 
     func testEncodeInt() {
@@ -19,8 +19,8 @@ class IntegerTests: TestCase {
             [0xd3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]:
             [0xd2, 0x80, 0x00, 0x00, 0x00]
 
-        let encoded = MessagePack.encode(.int(Int.min))
-        assertEqual(encoded, expected)
+        let encoded = try? MessagePack.encode(.int(Int.min))
+        assertEqual(encoded ?? [], expected)
     }
 
     func testEncodeUInt() {
@@ -28,8 +28,8 @@ class IntegerTests: TestCase {
             [0xcf, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]:
             [0xce, 0xff, 0xff, 0xff, 0xff]
 
-        let encoded = MessagePack.encode(.uint(UInt.max))
-        assertEqual(encoded, expected)
+        let encoded = try? MessagePack.encode(.uint(UInt.max))
+        assertEqual(encoded ?? [], expected)
     }
 
     func testDecodeNegativeFixInt() {

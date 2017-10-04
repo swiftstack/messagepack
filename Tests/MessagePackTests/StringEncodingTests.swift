@@ -4,25 +4,29 @@ import MessagePack
 class StringEncodingTests: TestCase {
     func testEnglishString() {
         let original = MessagePack.string("Hello, World!")
-        let result = try? MessagePack.decode(bytes: MessagePack.encode(original))
+        let encoded = try! MessagePack.encode(original)
+        let result = try! MessagePack.decode(bytes: encoded)
         assertEqual(result, original)
     }
 
     func testSwedishString() {
         let original = MessagePack.string("Hellö, Wörld!")
-        let result = try? MessagePack.decode(bytes: MessagePack.encode(original))
+        let encoded = try! MessagePack.encode(original)
+        let result = try! MessagePack.decode(bytes: encoded)
         assertEqual(result, original)
     }
 
     func testJapaneseString() {
         let original = MessagePack.string("こんにちは世界！")
-        let result = try? MessagePack.decode(bytes: MessagePack.encode(original))
+        let encoded = try! MessagePack.encode(original)
+        let result = try! MessagePack.decode(bytes: encoded)
         assertEqual(result, original)
     }
 
     func testRussianString() {
         let original = MessagePack.string("Привет, Мир!")
-        let result = try? MessagePack.decode(bytes: MessagePack.encode(original))
+        let encoded = try! MessagePack.encode(original)
+        let result = try! MessagePack.decode(bytes: encoded)
         assertEqual(result, original)
     }
 
@@ -30,10 +34,10 @@ class StringEncodingTests: TestCase {
         let string = MessagePack.string("Hello, World!")
         let bytes: [UInt8] = [0xad, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x57, 0x6f, 0x72, 0x6c, 0x64, 0x21]
 
-        let encoded = MessagePack.encode(string)
+        let encoded = try! MessagePack.encode(string)
         assertEqual(encoded, bytes)
 
-        let decoded = try? MessagePack.decode(bytes: bytes)
+        let decoded = try! MessagePack.decode(bytes: bytes)
         assertEqual(decoded, string)
     }
 }

@@ -1,240 +1,240 @@
 extension MessagePackWriter {
-    public mutating func encode(_ value: MessagePack) {
+    public mutating func encode(_ value: MessagePack) throws {
         switch value {
-        case .`nil`: encodeNil()
-        case let .int(value): encode(Int64(value))
-        case let .uint(value): encode(UInt64(value))
-        case let .bool(value): encode(value)
-        case let .string(value): encode(value)
-        case let .float(value): encode(value)
-        case let .double(value): encode(value)
-        case let .array(value): encode(value)
-        case let .map(value): encode(value)
-        case let .binary(value): encode(value)
-        case let .extended(value): encode(extended: value)
+        case .`nil`: try encodeNil()
+        case let .int(value): try encode(Int64(value))
+        case let .uint(value): try encode(UInt64(value))
+        case let .bool(value): try encode(value)
+        case let .string(value): try encode(value)
+        case let .float(value): try encode(value)
+        case let .double(value): try encode(value)
+        case let .array(value): try encode(value)
+        case let .map(value): try encode(value)
+        case let .binary(value): try encode(value)
+        case let .extended(value): try encode(extended: value)
         }
     }
 
-    public mutating func encode(_ array: [MessagePack]) {
-        writeArrayHeader(count: array.count)
+    public mutating func encode(_ array: [MessagePack]) throws {
+        try writeArrayHeader(count: array.count)
         for item in array {
-            encode(item)
+            try encode(item)
         }
     }
 
-    public mutating func encode(_ dictionary: [MessagePack : MessagePack]) {
-        writeMapHeader(count: dictionary.count)
+    public mutating func encode(_ dictionary: [MessagePack : MessagePack]) throws {
+        try writeMapHeader(count: dictionary.count)
         for (key, value) in dictionary {
-            encode(key)
-            encode(value)
+            try encode(key)
+            try encode(value)
         }
     }
 
-    public mutating func encodeArrayItemsCount(_ itemsCount: Int) {
-        writeArrayHeader(count: itemsCount)
+    public mutating func encodeArrayItemsCount(_ itemsCount: Int) throws {
+        try writeArrayHeader(count: itemsCount)
     }
 
-    public mutating func encodeMapItemsCount(_ itemsCount: Int) {
-        writeMapHeader(count: itemsCount)
+    public mutating func encodeMapItemsCount(_ itemsCount: Int) throws {
+        try writeMapHeader(count: itemsCount)
     }
 
-    public mutating func encodeNil() {
-        write(UInt8(0xc0))
+    public mutating func encodeNil() throws {
+        try write(UInt8(0xc0))
     }
 
-    public mutating func encode(_ value: Int) {
-        encode(Int64(value))
+    public mutating func encode(_ value: Int) throws {
+        try encode(Int64(value))
     }
 
-    public mutating func encode(_ value: UInt) {
-        encode(UInt64(value))
+    public mutating func encode(_ value: UInt) throws {
+        try encode(UInt64(value))
     }
 
-    public mutating func encode(_ value: Bool) {
-        write(UInt8(value ? 0xc3 : 0xc2))
+    public mutating func encode(_ value: Bool) throws {
+        try write(UInt8(value ? 0xc3 : 0xc2))
     }
 
-    public mutating func encode(_ value: Float) {
-        write(code: 0xca)
-        write(value.bitPattern)
+    public mutating func encode(_ value: Float) throws {
+        try write(code: 0xca)
+        try write(value.bitPattern)
     }
 
-    public mutating func encode(_ value: Double) {
-        write(code: 0xcb)
-        write(value.bitPattern)
+    public mutating func encode(_ value: Double) throws {
+        try write(code: 0xcb)
+        try write(value.bitPattern)
     }
 
-    public mutating func encode(_ value: String) {
+    public mutating func encode(_ value: String) throws {
         let utf8 = Array(value.utf8)
-        writeStringHeader(count: utf8.count)
-        write(utf8)
+        try writeStringHeader(count: utf8.count)
+        try write(utf8)
     }
 
-    public mutating func encode(_ binary: [UInt8]) {
-        writeBinaryHeader(count: binary.count)
-        write(binary)
+    public mutating func encode(_ binary: [UInt8]) throws {
+        try writeBinaryHeader(count: binary.count)
+        try write(binary)
     }
 
-    public mutating func encode(extended: MessagePack.Extended) {
-        writeExtendedHeader(type: extended.type, count: extended.data.count)
-        write(extended.data)
+    public mutating func encode(extended: MessagePack.Extended) throws {
+        try writeExtendedHeader(type: extended.type, count: extended.data.count)
+        try write(extended.data)
     }
 
-    public mutating func encode(_ value: Int8) {
+    public mutating func encode(_ value: Int8) throws {
         switch value {
         case value where value >= 0:
-            encode(UInt8(bitPattern: value))
+            try encode(UInt8(bitPattern: value))
         case value where value >= -0x20:
-            write(code: 0xe0 + 0x1f & UInt8(bitPattern: value))
+            try write(code: 0xe0 + 0x1f & UInt8(bitPattern: value))
         default:
-            write(code: 0xd0)
-            write(value)
+            try write(code: 0xd0)
+            try write(value)
         }
     }
 
-    public mutating func encode(_ value: Int16) {
+    public mutating func encode(_ value: Int16) throws {
         switch value {
         case let value where value >= 0:
-            encode(UInt16(bitPattern: value))
+            try encode(UInt16(bitPattern: value))
         case let value where value >= -0x7f:
-            encode(Int8(truncatingIfNeeded: value))
+            try encode(Int8(truncatingIfNeeded: value))
         default:
-            write(code: 0xd1)
-            write(value)
+            try write(code: 0xd1)
+            try write(value)
         }
     }
 
-    public mutating func encode(_ value: Int32) {
+    public mutating func encode(_ value: Int32) throws {
         switch value {
         case let value where value >= 0:
-            encode(UInt32(bitPattern: value))
+            try encode(UInt32(bitPattern: value))
         case let value where value >= -0x7fff:
-            encode(Int16(truncatingIfNeeded: value))
+            try encode(Int16(truncatingIfNeeded: value))
         default:
-            write(code: 0xd2)
-            write(value)
+            try write(code: 0xd2)
+            try write(value)
         }
     }
 
-    public mutating func encode(_ value: Int64) {
+    public mutating func encode(_ value: Int64) throws {
         switch value {
         case let value where value >= 0:
-            encode(UInt64(bitPattern: value))
+            try encode(UInt64(bitPattern: value))
         case let value where value >= -0x7fff_ffff:
-            encode(Int32(truncatingIfNeeded: value))
+            try encode(Int32(truncatingIfNeeded: value))
         default:
-            write(code: 0xd3)
-            write(value)
+            try write(code: 0xd3)
+            try write(value)
         }
     }
 
-    public mutating func encode(_ value: UInt8) {
+    public mutating func encode(_ value: UInt8) throws {
         switch value {
         case let value where value <= 0x7f:
-            write(UInt8(value))
+            try write(UInt8(value))
         default:
-            write(code: 0xcc)
-            write(value)
+            try write(code: 0xcc)
+            try write(value)
         }
     }
 
-    public mutating func encode(_ value: UInt16) {
+    public mutating func encode(_ value: UInt16) throws {
         switch value {
         case let value where value <= 0xff:
-            encode(UInt8(truncatingIfNeeded: value))
+            try encode(UInt8(truncatingIfNeeded: value))
         default:
-            write(code: 0xcd)
-            write(value)
+            try write(code: 0xcd)
+            try write(value)
         }
     }
 
-    public mutating func encode(_ value: UInt32) {
+    public mutating func encode(_ value: UInt32) throws {
         switch value {
         case let value where value <= 0xffff:
-            encode(UInt16(truncatingIfNeeded: value))
+            try encode(UInt16(truncatingIfNeeded: value))
         default:
-            write(code: 0xce)
-            write(value)
+            try write(code: 0xce)
+            try write(value)
         }
     }
 
-    public mutating func encode(_ value: UInt64) {
+    public mutating func encode(_ value: UInt64) throws {
         switch value {
         case let value where value <= 0xffff_ffff:
-            encode(UInt32(truncatingIfNeeded: value))
+            try encode(UInt32(truncatingIfNeeded: value))
         default:
-            write(code: 0xcf)
-            write(value)
+            try write(code: 0xcf)
+            try write(value)
         }
     }
 
-    public mutating func encode(array: [Bool]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [Bool]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 
-    public mutating func encode(array: [Float]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [Float]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 
-    public mutating func encode(array: [Double]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [Double]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 
-    public mutating func encode(array: [String]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [String]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 
-    public mutating func encode(array: [Int]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [Int]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 
-    public mutating func encode(array: [UInt]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [UInt]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 
-    public mutating func encode(array: [Int8]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [Int8]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 
-    public mutating func encode(array: [UInt8]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [UInt8]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 
-    public mutating func encode(array: [Int16]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [Int16]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 
-    public mutating func encode(array: [UInt16]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [UInt16]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 
-    public mutating func encode(array: [Int32]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [Int32]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 
-    public mutating func encode(array: [UInt32]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [UInt32]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 
-    public mutating func encode(array: [Int64]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [Int64]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 
-    public mutating func encode(array: [UInt64]) {
-        writeArrayHeader(count: array.count)
-        for item in array { encode(item) }
+    public mutating func encode(array: [UInt64]) throws {
+        try writeArrayHeader(count: array.count)
+        for item in array { try encode(item) }
     }
 }

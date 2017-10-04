@@ -1,50 +1,69 @@
-public struct MessagePackReader {
-    private let buffer: UnsafeRawBufferPointer
-    private var position = 0
+import Stream
 
-    public init(buffer: UnsafeRawBufferPointer) {
-        self.buffer = buffer
+public class InputByteStream: InputStream {
+    public let bytes: [UInt8]
+    public var index = 0
+
+    public init(_ bytes: [UInt8]) {
+        self.bytes = bytes
     }
 
-    public init(bytes: UnsafeRawPointer, count: Int) {
-        self.buffer = UnsafeRawBufferPointer(start: bytes, count: count)
-    }
-
-    public mutating func rewind() {
-        position = 0
-    }
-
-    mutating func requestBuffer(size: Int) throws -> UnsafeRawPointer {
-        guard position + size <= buffer.count else {
+    @inline(__always)
+    public func read(to buffer: UnsafeMutableRawBufferPointer) throws -> Int {
+        guard index + buffer.count <= bytes.count else {
             throw MessagePackError.insufficientData
         }
-        defer { position += size }
-        return UnsafeRawPointer(buffer.baseAddress! + position)
+        buffer.copyBytes(from: bytes[index..<index+buffer.count])
+        index += buffer.count
+        return buffer.count
+    }
+}
+
+public struct MessagePackReader<T: InputStream> {
+    let stream: T
+
+    public init(_ stream: T) {
+        self.stream = stream
     }
 
     mutating func readUInt8() throws -> UInt8 {
-        let buffer = try requestBuffer(size: MemoryLayout<UInt8>.size)
-        return buffer.assumingMemoryBound(to: UInt8.self).pointee
+        var result: UInt8 = 0
+        guard try stream.read(to: &result, count: 1) == 1 else {
+            throw MessagePackError.insufficientData
+        }
+        return result
     }
 
     mutating func readUInt16() throws -> UInt16 {
-        let buffer = try requestBuffer(size: MemoryLayout<UInt16>.size)
-        return buffer.assumingMemoryBound(to: UInt16.self).pointee.byteSwapped
+        var result: UInt16 = 0
+        guard try stream.read(to: &result, count: 2) == 2 else {
+            throw MessagePackError.insufficientData
+        }
+        return result.byteSwapped
     }
 
     mutating func readUInt32() throws -> UInt32 {
-        let buffer = try requestBuffer(size: MemoryLayout<UInt32>.size)
-        return buffer.assumingMemoryBound(to: UInt32.self).pointee.byteSwapped
+        var result: UInt32 = 0
+        guard try stream.read(to: &result, count: 4) == 4 else {
+            throw MessagePackError.insufficientData
+        }
+        return result.byteSwapped
     }
 
     mutating func readUInt64() throws -> UInt64 {
-        let buffer = try requestBuffer(size: MemoryLayout<UInt64>.size)
-        return buffer.assumingMemoryBound(to: UInt64.self).pointee.byteSwapped
+        var result: UInt64 = 0
+        guard try stream.read(to: &result, count: 8) == 8 else {
+            throw MessagePackError.insufficientData
+        }
+        return result.byteSwapped
     }
 
-    mutating func read(count: Int) throws -> UnsafeBufferPointer<UInt8> {
-        let buffer = try requestBuffer(size: count)
-        return UnsafeBufferPointer(start: buffer.assumingMemoryBound(to: UInt8.self), count: count)
+    mutating func read(count: Int) throws -> [UInt8] {
+        var result = [UInt8](repeating: 0, count: count)
+        guard try stream.read(to: &result) == count else {
+            throw MessagePackError.insufficientData
+        }
+        return result
     }
 }
 

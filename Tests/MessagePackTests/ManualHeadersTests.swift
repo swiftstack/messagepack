@@ -3,20 +3,20 @@ import MessagePack
 
 class ManualHeadersTests: TestCase {
     func testEncodeArray() {
-        let expected = MessagePack.encode(.array(["one", "two", "three"]))
-        var writer = MessagePackWriter()
+        let expected = try! MessagePack.encode(.array(["one", "two", "three"]))
+        var writer = MessagePackWriter(OutputByteStream())
         let items = ["one", "two", "three"]
-        writer.encodeArrayItemsCount(items.count)
+        try? writer.encodeArrayItemsCount(items.count)
         for item in items {
-            writer.encode(item)
+            try? writer.encode(item)
         }
-        assertEqual(writer.bytes, expected)
+        assertEqual(writer.stream.bytes, expected)
     }
 
     func testDecodeArray() {
         let expected = ["one", "two", "three"]
-        let encoded = MessagePack.encode(.array(["one", "two", "three"]))
-        var reader = MessagePackReader(bytes: encoded, count: encoded.count)
+        let encoded = try? MessagePack.encode(.array(["one", "two", "three"]))
+        var reader = MessagePackReader(InputByteStream(encoded ?? []))
         var result = [String]()
         do {
             let itemsCount = try reader.decodeArrayItemsCount()
@@ -31,23 +31,23 @@ class ManualHeadersTests: TestCase {
     }
 
     func testEncodeMap() {
-        let expected = MessagePack.encode(
+        let expected = try! MessagePack.encode(
             .map(["one" : 1, "two" : 2, "three" : 3]))
-        var writer = MessagePackWriter()
+        var writer = MessagePackWriter(OutputByteStream())
         let items = ["one" : 1, "two" : 2, "three" : 3]
-        writer.encodeMapItemsCount(items.count)
+        try? writer.encodeMapItemsCount(items.count)
         for (key, value) in items {
-            writer.encode(key)
-            writer.encode(value)
+            try? writer.encode(key)
+            try? writer.encode(value)
         }
-        assertEqual(writer.bytes, expected)
+        assertEqual(writer.stream.bytes, expected)
     }
 
     func testDecodeMap() {
         let expected = ["one" : 1, "two" : 2, "three" : 3]
-        let encoded = MessagePack.encode(
+        let encoded = try? MessagePack.encode(
             .map(["one" : 1, "two" : 2, "three" : 3]))
-        var reader = MessagePackReader(bytes: encoded, count: encoded.count)
+        var reader = MessagePackReader(InputByteStream(encoded ?? []))
         var result = [String : Int]()
         do {
             let itemsCount = try reader.decodeMapItemsCount()

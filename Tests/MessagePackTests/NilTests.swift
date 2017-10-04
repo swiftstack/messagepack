@@ -4,8 +4,8 @@ import MessagePack
 class NilTests: TestCase {
     func testEncodeNil() {
         let expected: [UInt8] = [0xc0]
-        let encoded = MessagePack.encode(.nil)
-        assertEqual(encoded, expected)
+        let encoded = try? MessagePack.encode(.nil)
+        assertEqual(encoded ?? [], expected)
     }
 
     func testDecodeNil() {

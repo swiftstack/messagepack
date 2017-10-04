@@ -5,8 +5,8 @@ class BinaryTests: TestCase {
     func testEncodeBin8() {
         let raw = [UInt8](repeating: 0x45, count: Int(UInt8.max))
         let expected = [0xc4, 0xff] + raw
-        let encoded = MessagePack.encode(.binary(raw))
-        assertEqual(encoded, expected)
+        let encoded = try? MessagePack.encode(.binary(raw))
+        assertEqual(encoded ?? [], expected)
     }
 
     func testDecodeBin8() {
@@ -19,8 +19,8 @@ class BinaryTests: TestCase {
     func testEncodeBin16() {
         let raw = [UInt8](repeating: 0x45, count: Int(UInt16.max))
         let expected = [0xc5, 0xff, 0xff] + raw
-        let encoded = MessagePack.encode(.binary(raw))
-        assertEqual(encoded, expected)
+        let encoded = try? MessagePack.encode(.binary(raw))
+        assertEqual(encoded ?? [], expected)
     }
 
     func testDecodeBin16() {
@@ -33,8 +33,8 @@ class BinaryTests: TestCase {
     func testEncodeBin32() {
         let raw = [UInt8](repeating: 0x45, count: Int(UInt16.max)+1)
         let expected = [0xc6, 0x00, 0x01, 0x00, 0x00] + raw
-        let encoded = MessagePack.encode(.binary(raw))
-        assertEqual(encoded, expected)
+        let encoded = try? MessagePack.encode(.binary(raw))
+        assertEqual(encoded ?? [], expected)
     }
 
     func testDecodeBin32() {
