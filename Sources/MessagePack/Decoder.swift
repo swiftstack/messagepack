@@ -74,13 +74,6 @@ extension UnsafeRawMessagePackDecoder {
 
 extension UnsafeRawMessagePackDecoder {
     mutating func readInt(code: UInt8) throws -> Int {
-        // positive integers encoded as unsigned
-        // since they're used more often,
-        // we try to decode and convert it first
-        if let unsigned = try? readUInt(code: code),
-            unsigned <= UInt(Int.max) {
-                return Int(unsigned)
-        }
         switch code {
         case 0xd0: return Int(try readInt8())
         case 0xd1: return Int(try readInt16())

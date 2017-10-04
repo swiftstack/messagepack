@@ -53,6 +53,13 @@ extension UnsafeRawMessagePackDecoder {
 
     public mutating func decode(_ type: Int.Type) throws -> Int {
         let code = try readCode()
+        // positive integers encoded as unsigned
+        // since they're used more often,
+        // we try to decode and convert it first
+        if let unsigned = try? readUInt(code: code),
+            unsigned <= UInt(Int.max) {
+            return Int(unsigned)
+        }
         return try readInt(code: code)
     }
 
