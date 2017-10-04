@@ -74,8 +74,8 @@ class _MessagePackEncoder: Encoder, MessagePackContainer {
     public func singleValueContainer() -> SingleValueEncodingContainer {
         if let container = self.container {
             guard case .unkeyed(let container) = container else {
-                fatalError("single value container called from" +
-                    "super encoder can be user only with keyed container")
+                fatalError("single value container can be called through" +
+                    "super encoder only from unkeyed container")
             }
             return container as! SingleValueEncodingContainer
         }
