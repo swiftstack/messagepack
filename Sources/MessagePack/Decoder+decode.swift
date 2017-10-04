@@ -1,4 +1,4 @@
-extension UnsafeRawMessagePackDecoder {
+extension MessagePackReader {
     public mutating func decode() throws -> MessagePack {
         let code = try readCode()
         switch code {

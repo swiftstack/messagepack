@@ -1,4 +1,4 @@
-extension RawMessagePackEncoder {
+extension MessagePackWriter {
     public mutating func encode(_ value: MessagePack) {
         switch value {
         case .`nil`: encodeNil()

@@ -4,24 +4,24 @@ import MessagePack
 class ManualHeadersTests: TestCase {
     func testEncodeArray() {
         let expected = MessagePack.encode(.array(["one", "two", "three"]))
-        var encoder = RawMessagePackEncoder()
+        var writer = MessagePackWriter()
         let items = ["one", "two", "three"]
-        encoder.encodeArrayItemsCount(items.count)
+        writer.encodeArrayItemsCount(items.count)
         for item in items {
-            encoder.encode(item)
+            writer.encode(item)
         }
-        assertEqual(encoder.bytes, expected)
+        assertEqual(writer.bytes, expected)
     }
 
     func testDecodeArray() {
         let expected = ["one", "two", "three"]
         let encoded = MessagePack.encode(.array(["one", "two", "three"]))
-        var decoder = UnsafeRawMessagePackDecoder(bytes: encoded, count: encoded.count)
+        var reader = MessagePackReader(bytes: encoded, count: encoded.count)
         var result = [String]()
         do {
-            let itemsCount = try decoder.decodeArrayItemsCount()
+            let itemsCount = try reader.decodeArrayItemsCount()
             for _ in 0..<itemsCount {
-                result.append(try decoder.decode(String.self))
+                result.append(try reader.decode(String.self))
             }
         } catch {
             fail(String(describing: error))
@@ -33,27 +33,27 @@ class ManualHeadersTests: TestCase {
     func testEncodeMap() {
         let expected = MessagePack.encode(
             .map(["one" : 1, "two" : 2, "three" : 3]))
-        var encoder = RawMessagePackEncoder()
+        var writer = MessagePackWriter()
         let items = ["one" : 1, "two" : 2, "three" : 3]
-        encoder.encodeMapItemsCount(items.count)
+        writer.encodeMapItemsCount(items.count)
         for (key, value) in items {
-            encoder.encode(key)
-            encoder.encode(value)
+            writer.encode(key)
+            writer.encode(value)
         }
-        assertEqual(encoder.bytes, expected)
+        assertEqual(writer.bytes, expected)
     }
 
     func testDecodeMap() {
         let expected = ["one" : 1, "two" : 2, "three" : 3]
         let encoded = MessagePack.encode(
             .map(["one" : 1, "two" : 2, "three" : 3]))
-        var decoder = UnsafeRawMessagePackDecoder(bytes: encoded, count: encoded.count)
+        var reader = MessagePackReader(bytes: encoded, count: encoded.count)
         var result = [String : Int]()
         do {
-            let itemsCount = try decoder.decodeMapItemsCount()
+            let itemsCount = try reader.decodeMapItemsCount()
             for _ in 0..<itemsCount {
-                let key = try decoder.decode(String.self)
-                let value = try decoder.decode(Int.self)
+                let key = try reader.decode(String.self)
+                let value = try reader.decode(Int.self)
                 result[key] = value
             }
         } catch {
