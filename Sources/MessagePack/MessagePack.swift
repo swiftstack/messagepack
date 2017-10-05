@@ -12,8 +12,9 @@ public enum MessagePack {
     case extended(Extended)
 
     public struct Extended {
-        public let type: Int8
-        public let data: [UInt8]
+        public var type: Int8
+        public var data: [UInt8]
+
         public init(type: Int8, data: [UInt8]) {
             self.type = type
             self.data = data
