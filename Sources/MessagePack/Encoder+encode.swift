@@ -11,7 +11,7 @@ extension MessagePackWriter {
         case let .array(value): try encode(value)
         case let .map(value): try encode(value)
         case let .binary(value): try encode(value)
-        case let .extended(value): try encode(extended: value)
+        case let .extended(value): try encode(value)
         }
     }
 
@@ -75,7 +75,7 @@ extension MessagePackWriter {
         try write(binary)
     }
 
-    public mutating func encode(extended: MessagePack.Extended) throws {
+    public mutating func encode(_ extended: MessagePack.Extended) throws {
         try writeExtendedHeader(type: extended.type, count: extended.data.count)
         try write(extended.data)
     }
