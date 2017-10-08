@@ -1,22 +1,7 @@
 import Stream
 
-public class OutputByteStream: OutputStream {
-    public var bytes: [UInt8]
-
-    public init(reservingCapacity capacity: Int = 1024) {
-        bytes = []
-        bytes.reserveCapacity(capacity)
-    }
-
-    @inline(__always)
-    public func write(_ bytes: UnsafeRawBufferPointer) throws -> Int {
-        self.bytes.append(contentsOf: bytes)
-        return bytes.count
-    }
-}
-
 public struct MessagePackWriter<T: OutputStream> {
-    public let stream: T
+    public var stream: T
 
     public init(_ stream: T) {
         self.stream = stream

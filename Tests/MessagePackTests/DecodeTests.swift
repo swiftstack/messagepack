@@ -1,4 +1,5 @@
 import Test
+import Stream
 import MessagePack
 
 class DecodeTests: TestCase {

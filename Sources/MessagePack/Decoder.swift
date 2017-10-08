@@ -1,26 +1,7 @@
 import Stream
 
-public class InputByteStream: InputStream {
-    public let bytes: [UInt8]
-    public var index = 0
-
-    public init(_ bytes: [UInt8]) {
-        self.bytes = bytes
-    }
-
-    @inline(__always)
-    public func read(to buffer: UnsafeMutableRawBufferPointer) throws -> Int {
-        guard index + buffer.count <= bytes.count else {
-            throw MessagePackError.insufficientData
-        }
-        buffer.copyBytes(from: bytes[index..<index+buffer.count])
-        index += buffer.count
-        return buffer.count
-    }
-}
-
 public struct MessagePackReader<T: InputStream> {
-    let stream: T
+    var stream: T
 
     public init(_ stream: T) {
         self.stream = stream
