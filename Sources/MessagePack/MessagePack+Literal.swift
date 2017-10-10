@@ -48,11 +48,6 @@ extension MessagePack: ExpressibleByArrayLiteral {
 
 extension MessagePack: ExpressibleByDictionaryLiteral {
     public init(dictionaryLiteral elements: (MessagePack, MessagePack)...) {
-        var dictionary =
-            [MessagePack : MessagePack](minimumCapacity: elements.count)
-        for (key, value) in elements {
-            dictionary[key] = value
-        }
-        self = .map(dictionary)
+        self = .map([MessagePack : MessagePack](uniqueKeysWithValues: elements))
     }
 }
