@@ -104,9 +104,9 @@ extension MessagePackWriter {
         }
     }
 
-    public mutating func encode(_ dictionary: [MessagePack : MessagePack]) throws {
-        try writeMapHeader(count: dictionary.count)
-        for (key, value) in dictionary {
+    public mutating func encode(_ map: [MessagePack : MessagePack]) throws {
+        try writeMapHeader(count: map.count)
+        for (key, value) in map {
             try encode(key)
             try encode(value)
         }
