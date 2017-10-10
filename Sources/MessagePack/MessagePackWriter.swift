@@ -325,7 +325,6 @@ extension MessagePackWriter {
 
 extension MessagePackWriter {
     mutating func writeStringHeader(count: Int) throws {
-        precondition(count <= 0xffff_ffff)
         switch count {
         case let count where count <= 0x19:
             try write(code: 0xa0 | UInt8(count))
@@ -342,7 +341,6 @@ extension MessagePackWriter {
     }
 
     mutating func writeArrayHeader(count: Int) throws {
-        precondition(count <= 0xffff_ffff)
         switch count {
         case let count where count <= 0xf:
             try write(code: 0x90 | UInt8(count))
@@ -356,7 +354,6 @@ extension MessagePackWriter {
     }
 
     mutating func writeMapHeader(count: Int) throws {
-        precondition(count < 0xffff_ffff)
         switch count {
         case let count where count <= 0xf:
             try write(code: 0x80 | UInt8(count))
@@ -370,7 +367,6 @@ extension MessagePackWriter {
     }
 
     mutating func writeBinaryHeader(count: Int) throws {
-        precondition(count <= 0xffff_ffff)
         switch count {
         case let count where count <= 0xff:
             try write(code: 0xc4)
@@ -385,7 +381,6 @@ extension MessagePackWriter {
     }
 
     mutating func writeExtendedHeader(type: Int8, count: Int) throws {
-        precondition(count <= 0xffff_ffff)
         let type = UInt8(bitPattern: type)
         switch count {
         case 1:
