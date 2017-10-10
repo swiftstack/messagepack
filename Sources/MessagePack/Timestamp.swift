@@ -22,7 +22,7 @@ extension MessagePackReader {
     ) throws -> Timestamp {
         let `extension` = try decode(MessagePack.Extended.self)
         guard `extension`.type == -1 else {
-            throw MessagePackError.invalidData
+            throw Error.invalidData
         }
 
         let data = `extension`.data
@@ -65,7 +65,7 @@ extension MessagePackReader {
             seconds |= Int(data[10]) << 8
             seconds |= Int(data[11]) << 0
         default:
-            throw MessagePackError.invalidData
+            throw Error.invalidData
         }
 
         return Timestamp(seconds: seconds, nanoseconds: nanoseconds)
@@ -96,7 +96,7 @@ extension MessagePackWriter {
             } else {
                 guard timestamp.nanoseconds & ~0x3fff_ffff == 0,
                     timestamp.seconds & ~0x0003_ffff_ffff == 0 else {
-                        throw MessagePackError.invalidData
+                        throw Error.invalidData
                 }
                 var data = [UInt8](repeating: 0, count: 8)
 
@@ -115,7 +115,7 @@ extension MessagePackWriter {
             }
         } else {
             guard timestamp.nanoseconds <= UInt32.max else {
-                throw MessagePackError.invalidData
+                throw Error.invalidData
             }
             var data = [UInt8](repeating: 0, count: 12)
 
