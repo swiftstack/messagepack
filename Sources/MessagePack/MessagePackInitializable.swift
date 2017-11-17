@@ -187,6 +187,23 @@ extension Dictionary where Key == MessagePack, Value == MessagePack {
     }
 }
 
+extension Array where Element: MessagePackInitializable {
+    public init?(_ value: MessagePack) {
+        guard let array = [MessagePack](value) else {
+            return nil
+        }
+
+        var result = [Element]()
+        for item in array {
+            guard let value = Element(item) else {
+                return nil
+            }
+            result.append(value)
+        }
+        self = result
+    }
+}
+
 // MARK: Optionals
 
 extension MessagePackInitializable {
@@ -213,6 +230,16 @@ extension Dictionary where Key == MessagePack, Value == MessagePack {
     public init?(_ optional: MessagePack?) {
         guard case let .some(some) = optional,
             let value = Dictionary(some) else {
+                return nil
+        }
+        self = value
+    }
+}
+
+extension Array where Element: MessagePackInitializable {
+    public init?(_ optional: MessagePack?) {
+        guard case let .some(some) = optional,
+            let value = Array(some) else {
                 return nil
         }
         self = value
