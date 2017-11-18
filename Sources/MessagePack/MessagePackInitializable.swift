@@ -208,40 +208,36 @@ extension Array where Element: MessagePackInitializable {
 
 extension MessagePackInitializable {
     public init?(_ optional: MessagePack?) {
-        guard case let .some(value) = optional,
-            let result = Self(value) else {
-                return nil
+        guard case let .some(value) = optional else {
+            return nil
         }
-        self = result
+        self.init(value)
     }
 }
 
 extension Array where Element == MessagePack {
     public init?(_ optional: MessagePack?) {
-        guard case let .some(value) = optional,
-            let result = Array(value) else {
-                return nil
+        guard case let .some(value) = optional else {
+            return nil
         }
-        self = result
+        self.init(value)
     }
 }
 
 extension Dictionary where Key == MessagePack, Value == MessagePack {
     public init?(_ optional: MessagePack?) {
-        guard case let .some(value) = optional,
-            let result = Dictionary(value) else {
-                return nil
+        guard case let .some(value) = optional else {
+            return nil
         }
-        self = result
+        self.init(value)
     }
 }
 
 extension Array where Element: MessagePackInitializable {
     public init?(_ optional: MessagePack?) {
-        guard case let .some(value) = optional,
-            let result = Array(value) else {
-                return nil
+        guard case let .some(value) = optional else {
+            return nil
         }
-        self = result
+        self.init(value)
     }
 }
