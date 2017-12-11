@@ -8,7 +8,7 @@ extension Array where Element == MessagePackContainerType {
     }
 }
 
-class MessagePackUnkeyedEncodingContainer
+final class MessagePackUnkeyedEncodingContainer
 : UnkeyedEncodingContainer, SingleValueEncodingContainer, MessagePackContainer {
     var codingPath: [CodingKey] {
         return []
