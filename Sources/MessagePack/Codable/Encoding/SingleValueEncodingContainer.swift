@@ -1,4 +1,4 @@
-class MessagePackSingleValueEncodingContainer
+final class MessagePackSingleValueEncodingContainer
 : SingleValueEncodingContainer, MessagePackContainer {
     var codingPath: [CodingKey] {
         return []

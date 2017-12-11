@@ -14,7 +14,7 @@ public struct MessagePackEncoder {
     }
 }
 
-class _MessagePackEncoder: Encoder, MessagePackContainer {
+final class _MessagePackEncoder: Encoder, MessagePackContainer {
     public var codingPath: [CodingKey] {
         return []
     }

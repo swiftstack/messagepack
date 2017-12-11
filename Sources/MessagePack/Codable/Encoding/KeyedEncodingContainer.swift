@@ -1,4 +1,4 @@
-class TypeErasedMessagePackKeyedEncodingContainer: MessagePackContainer {
+final class TypeErasedMessagePackKeyedEncodingContainer: MessagePackContainer {
     var values: [MessagePack : MessagePackContainerType] = [:]
 
     var value: MessagePack {
@@ -15,7 +15,7 @@ class TypeErasedMessagePackKeyedEncodingContainer: MessagePackContainer {
     }
 }
 
-class MessagePackKeyedEncodingContainer<K : CodingKey>
+final class MessagePackKeyedEncodingContainer<K : CodingKey>
 : KeyedEncodingContainerProtocol {
     typealias Key = K
 

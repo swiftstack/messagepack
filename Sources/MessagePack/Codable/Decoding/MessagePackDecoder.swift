@@ -1,4 +1,4 @@
-public class MessagePackDecoder {
+public final class MessagePackDecoder {
     public init() {}
 
     public func decode<T: Decodable>(
@@ -31,7 +31,7 @@ public class MessagePackDecoder {
     }
 }
 
-class _MessagePackDecoder: Decoder {
+final class _MessagePackDecoder: Decoder {
     var codingPath: [CodingKey] {
         return []
     }
