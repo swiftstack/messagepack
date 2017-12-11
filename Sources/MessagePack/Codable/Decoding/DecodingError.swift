@@ -20,16 +20,12 @@ extension DecodingError.Context {
 
 extension DecodingError.Context: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        self.codingPath = []
-        self.debugDescription = value
-        self.underlyingError = nil
+        self.init(codingPath: [], debugDescription: value)
     }
 }
 
 extension DecodingError.Context: ExpressibleByNilLiteral {
     public init(nilLiteral: ()) {
-        self.codingPath = []
-        self.debugDescription = ""
-        self.underlyingError = nil
+        self.init(codingPath: [], debugDescription: "")
     }
 }
