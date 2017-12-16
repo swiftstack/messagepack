@@ -11,7 +11,7 @@ public struct MessagePackReader<T: InputStream> {
 
     mutating func readUInt8() throws -> UInt8 {
         var result: UInt8 = 0
-        guard try stream.read(to: &result, count: 1) == 1 else {
+        guard try stream.read(to: &result, byteCount: 1) == 1 else {
             throw Error.insufficientData
         }
         return result
@@ -19,7 +19,7 @@ public struct MessagePackReader<T: InputStream> {
 
     mutating func readUInt16() throws -> UInt16 {
         var result: UInt16 = 0
-        guard try stream.read(to: &result, count: 2) == 2 else {
+        guard try stream.read(to: &result, byteCount: 2) == 2 else {
             throw Error.insufficientData
         }
         return result.byteSwapped
@@ -27,7 +27,7 @@ public struct MessagePackReader<T: InputStream> {
 
     mutating func readUInt32() throws -> UInt32 {
         var result: UInt32 = 0
-        guard try stream.read(to: &result, count: 4) == 4 else {
+        guard try stream.read(to: &result, byteCount: 4) == 4 else {
             throw Error.insufficientData
         }
         return result.byteSwapped
@@ -35,7 +35,7 @@ public struct MessagePackReader<T: InputStream> {
 
     mutating func readUInt64() throws -> UInt64 {
         var result: UInt64 = 0
-        guard try stream.read(to: &result, count: 8) == 8 else {
+        guard try stream.read(to: &result, byteCount: 8) == 8 else {
             throw Error.insufficientData
         }
         return result.byteSwapped
