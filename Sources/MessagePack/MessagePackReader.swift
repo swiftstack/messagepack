@@ -117,23 +117,8 @@ extension MessagePackReader {
 
     mutating func readString(code: UInt8) throws -> String {
         let count = try readStringHeader(code: code)
-
-        // TODO: Optimize iterator
-        // let buffer = try read(count: count)
-        let data = Array(try read(count: count))
-
-        var string = ""
-        var decoder = UTF8()
-        var iterator = data.makeIterator()
-
-        decode: for _ in 0..<count {
-            switch decoder.decode(&iterator) {
-            case .scalarValue(let char): string.unicodeScalars.append(char)
-            case .emptyInput: break decode
-            case .error: throw Error.invalidData
-            }
-        }
-        return string
+        let bytes = try read(count: count)
+        return String(decoding: bytes, as: UTF8.self)
     }
 
     mutating func readArray(code: UInt8) throws -> [MessagePack] {
