@@ -74,13 +74,11 @@ class MapTests: TestCase {
             [0xdf, 0x00, 0x00, 0x00, 0x00]
         ]
         for bytes in mapArray {
-            guard let object = try? MessagePack.decode(bytes: bytes),
-                let map = [MessagePack : MessagePack](object) else {
-                    fail()
-                    return
-
+            guard let object = try? MessagePack.decode(bytes: bytes) else {
+                fail()
+                return
             }
-            assertEqual(map, [:])
+            assertEqual(object.dictionaryValue, [:])
         }
     }
 

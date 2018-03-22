@@ -2,7 +2,45 @@ public protocol MessagePackInitializable {
     init?(_ value: MessagePack)
 }
 
+extension MessagePackInitializable {
+    public init?(_ optional: MessagePack?) {
+        guard case let .some(value) = optional else {
+            return nil
+        }
+        self.init(value)
+    }
+}
+
+extension Array where Element: MessagePackInitializable {
+    public init?(_ optional: MessagePack?) {
+        guard case let .some(value) = optional else {
+            return nil
+        }
+        self.init(value)
+    }
+}
+
+extension Array where Element: MessagePackInitializable {
+    public init?(_ value: MessagePack) {
+        guard let items = value.arrayValue else {
+            return nil
+        }
+
+        var result = [Element]()
+        for item in items {
+            guard let value = Element(item) else {
+                return nil
+            }
+            result.append(value)
+        }
+        self = result
+    }
+}
+
+// Deprecated
+
 extension Bool: MessagePackInitializable {
+    @available(*, deprecated, message: "use .booleanValue")
     public init?(_ value: MessagePack) {
         guard case let .bool(value) = value else {
             return nil
@@ -12,6 +50,7 @@ extension Bool: MessagePackInitializable {
 }
 
 extension String: MessagePackInitializable {
+    @available(*, deprecated, message: "use .stringValue")
     public init?(_ value: MessagePack) {
         guard case let .string(string) = value else {
             return nil
@@ -21,6 +60,7 @@ extension String: MessagePackInitializable {
 }
 
 extension Float: MessagePackInitializable {
+    @available(*, deprecated, message: "use .floatValue")
     public init?(_ value: MessagePack) {
         switch value {
         case let .float(value): self.init(value)
@@ -30,6 +70,7 @@ extension Float: MessagePackInitializable {
 }
 
 extension Double: MessagePackInitializable {
+    @available(*, deprecated, message: "use .doubleValue")
     public init?(_ value: MessagePack) {
         switch value {
         case let .double(value): self.init(value)
@@ -39,6 +80,7 @@ extension Double: MessagePackInitializable {
 }
 
 extension Int: MessagePackInitializable {
+    @available(*, deprecated, message: "use .integerValue")
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value): self.init(value)
@@ -49,6 +91,7 @@ extension Int: MessagePackInitializable {
 }
 
 extension Int8: MessagePackInitializable {
+    @available(*, deprecated, message: "use .integerValue")
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value) where value <= Int(Int8.max): self.init(value)
@@ -59,6 +102,7 @@ extension Int8: MessagePackInitializable {
 }
 
 extension Int16: MessagePackInitializable {
+    @available(*, deprecated, message: "use .integerValue")
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value) where value <= Int(Int16.max): self.init(value)
@@ -69,6 +113,7 @@ extension Int16: MessagePackInitializable {
 }
 
 extension Int32: MessagePackInitializable {
+    @available(*, deprecated, message: "use .integerValue")
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value) where value <= Int(Int32.max): self.init(value)
@@ -79,6 +124,7 @@ extension Int32: MessagePackInitializable {
 }
 
 extension Int64: MessagePackInitializable {
+    @available(*, deprecated, message: "use .integerValue")
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value):
@@ -91,6 +137,7 @@ extension Int64: MessagePackInitializable {
 }
 
 extension UInt: MessagePackInitializable {
+    @available(*, deprecated, message: "use .unsignedValue")
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value) where value >= 0 : self.init(value)
@@ -101,6 +148,7 @@ extension UInt: MessagePackInitializable {
 }
 
 extension UInt8: MessagePackInitializable {
+    @available(*, deprecated, message: "use .unsignedValue")
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value) where value >= 0 && UInt(value) <= UInt(UInt8.max):
@@ -113,6 +161,7 @@ extension UInt8: MessagePackInitializable {
 }
 
 extension UInt16: MessagePackInitializable {
+    @available(*, deprecated, message: "use .unsignedValue")
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value)
@@ -127,6 +176,7 @@ extension UInt16: MessagePackInitializable {
 }
 
 extension UInt32: MessagePackInitializable {
+    @available(*, deprecated, message: "use .unsignedValue")
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value)
@@ -141,6 +191,7 @@ extension UInt32: MessagePackInitializable {
 }
 
 extension UInt64: MessagePackInitializable {
+    @available(*, deprecated, message: "use .unsignedValue")
     public init?(_ value: MessagePack) {
         switch value {
         case let .int(value) where value >= 0: self.init(value)
@@ -151,6 +202,7 @@ extension UInt64: MessagePackInitializable {
 }
 
 extension MessagePack.Extended: MessagePackInitializable {
+    @available(*, deprecated, message: "use .extendedValue")
     public init?(_ value: MessagePack) {
         guard case let .extended(data) = value else {
             return nil
@@ -161,6 +213,7 @@ extension MessagePack.Extended: MessagePackInitializable {
 
 
 extension Array where Element == UInt8 {
+    @available(*, deprecated, message: "use .binaryValue")
     public init?(_ value: MessagePack) {
         guard case let .binary(data) = value else {
             return nil
@@ -170,6 +223,7 @@ extension Array where Element == UInt8 {
 }
 
 extension Array where Element == MessagePack {
+    @available(*, deprecated, message: "use .arrayValue")
     public init?(_ value: MessagePack) {
         guard case let .array(items) = value else {
             return nil
@@ -179,6 +233,7 @@ extension Array where Element == MessagePack {
 }
 
 extension Dictionary where Key == MessagePack, Value == MessagePack {
+    @available(*, deprecated, message: "use .dictionaryValue")
     public init?(_ value: MessagePack) {
         guard case let .map(items) = value else {
             return nil
@@ -187,35 +242,10 @@ extension Dictionary where Key == MessagePack, Value == MessagePack {
     }
 }
 
-extension Array where Element: MessagePackInitializable {
-    public init?(_ value: MessagePack) {
-        guard let array = [MessagePack](value) else {
-            return nil
-        }
-
-        var result = [Element]()
-        for item in array {
-            guard let value = Element(item) else {
-                return nil
-            }
-            result.append(value)
-        }
-        self = result
-    }
-}
-
 // MARK: Optionals
 
-extension MessagePackInitializable {
-    public init?(_ optional: MessagePack?) {
-        guard case let .some(value) = optional else {
-            return nil
-        }
-        self.init(value)
-    }
-}
-
 extension Array where Element == MessagePack {
+    @available(*, deprecated, message: "use .arrayValue")
     public init?(_ optional: MessagePack?) {
         guard case let .some(value) = optional else {
             return nil
@@ -225,15 +255,7 @@ extension Array where Element == MessagePack {
 }
 
 extension Dictionary where Key == MessagePack, Value == MessagePack {
-    public init?(_ optional: MessagePack?) {
-        guard case let .some(value) = optional else {
-            return nil
-        }
-        self.init(value)
-    }
-}
-
-extension Array where Element: MessagePackInitializable {
+    @available(*, deprecated, message: "use .dictionaryValue")
     public init?(_ optional: MessagePack?) {
         guard case let .some(value) = optional else {
             return nil

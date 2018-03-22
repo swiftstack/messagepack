@@ -46,7 +46,7 @@ class ArrayTests: TestCase {
         ]
         for bytes in arrayArray {
             guard let object = try? MessagePack.decode(bytes: bytes),
-                let array = [MessagePack](object) else {
+                let array = object.arrayValue else {
                     fail()
                     return
             }

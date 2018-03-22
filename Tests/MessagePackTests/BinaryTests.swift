@@ -52,7 +52,7 @@ class BinaryTests: TestCase {
         ]
         for bytes in binArray {
             guard let object = try? MessagePack.decode(bytes: bytes),
-                let binary = [UInt8](object) else {
+                let binary = object.binaryValue else {
                     fail()
                     return
             }
