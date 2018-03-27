@@ -1,6 +1,6 @@
 import Stream
 
-public struct MessagePackWriter<T: OutputStream> {
+public struct MessagePackWriter<T: StreamWriter> {
     public var stream: T
 
     typealias Error = MessagePack.Error
@@ -10,45 +10,23 @@ public struct MessagePackWriter<T: OutputStream> {
     }
 
     mutating func write(_ value: UInt8) throws {
-        var value = value
-        try withUnsafeBytes(of: &value) { bytes in
-            guard try stream.write(bytes) == 1 else {
-                throw Error.streamWriteError
-            }
-        }
+        try stream.write(value)
     }
 
     mutating func write(_ value: UInt16) throws {
-        var value = value.byteSwapped
-        try withUnsafeBytes(of: &value) { bytes in
-            guard try stream.write(bytes) == 2 else {
-                throw Error.streamWriteError
-            }
-        }
+        try stream.write(value.byteSwapped)
     }
 
     mutating func write(_ value: UInt32) throws {
-        var value = value.byteSwapped
-        try withUnsafeBytes(of: &value) { bytes in
-            guard try stream.write(bytes) == 4 else {
-                throw Error.streamWriteError
-            }
-        }
+        try stream.write(value.byteSwapped)
     }
 
     mutating func write(_ value: UInt64) throws {
-        var value = value.byteSwapped
-        try withUnsafeBytes(of: &value) { bytes in
-            guard try stream.write(bytes) == 8 else {
-                throw Error.streamWriteError
-            }
-        }
+        try stream.write(value.byteSwapped)
     }
 
     mutating func write(_ bytes: [UInt8]) throws {
-        guard try stream.write(bytes) == bytes.count else {
-            throw Error.streamWriteError
-        }
+        try stream.write(bytes)
     }
 }
 

@@ -12,7 +12,7 @@ extension MessagePack {
         return try reader.decode()
     }
 
-    public static func encode<T: OutputStream>(
+    public static func encode<T: StreamWriter>(
         _ object: MessagePack,
         to stream: T
     ) throws {
@@ -20,7 +20,7 @@ extension MessagePack {
         try writer.encode(object)
     }
 
-    public static func decode<T: InputStream>(
+    public static func decode<T: StreamReader>(
         from stream: T
     ) throws -> MessagePack {
         var reader = MessagePackReader(stream)

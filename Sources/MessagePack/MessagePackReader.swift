@@ -1,6 +1,6 @@
 import Stream
 
-public struct MessagePackReader<T: InputStream> {
+public struct MessagePackReader<T: StreamReader> {
     var stream: T
 
     typealias Error = MessagePack.Error
@@ -10,43 +10,23 @@ public struct MessagePackReader<T: InputStream> {
     }
 
     mutating func readUInt8() throws -> UInt8 {
-        var result: UInt8 = 0
-        guard try stream.read(to: &result, byteCount: 1) == 1 else {
-            throw Error.insufficientData
-        }
-        return result
+        return try stream.read(UInt8.self)
     }
 
     mutating func readUInt16() throws -> UInt16 {
-        var result: UInt16 = 0
-        guard try stream.read(to: &result, byteCount: 2) == 2 else {
-            throw Error.insufficientData
-        }
-        return result.byteSwapped
+        return try stream.read(UInt16.self).byteSwapped
     }
 
     mutating func readUInt32() throws -> UInt32 {
-        var result: UInt32 = 0
-        guard try stream.read(to: &result, byteCount: 4) == 4 else {
-            throw Error.insufficientData
-        }
-        return result.byteSwapped
+        return try stream.read(UInt32.self).byteSwapped
     }
 
     mutating func readUInt64() throws -> UInt64 {
-        var result: UInt64 = 0
-        guard try stream.read(to: &result, byteCount: 8) == 8 else {
-            throw Error.insufficientData
-        }
-        return result.byteSwapped
+        return try stream.read(UInt64.self).byteSwapped
     }
 
     mutating func read(count: Int) throws -> [UInt8] {
-        var result = [UInt8](repeating: 0, count: count)
-        guard try stream.read(to: &result) == count else {
-            throw Error.insufficientData
-        }
-        return result
+        return try stream.read(count: count)
     }
 }
 
