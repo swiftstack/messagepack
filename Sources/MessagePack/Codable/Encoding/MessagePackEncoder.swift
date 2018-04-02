@@ -6,6 +6,8 @@ public final class MessagePackEncoder: Encoder, MessagePackContainer {
         return [:]
     }
 
+    public init() {}
+
     enum ContainerType {
         case keyed(MessagePackContainer)
         case unkeyed(MessagePackContainer)

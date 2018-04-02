@@ -8,7 +8,7 @@ public final class MessagePackDecoder: Decoder {
 
     let object: MessagePack
 
-    init(_ object: MessagePack) {
+    public init(_ object: MessagePack) {
         self.object = object
     }
 

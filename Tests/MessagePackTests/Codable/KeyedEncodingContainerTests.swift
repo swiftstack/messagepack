@@ -43,7 +43,7 @@ class KeyedEncodingContainerTests: TestCase {
         }
 
         do {
-            let encoder = _MessagePackEncoder()
+            let encoder = MessagePackEncoder()
             var container = encoder.container(keyedBy: Keys.self)
 
             try container.encodeNil(forKey: .nil)
@@ -90,7 +90,7 @@ class KeyedEncodingContainerTests: TestCase {
                 case two
             }
 
-            let encoder = _MessagePackEncoder()
+            let encoder = MessagePackEncoder()
             var container = encoder.container(keyedBy: One.self)
             try container.encode(1, forKey: .one)
 
@@ -124,7 +124,7 @@ class KeyedEncodingContainerTests: TestCase {
                 case two
             }
 
-            let encoder = _MessagePackEncoder()
+            let encoder = MessagePackEncoder()
             var container = encoder.container(keyedBy: One.self)
             try container.encode(1, forKey: .one)
 

@@ -24,7 +24,7 @@ class UnkeyedDecodingContainerTests: TestCase {
         ])
 
         do {
-            let decoder = _MessagePackDecoder(encoded)
+            let decoder = MessagePackDecoder(encoded)
             var container = try decoder.unkeyedContainer()
 
             assertEqual(try container.decodeNil(), true)
@@ -63,7 +63,7 @@ class UnkeyedDecodingContainerTests: TestCase {
                 case nested
             }
 
-            let decoder = _MessagePackDecoder(encoded)
+            let decoder = MessagePackDecoder(encoded)
             var container = try decoder.unkeyedContainer()
             assertEqual(try container.decode(Int.self), 1)
 
@@ -84,7 +84,7 @@ class UnkeyedDecodingContainerTests: TestCase {
         ])
 
         do {
-            let decoder = _MessagePackDecoder(encoded)
+            let decoder = MessagePackDecoder(encoded)
             var container = try decoder.unkeyedContainer()
             assertEqual(try container.decode(Int.self), 1)
 

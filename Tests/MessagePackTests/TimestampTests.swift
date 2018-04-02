@@ -11,9 +11,10 @@ class TimestampTests: TestCase {
 
             let timestamp = Timestamp(seconds: 1, nanoseconds: 0)
 
-            var writer = MessagePackWriter(OutputByteStream())
+            let stream = OutputByteStream()
+            var writer = MessagePackWriter(stream)
             try writer.encode(timestamp)
-            assertEqual(writer.stream.bytes, expected)
+            assertEqual(stream.bytes, expected)
         } catch {
             fail(String(describing: error))
         }
@@ -30,9 +31,10 @@ class TimestampTests: TestCase {
                 seconds: 0x0003_ffff_ffff,
                 nanoseconds: 0x3fff_ffff)
 
-            var writer = MessagePackWriter(OutputByteStream())
+            let stream = OutputByteStream()
+            var writer = MessagePackWriter(stream)
             try writer.encode(timestamp)
-            assertEqual(writer.stream.bytes, expected)
+            assertEqual(stream.bytes, expected)
         } catch {
             fail(String(describing: error))
         }
@@ -47,9 +49,10 @@ class TimestampTests: TestCase {
 
             let timestamp = Timestamp(seconds: Int.max, nanoseconds: 1)
 
-            var writer = MessagePackWriter(OutputByteStream())
+            let stream = OutputByteStream()
+            var writer = MessagePackWriter(stream)
             try writer.encode(timestamp)
-            assertEqual(writer.stream.bytes, expected)
+            assertEqual(stream.bytes, expected)
         } catch {
             fail(String(describing: error))
         }
