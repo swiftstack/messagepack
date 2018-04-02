@@ -67,7 +67,7 @@ final class MessagePackSingleValueEncodingContainer
     }
 
     func encode<T>(_ value: T) throws where T : Encodable {
-        let encoder = _MessagePackEncoder()
+        let encoder = MessagePackEncoder()
         try value.encode(to: encoder)
         self.value = encoder.value
     }

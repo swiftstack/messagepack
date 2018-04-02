@@ -111,7 +111,7 @@ final class MessagePackUnkeyedDecodingContainer
     func decode<T>(
         _ type: T.Type
     ) throws -> T where T : Decodable {
-        let decoder = _MessagePackDecoder(array[currentIndex])
+        let decoder = MessagePackDecoder(array[currentIndex])
         let value = try T(from: decoder)
         currentIndex += 1
         return value
@@ -176,7 +176,7 @@ final class MessagePackUnkeyedDecodingContainer
     func decodeIfPresent<T>(
         _ type: T.Type
     ) throws -> T? where T : Decodable {
-        let decoder = _MessagePackDecoder(array[currentIndex])
+        let decoder = MessagePackDecoder(array[currentIndex])
         let value = try T(from: decoder)
         currentIndex += 1
         return value

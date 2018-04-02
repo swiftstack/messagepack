@@ -1,41 +1,8 @@
-public final class MessagePackDecoder {
-    public init() {}
-
-    public func decode<T: Decodable>(
-        _ type: T.Type, from bytes: [UInt8]
-    ) throws -> T {
-        let object = try MessagePack.decode(bytes: bytes)
-        return try decode(type, from: object)
-    }
-
-    public func decode<T: Decodable>(
-        _ type: T.Type, from object: MessagePack
-    ) throws -> T {
-        let decoder = _MessagePackDecoder(object)
-        return try T(from: decoder)
-    }
-
-    // FIXME: (_ type: Decodable.Type, ...) shadows the generic one
-    public func decode(
-        decodable type: Decodable.Type, from bytes: [UInt8]
-    ) throws -> Decodable {
-        let object = try MessagePack.decode(bytes: bytes)
-        return try decode(decodable: type, from: object)
-    }
-
-    public func decode(
-        decodable type: Decodable.Type, from object: MessagePack
-    ) throws -> Decodable {
-        let decoder = _MessagePackDecoder(object)
-        return try type.init(from: decoder)
-    }
-}
-
-final class _MessagePackDecoder: Decoder {
-    var codingPath: [CodingKey] {
+public final class MessagePackDecoder: Decoder {
+    public var codingPath: [CodingKey] {
         return []
     }
-    var userInfo: [CodingUserInfoKey : Any] {
+    public var userInfo: [CodingUserInfoKey : Any] {
         return [:]
     }
 
@@ -45,7 +12,7 @@ final class _MessagePackDecoder: Decoder {
         self.object = object
     }
 
-    func container<Key>(
+    public func container<Key>(
         keyedBy type: Key.Type
     ) throws -> KeyedDecodingContainer<Key> {
         guard case .map(let dictionary) = object else {
@@ -55,14 +22,14 @@ final class _MessagePackDecoder: Decoder {
         return KeyedDecodingContainer(container)
     }
 
-    func unkeyedContainer() throws -> UnkeyedDecodingContainer {
+    public func unkeyedContainer() throws -> UnkeyedDecodingContainer {
         guard case .array(let array) = object else {
             throw DecodingError.typeMismatch([MessagePack].self, nil)
         }
         return MessagePackUnkeyedDecodingContainer(array)
     }
 
-    func singleValueContainer() throws -> SingleValueDecodingContainer {
+    public func singleValueContainer() throws -> SingleValueDecodingContainer {
         return MessagePackSingleValueDecodingContainer(object)
     }
 }

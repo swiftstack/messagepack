@@ -124,7 +124,7 @@ struct MessagePackKeyedDecodingContainer<K : CodingKey>
         guard let value = object[key.messagePackKey] else {
             throw DecodingError.keyNotFound(key, nil)
         }
-        let decoder = _MessagePackDecoder(value)
+        let decoder = MessagePackDecoder(value)
         return try T(from: decoder)
     }
 
@@ -191,7 +191,7 @@ struct MessagePackKeyedDecodingContainer<K : CodingKey>
         guard let value = object[key.messagePackKey] else {
             return nil
         }
-        let decoder = _MessagePackDecoder(value)
+        let decoder = MessagePackDecoder(value)
         return try T(from: decoder)
     }
 
@@ -222,13 +222,13 @@ struct MessagePackKeyedDecodingContainer<K : CodingKey>
     }
 
     func superDecoder() throws -> Decoder {
-        return _MessagePackDecoder(.map(object))
+        return MessagePackDecoder(.map(object))
     }
 
     func superDecoder(forKey key: K) throws -> Decoder {
         guard let nested = object[key.messagePackKey] else {
             throw DecodingError.keyNotFound(key, nil)
         }
-        return _MessagePackDecoder(nested)
+        return MessagePackDecoder(nested)
     }
 }
