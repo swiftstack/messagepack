@@ -4,7 +4,7 @@ import MessagePack
 
 class TimestampTests: TestCase {
     func testEncode4() {
-        do {
+        scope {
             let expected: [UInt8] = [
                 0xd6, UInt8(bitPattern: -1),
                 0x00, 0x00, 0x00, 0x01]
@@ -15,13 +15,11 @@ class TimestampTests: TestCase {
             var writer = MessagePackWriter(stream)
             try writer.encode(timestamp)
             assertEqual(stream.bytes, expected)
-        } catch {
-            fail(String(describing: error))
         }
     }
 
     func testEncode8() {
-        do {
+        scope {
             let expected: [UInt8] = [
                 0xd7, UInt8(bitPattern: -1),
                 0xff, 0xff, 0xff, 0xff,
@@ -35,13 +33,11 @@ class TimestampTests: TestCase {
             var writer = MessagePackWriter(stream)
             try writer.encode(timestamp)
             assertEqual(stream.bytes, expected)
-        } catch {
-            fail(String(describing: error))
         }
     }
 
     func testEncode12() {
-        do {
+        scope {
             let expected: [UInt8] = [
                 0xc7, 12, UInt8(bitPattern: -1),
                 0x00, 0x00, 0x00, 0x01,
@@ -53,13 +49,11 @@ class TimestampTests: TestCase {
             var writer = MessagePackWriter(stream)
             try writer.encode(timestamp)
             assertEqual(stream.bytes, expected)
-        } catch {
-            fail(String(describing: error))
         }
     }
 
     func testDecode4() {
-        do {
+        scope {
             let expected = Timestamp(seconds: 1, nanoseconds: 0)
 
             let encoded: [UInt8] = [
@@ -69,13 +63,11 @@ class TimestampTests: TestCase {
             var reader = MessagePackReader(InputByteStream(encoded))
             let decoded = try reader.decode(Timestamp.self)
             assertEqual(decoded, expected)
-        } catch {
-            fail(String(describing: error))
         }
     }
 
     func testDecode8() {
-        do {
+        scope {
             let expected = Timestamp(
                 seconds: 0x0003_ffff_ffff,
                 nanoseconds: 0x3fff_ffff)
@@ -88,13 +80,11 @@ class TimestampTests: TestCase {
             var reader = MessagePackReader(InputByteStream(encoded))
             let decoded = try reader.decode(Timestamp.self)
             assertEqual(decoded, expected)
-        } catch {
-            fail(String(describing: error))
         }
     }
 
     func testDecode12() {
-        do {
+        scope {
             let expected = Timestamp(seconds: 1, nanoseconds: 1)
 
             let encoded: [UInt8] = [
@@ -105,8 +95,6 @@ class TimestampTests: TestCase {
             var reader = MessagePackReader(InputByteStream(encoded))
             let decoded = try reader.decode(Timestamp.self)
             assertEqual(decoded, expected)
-        } catch {
-            fail(String(describing: error))
         }
     }
 }

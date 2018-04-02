@@ -9,85 +9,103 @@ func makeMap(repeating: MessagePack, count: Int) -> [MessagePack: MessagePack] {
     return map
 }
 
-func makeEncodedMapData(repeating: MessagePack, count: Int) -> [UInt8] {
+func makeEncodedMapData(repeating: MessagePack, count: Int) throws -> [UInt8] {
     var bytes: [UInt8] = []
     for i in 0..<count {
-        bytes.append(contentsOf: try! MessagePack.encode(.int(i)))
-        bytes.append(contentsOf: try! MessagePack.encode(repeating))
+        bytes.append(contentsOf: try MessagePack.encode(.int(i)))
+        bytes.append(contentsOf: try MessagePack.encode(repeating))
     }
     return bytes
 }
 
 class MapTests: TestCase {
     func testEncodeFixMap() {
-        let expected: [UInt8] = [0x81, 0xa5, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xa5, 0x77, 0x6f, 0x72, 0x6c, 0x64]
-        let encoded = try? MessagePack.encode(.map([.string("hello"): .string("world")]))
-        assertEqual(encoded ?? [], expected)
+        scope {
+            let expected: [UInt8] = [
+                0x81, 0xa5, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xa5,
+                0x77, 0x6f, 0x72, 0x6c, 0x64]
+            let encoded = try MessagePack.encode(
+                .map([.string("hello"): .string("world")]))
+            assertEqual(encoded, expected)
+        }
     }
 
     func testDecodeFixMap() {
-        let expected = MessagePack.map([.string("hello"): .string("world")])
-        let decoded = try? MessagePack.decode(bytes: [0x81, 0xa5, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xa5, 0x77, 0x6f, 0x72, 0x6c, 0x64])
-        assertEqual(decoded, expected)
+        scope {
+            let expected = MessagePack.map([.string("hello"): .string("world")])
+            let decoded = try MessagePack.decode(bytes: [
+                0x81, 0xa5, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xa5,
+                0x77, 0x6f, 0x72, 0x6c, 0x64])
+            assertEqual(decoded, expected)
+        }
     }
 
     func testEncodeMap16() {
-        let expected: [UInt8] = [0xde, 0x01, 0x00]
-            + makeEncodedMapData(repeating: .nil, count: Int(UInt8.max)+1)
-        guard let encoded = try? MessagePack.encode(
-            .map(makeMap(repeating: nil, count: Int(UInt8.max)+1))) else {
-                fail()
-                return
+        scope {
+            let header: [UInt8] = [0xde, 0x01, 0x00]
+            let expected = header + (try makeEncodedMapData(
+                repeating: .nil, count: Int(UInt8.max) + 1))
+            let encoded = try MessagePack.encode(
+                .map(makeMap(repeating: nil, count: Int(UInt8.max)+1)))
+            assertEqual(encoded.prefix(3), expected.prefix(3))
+            assertEqual(encoded.sorted(), expected.sorted())
         }
-        assertEqual(encoded.prefix(3), expected.prefix(3))
-        assertEqual(encoded.sorted(), expected.sorted())
     }
 
     func testDecodeMap16() {
-        let expected = MessagePack.map(makeMap(repeating: nil, count: Int(UInt8.max)+1))
-        let decoded = try? MessagePack.decode(bytes: [0xde, 0x01, 0x00] + makeEncodedMapData(repeating: .nil, count: Int(UInt8.max)+1))
-        assertEqual(decoded, expected)
+        scope {
+            let expected = MessagePack.map(
+                makeMap(repeating: nil, count: Int(UInt8.max)+1))
+            let decoded = try MessagePack.decode(
+                bytes: [0xde, 0x01, 0x00] + makeEncodedMapData(
+                    repeating: .nil, count: Int(UInt8.max)+1))
+            assertEqual(decoded, expected)
+        }
     }
 
     func testEncodeMap32() {
-        let expected: [UInt8] = [0xdf, 0x00, 0x01, 0x00, 0x00]
-            + makeEncodedMapData(repeating: .nil, count: Int(UInt16.max)+1)
-        guard let encoded = try? MessagePack.encode(
-            .map(makeMap(repeating: nil, count: Int(UInt16.max)+1))) else {
-                fail()
-                return
+        scope {
+            let expected: [UInt8] = [0xdf, 0x00, 0x01, 0x00, 0x00]
+                + (try makeEncodedMapData(repeating: .nil, count: Int(UInt16.max) + 1))
+            let encoded = try MessagePack.encode(
+                .map(makeMap(repeating: nil, count: Int(UInt16.max)+1)))
+            assertEqual(encoded.prefix(3), expected.prefix(3))
+            assertEqual(encoded.sorted(), expected.sorted())
         }
-        assertEqual(encoded.prefix(3), expected.prefix(3))
-        assertEqual(encoded.sorted(), expected.sorted())
     }
 
     func testDecodeMap32() {
-        let expected = MessagePack.map(makeMap(repeating: nil, count: Int(UInt16.max)+1))
-        let decoded = try? MessagePack.decode(bytes: [0xdf, 0x00, 0x01, 0x00, 0x00] + makeEncodedMapData(repeating: .nil, count: Int(UInt16.max)+1))
-        assertEqual(decoded, expected)
+        scope {
+            let expected = MessagePack.map(makeMap(repeating: nil, count: Int(UInt16.max)+1))
+            let decoded = try MessagePack.decode(
+                bytes: [0xdf, 0x00, 0x01, 0x00, 0x00] + makeEncodedMapData(
+                    repeating: .nil, count: Int(UInt16.max)+1))
+            assertEqual(decoded, expected)
+        }
     }
 
     func testEmptyMap() {
-        let mapArray: [[UInt8]] = [
-            [0x80],
-            [0xde, 0x00, 0x00],
-            [0xdf, 0x00, 0x00, 0x00, 0x00]
-        ]
-        for bytes in mapArray {
-            guard let object = try? MessagePack.decode(bytes: bytes) else {
-                fail()
-                return
+        scope {
+            let mapArray: [[UInt8]] = [
+                [0x80],
+                [0xde, 0x00, 0x00],
+                [0xdf, 0x00, 0x00, 0x00, 0x00]
+            ]
+            for bytes in mapArray {
+                let object = try MessagePack.decode(bytes: bytes)
+                assertEqual(object.dictionaryValue, [:])
             }
-            assertEqual(object.dictionaryValue, [:])
         }
     }
 
     func testFixMapSize() {
-        var items = [MessagePack : MessagePack]()
-        for i in 1...15 {
-            items[.int(i)] = .int(i)
+        scope {
+            var items = [MessagePack : MessagePack]()
+            for i in 1...15 {
+                items[.int(i)] = .int(i)
+            }
+            let bytes = try MessagePack.encode(.map(items))
+            assertEqual(bytes.count, 31)
         }
-        let bytes = try? MessagePack.encode(.map(items))
-        assertEqual(bytes?.count, 31)
     }
 }

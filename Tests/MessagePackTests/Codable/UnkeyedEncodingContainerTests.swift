@@ -23,7 +23,7 @@ class UnkeyedEncodingContainerTests: TestCase {
             MessagePack.map([.int(1): .int(2)])
         ])
 
-        do {
+        scope {
             let encoder = MessagePackEncoder()
             var container = encoder.unkeyedContainer()
 
@@ -46,8 +46,6 @@ class UnkeyedEncodingContainerTests: TestCase {
             try container.encode([1 : 2])
 
             assertEqual(encoder.value, expected)
-        } catch {
-            fail(String(describing: error))
         }
     }
 
@@ -60,7 +58,7 @@ class UnkeyedEncodingContainerTests: TestCase {
             .int(3)
         ])
 
-        do {
+        scope {
             enum One: CodingKey {
                 case nested
             }
@@ -75,8 +73,6 @@ class UnkeyedEncodingContainerTests: TestCase {
             try container.encode(3)
 
             assertEqual(encoder.value, expected)
-        } catch {
-            fail(String(describing: error))
         }
     }
 
@@ -87,7 +83,7 @@ class UnkeyedEncodingContainerTests: TestCase {
             .int(3)
         ])
 
-        do {
+        scope {
             let encoder = MessagePackEncoder()
             var container = encoder.unkeyedContainer()
             try container.encode(1)
@@ -98,8 +94,6 @@ class UnkeyedEncodingContainerTests: TestCase {
             try container.encode(3)
 
             assertEqual(encoder.value, expected)
-        } catch {
-            fail(String(describing: error))
         }
     }
 }

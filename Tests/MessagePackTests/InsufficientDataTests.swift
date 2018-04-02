@@ -5,10 +5,7 @@ import MessagePack
 class InsufficientDataTests: TestCase {
     func testInvalidData() {
         let bytes: [UInt8] = [0xc1]
-        do {
-            _ = try MessagePack.decode(bytes: bytes)
-            fail("Expected deserializer to throw")
-        } catch {
+        assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
             assertEqual(error as? MessagePack.Error, .invalidData)
         }
     }
@@ -19,10 +16,7 @@ class InsufficientDataTests: TestCase {
             [0xcc], [0xcd], [0xde], [0xdf]
         ]
         for bytes in testCollection {
-            do {
-                _ = try MessagePack.decode(bytes: bytes)
-                fail("Expected deserializer to throw")
-            } catch {
+            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
                 assertEqual(error as? StreamError, .insufficientData)
             }
         }
@@ -33,10 +27,7 @@ class InsufficientDataTests: TestCase {
             [0xca], [0xcb]
         ]
         for bytes in testCollection {
-            do {
-                _ = try MessagePack.decode(bytes: bytes)
-                fail("Expected deserializer to throw")
-            } catch {
+            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
                 assertEqual(error as? StreamError, .insufficientData)
             }
         }
@@ -55,10 +46,7 @@ class InsufficientDataTests: TestCase {
             [0xdb, 0x00, 0x00, 0x00, 0x01]
         ]
         for bytes in testCollection {
-            do {
-                _ = try MessagePack.decode(bytes: bytes)
-                fail("Expected deserializer to throw")
-            } catch {
+            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
                 assertEqual(error as? StreamError, .insufficientData)
             }
         }
@@ -74,10 +62,7 @@ class InsufficientDataTests: TestCase {
             [0xdd, 0x00, 0x00, 0x00, 0x01]
         ]
         for bytes in testCollection {
-            do {
-                _ = try MessagePack.decode(bytes: bytes)
-                fail("Expected deserializer to throw")
-            } catch {
+            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
                 assertEqual(error as? StreamError, .insufficientData)
             }
         }
@@ -93,10 +78,7 @@ class InsufficientDataTests: TestCase {
             [0xdf, 0x00, 0x00, 0x00, 0x01]
         ]
         for bytes in testCollection {
-            do {
-                _ = try MessagePack.decode(bytes: bytes)
-                fail("Expected deserializer to throw")
-            } catch {
+            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
                 assertEqual(error as? StreamError, .insufficientData)
             }
         }
@@ -112,10 +94,7 @@ class InsufficientDataTests: TestCase {
             [0xc6, 0x00, 0x00, 0x00, 0x01]
         ]
         for bytes in testCollection {
-            do {
-                _ = try MessagePack.decode(bytes: bytes)
-                fail("Expected deserializer to throw")
-            } catch {
+            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
                 assertEqual(error as? StreamError, .insufficientData)
             }
         }
@@ -133,10 +112,7 @@ class InsufficientDataTests: TestCase {
             [0xc9, 0x00, 0x00, 0x00, 0x01]
         ]
         for bytes in testCollection {
-            do {
-                _ = try MessagePack.decode(bytes: bytes)
-                fail("Expected deserializer to throw")
-            } catch {
+            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
                 assertEqual(error as? StreamError, .insufficientData)
             }
         }
