@@ -2,9 +2,10 @@ import Stream
 
 extension MessagePack {
     public static func encode(_ object: MessagePack) throws -> [UInt8] {
-        var writer = MessagePackWriter(OutputByteStream())
+        let stream = OutputByteStream()
+        var writer = MessagePackWriter(stream)
         try writer.encode(object)
-        return writer.stream.bytes
+        return stream.bytes
     }
 
     public static func decode(bytes: [UInt8]) throws -> MessagePack {

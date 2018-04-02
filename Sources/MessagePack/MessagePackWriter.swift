@@ -1,11 +1,11 @@
 import Stream
 
-public struct MessagePackWriter<T: StreamWriter> {
-    public var stream: T
+public struct MessagePackWriter {
+    public var stream: StreamWriter
 
     typealias Error = MessagePack.Error
 
-    public init(_ stream: T) {
+    public init(_ stream: StreamWriter) {
         self.stream = stream
     }
 
