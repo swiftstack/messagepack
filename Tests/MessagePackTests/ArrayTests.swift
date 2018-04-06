@@ -12,7 +12,7 @@ class ArrayTests: TestCase {
 
     func testDecodeFixarray() {
         scope {
-            let expected = MessagePack.array([.int(1), .int(2), .int(3)])
+            let expected = MessagePack.array([.uint(1), .uint(2), .uint(3)])
             let decoded = try MessagePack.decode(bytes: [0x93, 0x01, 0x02, 0x03])
             assertEqual(decoded, expected)
         }

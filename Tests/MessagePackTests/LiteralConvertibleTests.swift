@@ -17,12 +17,22 @@ class LiteralConvertibleTests: TestCase {
         assertEqual(falseValue, falseExpected)
     }
 
-    func testIntegerLiteralConvertible() {
-        let expected = MessagePack.int(123)
-        let value: MessagePack = 123
+    func testSignedIntegerLiteralConvertible() {
+        let expected = MessagePack.int(-123)
+        let value: MessagePack = -123
         assertEqual(value, expected)
         guard case .int = value else {
             fail("value is not .int type")
+            return
+        }
+    }
+
+    func testUnsignedIntegerLiteralConvertible() {
+        let expected = MessagePack.uint(123)
+        let value: MessagePack = 123
+        assertEqual(value, expected)
+        guard case .uint = value else {
+            fail("value is not .uint type")
             return
         }
     }
@@ -40,8 +50,12 @@ class LiteralConvertibleTests: TestCase {
     }
 
     func testArrayLiteralConvertible() {
-        let expected: MessagePack = [1, 2, 3]
-        let value = MessagePack.array([.int(1), .int(2), .int(3)])
+        let expected: MessagePack = [-1, 0, 1, 2]
+        let value = MessagePack.array([
+            MessagePack.int(-1),
+            MessagePack.uint(0),
+            MessagePack.uint(1),
+            MessagePack.uint(2)])
         assertEqual(value, expected)
     }
 

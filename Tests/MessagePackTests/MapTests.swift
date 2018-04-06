@@ -4,7 +4,7 @@ import MessagePack
 func makeMap(repeating: MessagePack, count: Int) -> [MessagePack: MessagePack] {
     var map: [MessagePack: MessagePack] = [:]
     for i in 0..<count {
-        map[.int(i)] = repeating
+        map[.uint(UInt(i))] = repeating
     }
     return map
 }
@@ -12,7 +12,7 @@ func makeMap(repeating: MessagePack, count: Int) -> [MessagePack: MessagePack] {
 func makeEncodedMapData(repeating: MessagePack, count: Int) throws -> [UInt8] {
     var bytes: [UInt8] = []
     for i in 0..<count {
-        bytes.append(contentsOf: try MessagePack.encode(.int(i)))
+        bytes.append(contentsOf: try MessagePack.encode(.uint(UInt(i))))
         bytes.append(contentsOf: try MessagePack.encode(repeating))
     }
     return bytes

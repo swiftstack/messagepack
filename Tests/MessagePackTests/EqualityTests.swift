@@ -13,12 +13,12 @@ class EqualityTests: TestCase {
 
     func testIntEquality() {
         assertEqual(MessagePack.int(1), MessagePack.int(1))
-        assertEqual(MessagePack.int(1), MessagePack.uint(1))
+        assertNotEqual(MessagePack.int(1), MessagePack.uint(1))
     }
 
     func testUIntEquality() {
-        assertEqual(MessagePack.uint(1), MessagePack.int(1))
         assertEqual(MessagePack.uint(1), MessagePack.uint(1))
+        assertNotEqual(MessagePack.uint(1), MessagePack.int(1))
     }
 
     func testBoolEquality() {
