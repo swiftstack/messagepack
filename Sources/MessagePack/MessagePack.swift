@@ -34,17 +34,17 @@ extension MessagePack {
 extension MessagePack: CustomStringConvertible {
     public var description: String {
         switch self {
-        case .`nil`: return "nil"
-        case let .int(value): return value.description
-        case let .uint(value): return value.description
-        case let .bool(value): return value.description
-        case let .float(value): return value.description
-        case let .double(value): return value.description
-        case let .string(string): return "\"\(string)\""
-        case let .binary(data): return data.hexDescription
-        case let .array(array): return array.description
-        case let .map(dict): return dict.description
-        case let .extended(extended): return extended.description
+        case .`nil`: return ".nil"
+        case let .int(value): return ".int(\(value))"
+        case let .uint(value): return ".uint(\(value))"
+        case let .bool(value): return ".bool(\(value))"
+        case let .float(value): return ".float(\(value))"
+        case let .double(value): return ".double(\(value))"
+        case let .string(value): return ".string(\"\(value)\")"
+        case let .binary(value): return ".binary(\(value.hexDescription))"
+        case let .array(value): return ".array(\(value))"
+        case let .map(value): return ".map(\(value))"
+        case let .extended(value): return ".extended(\(value))"
         }
     }
 }
