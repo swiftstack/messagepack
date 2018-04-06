@@ -1,18 +1,12 @@
 import struct Foundation.Date
 
-public struct Timestamp {
+public struct Timestamp: Equatable {
     public var seconds: Int
     public var nanoseconds: Int
 
     public init(seconds: Int, nanoseconds: Int) {
         self.seconds = seconds
         self.nanoseconds = nanoseconds
-    }
-}
-
-extension Timestamp: Equatable {
-    public static func ==(lhs: Timestamp, rhs: Timestamp) -> Bool {
-        return lhs.seconds == rhs.seconds && lhs.nanoseconds == rhs.nanoseconds
     }
 }
 
