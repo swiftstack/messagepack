@@ -9,42 +9,12 @@ public struct MessagePackWriter {
         self.stream = stream
     }
 
-    mutating func write(_ value: UInt8) throws {
+    mutating func write<T: FixedWidthInteger>(_ value: T) throws {
         try stream.write(value)
-    }
-
-    mutating func write(_ value: UInt16) throws {
-        try stream.write(value.byteSwapped)
-    }
-
-    mutating func write(_ value: UInt32) throws {
-        try stream.write(value.byteSwapped)
-    }
-
-    mutating func write(_ value: UInt64) throws {
-        try stream.write(value.byteSwapped)
     }
 
     mutating func write(_ bytes: [UInt8]) throws {
         try stream.write(bytes)
-    }
-}
-
-extension MessagePackWriter {
-    mutating func write(_ value: Int8) throws {
-        try write(UInt8(bitPattern: value))
-    }
-
-    mutating func write(_ value: Int16) throws {
-        try write(UInt16(bitPattern: value))
-    }
-
-    mutating func write(_ value: Int32) throws {
-        try write(UInt32(bitPattern: value))
-    }
-
-    mutating func write(_ value: Int64) throws {
-        try write(UInt64(bitPattern: value))
     }
 }
 
