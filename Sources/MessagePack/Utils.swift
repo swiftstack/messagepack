@@ -11,13 +11,3 @@ extension Sequence where Iterator.Element == UInt8 {
         return "[\(joined)]"
     }
 }
-
-extension Sequence where Iterator.Element == UInt8 {
-    var hashValue: Int {
-        var hash = 5381
-        for byte in self {
-            hash = ((hash << 5) &+ hash) &+ Int(byte | 0x20)
-        }
-        return hash
-    }
-}
