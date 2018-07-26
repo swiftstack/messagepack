@@ -1,5 +1,3 @@
-import Foundation
-
 extension Sequence where Iterator.Element == UInt8 {
     var hexDescription: String {
         var bytes: [String] = []
