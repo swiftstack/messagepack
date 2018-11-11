@@ -62,13 +62,13 @@ class DescriptionTests: TestCase {
     }
 
     func testBinaryDescription() {
-        let expected = ".binary([0x01, 0x02, 0x03, 0xff])"
+        let expected = ".binary(010203ff)"
         let description = MessagePack.binary([0x01, 0x02, 0x03, 0xff]).description
         assertEqual(description, expected)
     }
 
     func testExtendedDescription() {
-        let expected = ".extended({1, [0x01, 0x02, 0x03, 0xff]})"
+        let expected = ".extended({1, 010203ff})"
         let ext = MessagePack.Extended(type: 1, data: [0x01, 0x02, 0x03, 0xff])
         let description = MessagePack.extended(ext).description
         assertEqual(description, expected)
