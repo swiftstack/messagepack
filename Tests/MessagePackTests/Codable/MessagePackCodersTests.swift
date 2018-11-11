@@ -1,5 +1,5 @@
 import Test
-import MessagePack
+@testable import MessagePack
 
 class MessagePackCodersTests: TestCase {
     func testEncodable() {
@@ -16,7 +16,7 @@ class MessagePackCodersTests: TestCase {
 
         scope {
             let model = Model(int: 42, string: "hello", array: [1,2])
-            let encoder = MessagePackEncoder()
+            let encoder = Encoder()
             try model.encode(to: encoder)
             assertEqual(encoder.value, expected)
         }

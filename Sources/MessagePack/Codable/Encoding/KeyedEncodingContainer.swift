@@ -1,134 +1,123 @@
-final class TypeErasedMessagePackKeyedEncodingContainer: MessagePackContainer {
-    var values: [MessagePack : MessagePackContainerType] = [:]
+extension Encoder {
+    // shared between different keyed
+    // containers, e.g. super encoder
+    final class TypeErasedContainer {
+        var values: [MessagePack : Container] = [:]
 
-    var value: MessagePack {
-        var values = [MessagePack : MessagePack]()
-        for (key, value) in self.values {
-            switch value {
-            case .value(let value):
-                values[key] = value
-            case .container(let container):
-                values[key] = container.value
-            }
+        var value: MessagePack {
+            return .map(values.mapValues{ $0.rawValue })
         }
-        return .map(values)
     }
 }
 
-final class MessagePackKeyedEncodingContainer<K : CodingKey>
-: KeyedEncodingContainerProtocol {
-    typealias Key = K
+extension Encoder {
+    final class KeyedContainer<Key : CodingKey>: KeyedEncodingContainerProtocol
+    {
+        var codingPath: [CodingKey] { return [] }
 
-    var codingPath: [CodingKey] {
-        return []
-    }
+        let encoder: Encoder
+        let container: TypeErasedContainer
 
-    let encoder: MessagePackEncoder
-    let container: TypeErasedMessagePackKeyedEncodingContainer
+        init(encoder: Encoder, container: TypeErasedContainer) {
+            self.encoder = encoder
+            self.container = container
+        }
 
-    init(
-        encoder: MessagePackEncoder,
-        container: TypeErasedMessagePackKeyedEncodingContainer
-    ) {
-        self.encoder = encoder
-        self.container = container
-    }
+        func encodeNil(forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.nil)
+        }
 
-    func encodeNil(forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.nil)
-    }
+        func encode(_ value: Bool, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.bool(value))
+        }
 
-    func encode(_ value: Bool, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.bool(value))
-    }
+        func encode(_ value: Int, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.int(value))
+        }
 
-    func encode(_ value: Int, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.int(value))
-    }
+        func encode(_ value: Int8, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.int(Int(value)))
+        }
 
-    func encode(_ value: Int8, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.int(Int(value)))
-    }
+        func encode(_ value: Int16, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.int(Int(value)))
+        }
 
-    func encode(_ value: Int16, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.int(Int(value)))
-    }
+        func encode(_ value: Int32, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.int(Int(value)))
+        }
 
-    func encode(_ value: Int32, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.int(Int(value)))
-    }
+        func encode(_ value: Int64, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.int(Int(value)))
+        }
 
-    func encode(_ value: Int64, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.int(Int(value)))
-    }
+        func encode(_ value: UInt, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.uint(UInt(value)))
+        }
 
-    func encode(_ value: UInt, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.uint(UInt(value)))
-    }
+        func encode(_ value: UInt8, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.uint(UInt(value)))
+        }
 
-    func encode(_ value: UInt8, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.uint(UInt(value)))
-    }
+        func encode(_ value: UInt16, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.uint(UInt(value)))
+        }
 
-    func encode(_ value: UInt16, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.uint(UInt(value)))
-    }
+        func encode(_ value: UInt32, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.uint(UInt(value)))
+        }
 
-    func encode(_ value: UInt32, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.uint(UInt(value)))
-    }
+        func encode(_ value: UInt64, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.uint(UInt(value)))
+        }
 
-    func encode(_ value: UInt64, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.uint(UInt(value)))
-    }
+        func encode(_ value: Float, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.float(value))
+        }
 
-    func encode(_ value: Float, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.float(value))
-    }
+        func encode(_ value: Double, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.double(value))
+        }
 
-    func encode(_ value: Double, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.double(value))
-    }
+        func encode(_ value: String, forKey key: Key) throws {
+            container.values[.init(key)] = .raw(.string(value))
+        }
 
-    func encode(_ value: String, forKey key: K) throws {
-        container.values[key.messagePackKey] = .value(.string(value))
-    }
+        func encode<T: Encodable>(_ value: T, forKey key: Key) throws {
+            let encoder = Encoder()
+            try value.encode(to: encoder)
+            container.values[.init(key)] = .raw(encoder.value)
+        }
 
-    func encode<T>(
-        _ value: T, forKey key: K
-    ) throws where T : Encodable {
-        let encoder = MessagePackEncoder()
-        try value.encode(to: encoder)
-        container.values[key.messagePackKey] = .value(encoder.value)
-    }
+        func nestedContainer<NestedKey>(
+            keyedBy keyType: NestedKey.Type,
+            forKey key: Key) -> KeyedEncodingContainer<NestedKey>
+        {
+            let container = TypeErasedContainer()
+            let keyedContainer = KeyedContainer<NestedKey>(
+                encoder: encoder,
+                container: container)
+            self.container.values[.init(key)] = .keyed(container)
+            return KeyedEncodingContainer(keyedContainer)
+        }
 
-    func nestedContainer<NestedKey>(
-        keyedBy keyType: NestedKey.Type, forKey key: K
-    ) -> KeyedEncodingContainer<NestedKey> {
-        let typeErasedContainer = TypeErasedMessagePackKeyedEncodingContainer()
-        let container = MessagePackKeyedEncodingContainer<NestedKey>(
-            encoder: encoder, container: typeErasedContainer)
-        self.container.values[key.messagePackKey] = .container(
-            typeErasedContainer)
-        return KeyedEncodingContainer(container)
-    }
+        func nestedUnkeyedContainer(
+            forKey key: Key) -> UnkeyedEncodingContainer
+        {
+            let container = UnkeyedContainer(encoder)
+            self.container.values[.init(key)] = .unkeyed(container)
+            return container
+        }
 
-    func nestedUnkeyedContainer(
-        forKey key: K
-    ) -> UnkeyedEncodingContainer {
-        let container = MessagePackUnkeyedEncodingContainer(encoder)
-        self.container.values[key.messagePackKey] = .container(container)
-        return container
-    }
+        func superEncoder() -> Swift.Encoder {
+            return encoder
+        }
 
-    func superEncoder() -> Encoder {
-        return encoder
-    }
-
-    func superEncoder(forKey key: K) -> Encoder {
-        // NOTE: actually works as nested container
-        let encoder = MessagePackEncoder()
-        container.values[key.messagePackKey] = .container(encoder)
-        return encoder
+        func superEncoder(forKey key: Key) -> Swift.Encoder {
+            // TODO: test
+            let encoder = Encoder()
+            container.values[.init(key)] = .superEncoder(encoder)
+            return encoder
+        }
     }
 }

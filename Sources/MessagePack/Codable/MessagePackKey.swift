@@ -28,3 +28,12 @@ extension CodingKey {
         }
     }
 }
+
+extension MessagePack {
+    init(_ key: CodingKey) {
+        switch key.intValue {
+        case .some(let value): self = .int(value)
+        case .none: self = .string(key.stringValue)
+        }
+    }
+}

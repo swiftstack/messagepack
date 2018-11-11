@@ -1,122 +1,129 @@
-extension Array where Element == MessagePackContainerType {
-    mutating func append(_ newElement: MessagePack) {
-        self.append(.value(newElement))
-    }
+extension Encoder {
+    final class UnkeyedContainer:
+        UnkeyedEncodingContainer,
+        SingleValueEncodingContainer
+    {
+        var codingPath: [CodingKey] { return [] }
 
-    mutating func append(_ newElement: MessagePackContainer) {
-        self.append(.container(newElement))
+        let encoder: Encoder
+        var values: [Container]
+
+        var value: MessagePack {
+            var values = [MessagePack]()
+            for value in self.values {
+                values.append(value.rawValue)
+            }
+            return .array(values)
+        }
+
+        var count: Int {
+            return values.count
+        }
+
+        init(_ encoder: Encoder) {
+            self.encoder = encoder
+            self.values = []
+        }
+
+        func encodeNil() throws {
+            values.append(.nil)
+        }
+
+        func encode(_ value: Int) throws {
+            values.append(.int(value))
+        }
+
+        func encode(_ value: Int8) throws {
+            values.append(.int(Int(value)))
+        }
+
+        func encode(_ value: Int16) throws {
+            values.append(.int(Int(value)))
+        }
+
+        func encode(_ value: Int32) throws {
+            values.append(.int(Int(value)))
+        }
+
+        func encode(_ value: Int64) throws {
+            values.append(.int(Int(value)))
+        }
+
+        func encode(_ value: UInt) throws {
+            values.append(.uint(value))
+        }
+
+        func encode(_ value: UInt8) throws {
+            values.append(.uint(UInt(value)))
+        }
+
+        func encode(_ value: UInt16) throws {
+            values.append(.uint(UInt(value)))
+        }
+
+        func encode(_ value: UInt32) throws {
+            values.append(.uint(UInt(value)))
+        }
+
+        func encode(_ value: UInt64) throws {
+            values.append(.uint(UInt(value)))
+        }
+
+        func encode(_ value: Float) throws {
+            values.append(.float(value))
+        }
+
+        func encode(_ value: Double) throws {
+            values.append(.double(value))
+        }
+
+        func encode(_ value: String) throws {
+            values.append(.string(value))
+        }
+
+        func encode<T>(_ value: T) throws where T : Encodable {
+            let encoder = Encoder()
+            try value.encode(to: encoder)
+            values.append(encoder.value)
+        }
+
+        func nestedContainer<NestedKey>(
+            keyedBy keyType: NestedKey.Type)
+            -> KeyedEncodingContainer<NestedKey>
+        {
+            let container = TypeErasedContainer()
+            let keyedContainer = KeyedContainer<NestedKey>(
+                encoder: encoder, container: container)
+            values.append(.keyed(container))
+            return KeyedEncodingContainer(keyedContainer)
+        }
+
+        func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
+            let container = UnkeyedContainer(encoder)
+            values.append(.unkeyed(container))
+            return container
+        }
+
+        func superEncoder() -> Swift.Encoder {
+            return encoder
+        }
     }
 }
 
-final class MessagePackUnkeyedEncodingContainer
-: UnkeyedEncodingContainer, SingleValueEncodingContainer, MessagePackContainer {
-    var codingPath: [CodingKey] {
-        return []
+extension Array where Element == MessagePack.Encoder.Container {
+    mutating func append(_ rawValue: MessagePack) {
+        self.append(.raw(rawValue))
     }
 
-    let encoder: MessagePackEncoder
-
-    var values: [MessagePackContainerType]
-
-    var value: MessagePack {
-        var values = [MessagePack]()
-        for value in self.values {
-            switch value {
-            case .value(let value): values.append(value)
-            case .container(let container): values.append(container.value)
-            }
-        }
-        return .array(values)
+    mutating func append(_ container: Encoder.TypeErasedContainer) {
+        self.append(.keyed(container))
     }
 
-    var count: Int {
-        return values.count
+    mutating func append(_ container: Encoder.UnkeyedContainer) {
+        self.append(.unkeyed(container))
     }
 
-    init(_ encoder: MessagePackEncoder) {
-        self.encoder = encoder
-        self.values = []
-    }
-
-    func encodeNil() throws {
-        values.append(.nil)
-    }
-
-    func encode(_ value: Int) throws {
-        values.append(.int(value))
-    }
-
-    func encode(_ value: Int8) throws {
-        values.append(.int(Int(value)))
-    }
-
-    func encode(_ value: Int16) throws {
-        values.append(.int(Int(value)))
-    }
-
-    func encode(_ value: Int32) throws {
-        values.append(.int(Int(value)))
-    }
-
-    func encode(_ value: Int64) throws {
-        values.append(.int(Int(value)))
-    }
-
-    func encode(_ value: UInt) throws {
-        values.append(.uint(value))
-    }
-
-    func encode(_ value: UInt8) throws {
-        values.append(.uint(UInt(value)))
-    }
-
-    func encode(_ value: UInt16) throws {
-        values.append(.uint(UInt(value)))
-    }
-
-    func encode(_ value: UInt32) throws {
-        values.append(.uint(UInt(value)))
-    }
-
-    func encode(_ value: UInt64) throws {
-        values.append(.uint(UInt(value)))
-    }
-
-    func encode(_ value: Float) throws {
-        values.append(.float(value))
-    }
-
-    func encode(_ value: Double) throws {
-        values.append(.double(value))
-    }
-
-    func encode(_ value: String) throws {
-        values.append(.string(value))
-    }
-
-    func encode<T>(_ value: T) throws where T : Encodable {
-        let encoder = MessagePackEncoder()
-        try value.encode(to: encoder)
-        values.append(encoder.value)
-    }
-
-    func nestedContainer<NestedKey>(
-        keyedBy keyType: NestedKey.Type
-    ) -> KeyedEncodingContainer<NestedKey> {
-        let typeErasedContainer = TypeErasedMessagePackKeyedEncodingContainer()
-        let container = MessagePackKeyedEncodingContainer<NestedKey>(
-            encoder: encoder, container: typeErasedContainer)
-        values.append(.container(typeErasedContainer))
-        return KeyedEncodingContainer(container)
-    }
-
-    func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
-        let container = MessagePackUnkeyedEncodingContainer(encoder)
-        values.append(.container(container))
-        return container
-    }
-
-    func superEncoder() -> Encoder {
-        return encoder
+    mutating func append(_ container: Encoder.SingleValueContainer) {
+        self.append(.singleValue(container))
     }
 }
