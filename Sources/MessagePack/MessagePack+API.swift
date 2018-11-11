@@ -8,7 +8,7 @@ extension MessagePack {
         from stream: StreamReader) throws -> Model
     {
         let messagepack = try MessagePack.decode(from: stream)
-        let decoder = MessagePackDecoder(messagepack)
+        let decoder = Decoder(messagepack)
         return try Model(from: decoder)
     }
 
@@ -30,7 +30,7 @@ extension MessagePack {
         from stream: StreamReader) throws -> Decodable
     {
         let messagepack = try MessagePack.decode(from: stream)
-        let decoder = MessagePackDecoder(messagepack)
+        let decoder = Decoder(messagepack)
         return try type.init(from: decoder)
     }
 

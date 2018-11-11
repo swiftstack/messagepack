@@ -43,7 +43,7 @@ class KeyedDecodingContainerTests: TestCase {
         }
 
         scope {
-            let decoder = MessagePackDecoder(encoded)
+            let decoder = Decoder(encoded)
             let container = try decoder.container(keyedBy: Keys.self)
 
             assertEqual(try container.decodeNil(forKey: .nil), true)
@@ -90,7 +90,7 @@ class KeyedDecodingContainerTests: TestCase {
                 case two
             }
 
-            let decoder = MessagePackDecoder(encoded)
+            let decoder = Decoder(encoded)
             let container = try decoder.container(keyedBy: One.self)
             assertEqual(try container.decode(Int.self, forKey: .one), 1)
 
@@ -99,7 +99,6 @@ class KeyedDecodingContainerTests: TestCase {
             assertEqual(try nested.decode(Int.self, forKey: .two), 2)
 
             assertEqual(try container.decode(Int.self, forKey: .three), 3)
-
         }
     }
 
@@ -121,7 +120,7 @@ class KeyedDecodingContainerTests: TestCase {
                 case two
             }
 
-            let decoder = MessagePackDecoder(encoded)
+            let decoder = Decoder(encoded)
             let container = try decoder.container(keyedBy: One.self)
             assertEqual(try container.decode(Int.self, forKey: .one), 1)
 
