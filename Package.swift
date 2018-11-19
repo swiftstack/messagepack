@@ -14,7 +14,7 @@ let package = Package(
             url: "https://github.com/swift-stack/stream.git",
             .branch("master")),
         .package(
-            url: "https://github.com/swift-stack/hex.git",
+            url: "https://github.com/swift-stack/radix.git",
             .branch("master")),
         .package(
             url: "https://github.com/swift-stack/test.git",
