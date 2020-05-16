@@ -2,35 +2,29 @@ import Test
 import MessagePack
 
 class NilTests: TestCase {
-    func testEncodeNil() {
-        scope {
-            let expected: [UInt8] = [0xc0]
-            let encoded = try MessagePack.encode(.nil)
-            assertEqual(encoded, expected)
-        }
+    func testEncodeNil() throws {
+        let expected: [UInt8] = [0xc0]
+        let encoded = try MessagePack.encode(.nil)
+        expect(encoded == expected)
     }
 
-    func testDecodeNil() {
-        scope {
-            let expected = MessagePack.nil
-            let decoded = try MessagePack.decode(bytes: [0xc0])
-            assertEqual(decoded, expected)
-        }
+    func testDecodeNil() throws {
+        let expected = MessagePack.nil
+        let decoded = try MessagePack.decode(bytes: [0xc0])
+        expect(decoded == expected)
     }
 
-    func testHasValue() {
-        scope {
-            let nilValue = MessagePack.nil
-            assertFalse(nilValue.hasValue)
-            assertTrue(MessagePack.int(0).hasValue)
-            assertTrue(MessagePack.string("").hasValue)
-            assertTrue(MessagePack.float(0).hasValue)
-            assertTrue(MessagePack.double(0).hasValue)
-            assertTrue(MessagePack.array([]).hasValue)
-            assertTrue(MessagePack.map([:]).hasValue)
-            assertTrue(MessagePack.binary([]).hasValue)
-            assertTrue(MessagePack.extended(MessagePack.Extended(
-                type: 0, data: [])).hasValue)
-        }
+    func testHasValue() throws {
+        let nilValue = MessagePack.nil
+        expect(!nilValue.hasValue)
+        expect(MessagePack.int(0).hasValue)
+        expect(MessagePack.string("").hasValue)
+        expect(MessagePack.float(0).hasValue)
+        expect(MessagePack.double(0).hasValue)
+        expect(MessagePack.array([]).hasValue)
+        expect(MessagePack.map([:]).hasValue)
+        expect(MessagePack.binary([]).hasValue)
+        expect(MessagePack.extended(
+            MessagePack.Extended(type: 0, data: [])).hasValue)
     }
 }

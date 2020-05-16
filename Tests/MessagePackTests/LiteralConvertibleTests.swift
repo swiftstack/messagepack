@@ -5,7 +5,7 @@ class LiteralConvertibleTests: TestCase {
     func testNilLiteralConvertible() {
         let expected = MessagePack.nil
         let value: MessagePack = nil
-        assertEqual(value, expected)
+        expect(value == expected)
     }
 
     func testBooleanLiteralConvertible() {
@@ -13,14 +13,14 @@ class LiteralConvertibleTests: TestCase {
         let falseExpected = MessagePack.bool(false)
         let trueValue: MessagePack = true
         let falseValue: MessagePack = false
-        assertEqual(trueValue, trueExpected)
-        assertEqual(falseValue, falseExpected)
+        expect(trueValue == trueExpected)
+        expect(falseValue == falseExpected)
     }
 
     func testSignedIntegerLiteralConvertible() {
         let expected = MessagePack.int(-123)
         let value: MessagePack = -123
-        assertEqual(value, expected)
+        expect(value == expected)
         guard case .int = value else {
             fail("value is not .int type")
             return
@@ -30,7 +30,7 @@ class LiteralConvertibleTests: TestCase {
     func testUnsignedIntegerLiteralConvertible() {
         let expected = MessagePack.uint(123)
         let value: MessagePack = 123
-        assertEqual(value, expected)
+        expect(value == expected)
         guard case .uint = value else {
             fail("value is not .uint type")
             return
@@ -40,13 +40,13 @@ class LiteralConvertibleTests: TestCase {
     func testFloatLiteralConvertible() {
         let expected = MessagePack.double(1.618)
         let value: MessagePack = 1.618
-        assertEqual(value, expected)
+        expect(value == expected)
     }
 
     func testStringLiteralConvertible() {
         let expected = MessagePack.string("Hello, World!")
         let value: MessagePack = "Hello, World!"
-        assertEqual(value, expected)
+        expect(value == expected)
     }
 
     func testArrayLiteralConvertible() {
@@ -56,12 +56,12 @@ class LiteralConvertibleTests: TestCase {
             MessagePack.uint(0),
             MessagePack.uint(1),
             MessagePack.uint(2)])
-        assertEqual(value, expected)
+        expect(value == expected)
     }
 
     func testDictionaryLiteralConvertible() {
         let expected = MessagePack.map([.string("Hello"): .string("World")])
         let value: MessagePack = ["Hello": "World"]
-        assertEqual(value, expected)
+        expect(value == expected)
     }
 }

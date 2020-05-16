@@ -2,7 +2,7 @@ import Test
 @testable import MessagePack
 
 class UnkeyedDecodingContainerTests: TestCase {
-    func testUnkeyedContainer() {
+    func testUnkeyedContainer() throws {
         let encoded: MessagePack = .array([
             MessagePack.`nil`,
             MessagePack.int(-1),
@@ -23,31 +23,29 @@ class UnkeyedDecodingContainerTests: TestCase {
             MessagePack.map([.int(1): .int(2)])
         ])
 
-        scope {
-            let decoder = Decoder(encoded)
-            var container = try decoder.unkeyedContainer()
+        let decoder = Decoder(encoded)
+        var container = try decoder.unkeyedContainer()
 
-            assertEqual(try container.decodeNil(), true)
-            assertEqual(try container.decode(Int.self), -1)
-            assertEqual(try container.decode(Int8.self), -2)
-            assertEqual(try container.decode(Int16.self), -3)
-            assertEqual(try container.decode(Int32.self), -4)
-            assertEqual(try container.decode(Int64.self), -5)
-            assertEqual(try container.decode(UInt.self), 1)
-            assertEqual(try container.decode(UInt8.self), 2)
-            assertEqual(try container.decode(UInt16.self), 3)
-            assertEqual(try container.decode(UInt32.self), 4)
-            assertEqual(try container.decode(UInt64.self), 5)
-            assertEqual(try container.decode(Bool.self), true)
-            assertEqual(try container.decode(Float.self), 3.14)
-            assertEqual(try container.decode(Double.self), 3.14)
-            assertEqual(try container.decode(String.self), "hello")
-            assertEqual(try container.decode([Int].self), [1, 2])
-            assertEqual(try container.decode([Int : Int].self), [1 : 2])
-        }
+        expect(try container.decodeNil() == true)
+        expect(try container.decode(Int.self) == -1)
+        expect(try container.decode(Int8.self) == -2)
+        expect(try container.decode(Int16.self) == -3)
+        expect(try container.decode(Int32.self) == -4)
+        expect(try container.decode(Int64.self) == -5)
+        expect(try container.decode(UInt.self) == 1)
+        expect(try container.decode(UInt8.self) == 2)
+        expect(try container.decode(UInt16.self) == 3)
+        expect(try container.decode(UInt32.self) == 4)
+        expect(try container.decode(UInt64.self) == 5)
+        expect(try container.decode(Bool.self) == true)
+        expect(try container.decode(Float.self) == 3.14)
+        expect(try container.decode(Double.self) == 3.14)
+        expect(try container.decode(String.self) == "hello")
+        expect(try container.decode([Int].self) == [1, 2])
+        expect(try container.decode([Int : Int].self) == [1 : 2])
     }
 
-    func testNestedKeyedContainer() {
+    func testNestedKeyedContainer() throws {
         let encoded: MessagePack = .array([
             .int(1),
             .map([
@@ -56,38 +54,34 @@ class UnkeyedDecodingContainerTests: TestCase {
             .int(3)
         ])
 
-        scope {
-            enum One: CodingKey {
-                case nested
-            }
-
-            let decoder = Decoder(encoded)
-            var container = try decoder.unkeyedContainer()
-            assertEqual(try container.decode(Int.self), 1)
-
-            let nested = try container.nestedContainer(keyedBy: One.self)
-            assertEqual(try nested.decode(Int.self, forKey: .nested), 2)
-
-            assertEqual(try container.decode(Int.self), 3)
+        enum One: CodingKey {
+            case nested
         }
+
+        let decoder = Decoder(encoded)
+        var container = try decoder.unkeyedContainer()
+        expect(try container.decode(Int.self) == 1)
+
+        let nested = try container.nestedContainer(keyedBy: One.self)
+        expect(try nested.decode(Int.self, forKey: .nested) == 2)
+
+        expect(try container.decode(Int.self) == 3)
     }
 
-    func testNestedUnkeyedContainer() {
+    func testNestedUnkeyedContainer() throws {
         let encoded: MessagePack = .array([
             .int(1),
             .array([.int(2)]),
             .int(3)
         ])
 
-        scope {
-            let decoder = Decoder(encoded)
-            var container = try decoder.unkeyedContainer()
-            assertEqual(try container.decode(Int.self), 1)
+        let decoder = Decoder(encoded)
+        var container = try decoder.unkeyedContainer()
+        expect(try container.decode(Int.self) == 1)
 
-            var nested = try container.nestedUnkeyedContainer()
-            assertEqual(try nested.decode(Int.self), 2)
+        var nested = try container.nestedUnkeyedContainer()
+        expect(try nested.decode(Int.self) == 2)
 
-            assertEqual(try container.decode(Int.self), 3)
-        }
+        expect(try container.decode(Int.self) == 3)
     }
 }

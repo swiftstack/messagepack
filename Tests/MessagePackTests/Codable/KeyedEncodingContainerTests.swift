@@ -2,7 +2,7 @@ import Test
 @testable import MessagePack
 
 class KeyedEncodingContainerTests: TestCase {
-    func testKeyedContainer() {
+    func testKeyedContainer() throws {
         let expected: MessagePack = .map([
             .string("nil"): .nil,
             .string("int"): .int(-1),
@@ -42,33 +42,31 @@ class KeyedEncodingContainerTests: TestCase {
             }
         }
 
-        scope {
-            let encoder = Encoder()
-            var container = encoder.container(keyedBy: Keys.self)
+        let encoder = Encoder()
+        var container = encoder.container(keyedBy: Keys.self)
 
-            try container.encodeNil(forKey: .nil)
-            try container.encode(Int(-1), forKey: .int)
-            try container.encode(Int8(-2), forKey: .int8)
-            try container.encode(Int16(-3), forKey: .int16)
-            try container.encode(Int32(-4), forKey: .int32)
-            try container.encode(Int64(-5), forKey: .int64)
-            try container.encode(UInt(1), forKey: .uint)
-            try container.encode(UInt8(2), forKey: .uint8)
-            try container.encode(UInt16(3), forKey: .uint16)
-            try container.encode(UInt32(4), forKey: .uint32)
-            try container.encode(UInt64(5), forKey: .uint64)
-            try container.encode(true, forKey: .bool)
-            try container.encode(Float(3.14), forKey: .float)
-            try container.encode(Double(3.14), forKey: .double)
-            try container.encode("hello", forKey: .string)
-            try container.encode([1, 2], forKey: .array)
-            try container.encode([1 : 2], forKey: .map)
+        try container.encodeNil(forKey: .nil)
+        try container.encode(Int(-1), forKey: .int)
+        try container.encode(Int8(-2), forKey: .int8)
+        try container.encode(Int16(-3), forKey: .int16)
+        try container.encode(Int32(-4), forKey: .int32)
+        try container.encode(Int64(-5), forKey: .int64)
+        try container.encode(UInt(1), forKey: .uint)
+        try container.encode(UInt8(2), forKey: .uint8)
+        try container.encode(UInt16(3), forKey: .uint16)
+        try container.encode(UInt32(4), forKey: .uint32)
+        try container.encode(UInt64(5), forKey: .uint64)
+        try container.encode(true, forKey: .bool)
+        try container.encode(Float(3.14), forKey: .float)
+        try container.encode(Double(3.14), forKey: .double)
+        try container.encode("hello", forKey: .string)
+        try container.encode([1, 2], forKey: .array)
+        try container.encode([1 : 2], forKey: .map)
 
-            assertEqual(encoder.value, expected)
-        }
+        expect(encoder.value == expected)
     }
 
-    func testNestedKeyedContainer() {
+    func testNestedKeyedContainer() throws {
         let expected: MessagePack = .map([
             .string("one"): .int(1),
             .string("nested"): .map([
@@ -77,59 +75,55 @@ class KeyedEncodingContainerTests: TestCase {
             .string("three"): .int(3)
         ])
 
-        scope {
-            enum One: CodingKey {
-                case one
-                case nested
-                case three
-            }
-
-            enum Two: CodingKey {
-                case two
-            }
-
-            let encoder = Encoder()
-            var container = encoder.container(keyedBy: One.self)
-            try container.encode(1, forKey: .one)
-
-            var nested = container.nestedContainer(
-                keyedBy: Two.self, forKey: .nested)
-            try nested.encode(2, forKey: .two)
-
-            try container.encode(3, forKey: .three)
-
-            assertEqual(encoder.value, expected)
+        enum One: CodingKey {
+            case one
+            case nested
+            case three
         }
+
+        enum Two: CodingKey {
+            case two
+        }
+
+        let encoder = Encoder()
+        var container = encoder.container(keyedBy: One.self)
+        try container.encode(1, forKey: .one)
+
+        var nested = container.nestedContainer(
+            keyedBy: Two.self, forKey: .nested)
+        try nested.encode(2, forKey: .two)
+
+        try container.encode(3, forKey: .three)
+
+        expect(encoder.value == expected)
     }
 
-    func testNestedUnkeyedContainer() {
+    func testNestedUnkeyedContainer() throws {
         let expected: MessagePack = .map([
             .string("one"): .int(1),
             .string("nested"): .array([.int(2)]),
             .string("three"): .int(3)
         ])
 
-        scope {
-            enum One: CodingKey {
-                case one
-                case nested
-                case three
-            }
-
-            enum Two: CodingKey {
-                case two
-            }
-
-            let encoder = Encoder()
-            var container = encoder.container(keyedBy: One.self)
-            try container.encode(1, forKey: .one)
-
-            var nested = container.nestedUnkeyedContainer(forKey: .nested)
-            try nested.encode(2)
-
-            try container.encode(3, forKey: .three)
-
-            assertEqual(encoder.value, expected)
+        enum One: CodingKey {
+            case one
+            case nested
+            case three
         }
+
+        enum Two: CodingKey {
+            case two
+        }
+
+        let encoder = Encoder()
+        var container = encoder.container(keyedBy: One.self)
+        try container.encode(1, forKey: .one)
+
+        var nested = container.nestedUnkeyedContainer(forKey: .nested)
+        try nested.encode(2)
+
+        try container.encode(3, forKey: .three)
+
+        expect(encoder.value == expected)
     }
 }

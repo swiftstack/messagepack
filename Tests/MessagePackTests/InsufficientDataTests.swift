@@ -5,8 +5,8 @@ import MessagePack
 class InsufficientDataTests: TestCase {
     func testInvalidData() {
         let bytes: [UInt8] = [0xc1]
-        assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
-            assertEqual(error as? MessagePack.Error, .invalidData)
+        expect(throws: MessagePack.Error.invalidData) {
+            try MessagePack.decode(bytes: bytes)
         }
     }
 
@@ -16,8 +16,8 @@ class InsufficientDataTests: TestCase {
             [0xcc], [0xcd], [0xde], [0xdf]
         ]
         for bytes in testCollection {
-            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
-                assertEqual(error as? StreamError, .insufficientData)
+            expect(throws: StreamError.insufficientData) {
+                try MessagePack.decode(bytes: bytes)
             }
         }
     }
@@ -27,8 +27,8 @@ class InsufficientDataTests: TestCase {
             [0xca], [0xcb]
         ]
         for bytes in testCollection {
-            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
-                assertEqual(error as? StreamError, .insufficientData)
+            expect(throws: StreamError.insufficientData) {
+                try MessagePack.decode(bytes: bytes)
             }
         }
     }
@@ -46,8 +46,8 @@ class InsufficientDataTests: TestCase {
             [0xdb, 0x00, 0x00, 0x00, 0x01]
         ]
         for bytes in testCollection {
-            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
-                assertEqual(error as? StreamError, .insufficientData)
+            expect(throws: StreamError.insufficientData) {
+                try MessagePack.decode(bytes: bytes)
             }
         }
     }
@@ -62,8 +62,8 @@ class InsufficientDataTests: TestCase {
             [0xdd, 0x00, 0x00, 0x00, 0x01]
         ]
         for bytes in testCollection {
-            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
-                assertEqual(error as? StreamError, .insufficientData)
+            expect(throws: StreamError.insufficientData) {
+                try MessagePack.decode(bytes: bytes)
             }
         }
     }
@@ -78,8 +78,8 @@ class InsufficientDataTests: TestCase {
             [0xdf, 0x00, 0x00, 0x00, 0x01]
         ]
         for bytes in testCollection {
-            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
-                assertEqual(error as? StreamError, .insufficientData)
+            expect(throws: StreamError.insufficientData) {
+                try MessagePack.decode(bytes: bytes)
             }
         }
     }
@@ -94,8 +94,8 @@ class InsufficientDataTests: TestCase {
             [0xc6, 0x00, 0x00, 0x00, 0x01]
         ]
         for bytes in testCollection {
-            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
-                assertEqual(error as? StreamError, .insufficientData)
+            expect(throws: StreamError.insufficientData) {
+                try MessagePack.decode(bytes: bytes)
             }
         }
     }
@@ -112,8 +112,8 @@ class InsufficientDataTests: TestCase {
             [0xc9, 0x00, 0x00, 0x00, 0x01]
         ]
         for bytes in testCollection {
-            assertThrowsError(try MessagePack.decode(bytes: bytes)) { error in
-                assertEqual(error as? StreamError, .insufficientData)
+            expect(throws: StreamError.insufficientData) {
+                try MessagePack.decode(bytes: bytes)
             }
         }
     }
