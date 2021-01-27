@@ -5,7 +5,7 @@
 ## Package.swift
 
 ```swift
-.package(url: "https://github.com/swift-stack/messagepack.git", .branch("dev"))
+.package(url: "https://github.com/swift-stack/messagepack.git", .branch("fiber"))
 ```
 
 ## Memo
