@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -e
+
+swift build
+
+export DYLD_LIBRARY_PATH=/Library/Developer/Toolchains/swift-latest.xctoolchain/usr/lib/swift/macosx
+
+.build/debug/Tests/Codable/KeyedDecodingContainer
+.build/debug/Tests/Codable/KeyedEncodingContainer
+.build/debug/Tests/Codable/MessagePackCoders
+.build/debug/Tests/Codable/UnkeyedDecodingContainer
+.build/debug/Tests/Codable/UnkeyedEncodingContainer
+
+#.build/debug/Tests/Coding/Array #[concurrency] crash
+.build/debug/Tests/Coding/Binary
+.build/debug/Tests/Coding/Bool
+.build/debug/Tests/Coding/Decode
+.build/debug/Tests/Coding/EncodeArray
+.build/debug/Tests/Coding/Extended
+.build/debug/Tests/Coding/Float
+.build/debug/Tests/Coding/Init
+.build/debug/Tests/Coding/InsufficientData
+.build/debug/Tests/Coding/Integer
+.build/debug/Tests/Coding/InvalidHeader
+.build/debug/Tests/Coding/ManualHeaders
+#.build/debug/Tests/Coding/Map #[concurrency] crash
+.build/debug/Tests/Coding/Nil
+.build/debug/Tests/Coding/String
+.build/debug/Tests/Coding/StringEncoding
+.build/debug/Tests/Coding/Timestamp
+
+.build/debug/Tests/MessagePack/Accessors
+.build/debug/Tests/MessagePack/ConvenienceInitializers
+.build/debug/Tests/MessagePack/Description
+.build/debug/Tests/MessagePack/Equality
+.build/debug/Tests/MessagePack/HasValue
+.build/debug/Tests/MessagePack/LiteralConvertible
+.build/debug/Tests/MessagePack/MessagePackInitializable

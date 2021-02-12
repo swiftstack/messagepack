@@ -21,14 +21,63 @@ let package = Package(
             swiftSettings: [
                 .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
             ]),
-        .testTarget(
-            name: "MessagePackTests",
-            dependencies: ["MessagePack", "Test"],
-            swiftSettings: [
-                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
-            ])
     ]
 )
+
+// MARK: - tests
+
+testTarget("Codable") { test in
+    test("KeyedDecodingContainer")
+    test("KeyedEncodingContainer")
+    test("MessagePackCoders")
+    test("UnkeyedDecodingContainer")
+    test("UnkeyedEncodingContainer")
+}
+
+testTarget("Coding") { test in
+    test("Array")
+    test("Binary")
+    test("Bool")
+    test("Decode")
+    test("EncodeArray")
+    test("Extended")
+    test("Float")
+    test("Init")
+    test("InsufficientData")
+    test("Integer")
+    test("InvalidHeader")
+    test("ManualHeaders")
+    test("Map")
+    test("Nil")
+    test("String")
+    test("StringEncoding")
+    test("Timestamp")
+}
+
+testTarget("MessagePack") { test in
+    test("Accessors")
+    test("ConvenienceInitializers")
+    test("Description")
+    test("Equality")
+    test("HasValue")
+    test("LiteralConvertible")
+    test("MessagePackInitializable")
+}
+
+func testTarget(_ target: String, task: ((String) -> Void) -> Void) {
+    task { test in addTest(target: target, name: test) }
+}
+
+func addTest(target: String, name: String) {
+    package.targets.append(
+        .executableTarget(
+            name: "Tests/\(target)/\(name)",
+            dependencies: ["MessagePack", "Test"],
+            path: "Tests/\(target)/\(name)",
+            swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
+            ]))
+}
 
 // MARK: - custom package source
 
