@@ -17,10 +17,16 @@ let package = Package(
     targets: [
         .target(
             name: "MessagePack",
-            dependencies: ["Codable", "Stream", .product(name: "Hex", package: "Radix")]),
+            dependencies: ["Codable", "Stream", .product(name: "Hex", package: "Radix")],
+            swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
+            ]),
         .testTarget(
             name: "MessagePackTests",
-            dependencies: ["MessagePack", "Test"])
+            dependencies: ["MessagePack", "Test"],
+            swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
+            ])
     ]
 )
 
