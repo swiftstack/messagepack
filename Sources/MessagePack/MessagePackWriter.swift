@@ -9,348 +9,348 @@ public struct MessagePackWriter {
         self.stream = stream
     }
 
-    mutating func write<T: FixedWidthInteger>(_ value: T) throws {
-        try stream.write(value)
+    mutating func write<T: FixedWidthInteger>(_ value: T) async throws {
+        try await stream.write(value)
     }
 
-    mutating func write(_ bytes: [UInt8]) throws {
-        try stream.write(bytes)
+    mutating func write(_ bytes: [UInt8]) async throws {
+        try await stream.write(bytes)
     }
 }
 
 extension MessagePackWriter {
-    mutating func write(code value: UInt8) throws {
-        try write(value)
+    mutating func write(code value: UInt8) async throws {
+        try await write(value)
     }
 }
 
 // Encode
 
 extension MessagePackWriter {
-    public mutating func encode(_ value: MessagePack) throws {
+    public mutating func encode(_ value: MessagePack) async throws {
         switch value {
-        case .`nil`: try encodeNil()
-        case let .int(value): try encode(Int64(value))
-        case let .uint(value): try encode(UInt64(value))
-        case let .bool(value): try encode(value)
-        case let .string(value): try encode(value)
-        case let .float(value): try encode(value)
-        case let .double(value): try encode(value)
-        case let .array(value): try encode(value)
-        case let .map(value): try encode(value)
-        case let .binary(value): try encode(value)
-        case let .extended(value): try encode(value)
+        case .`nil`: try await encodeNil()
+        case let .int(value): try await encode(Int64(value))
+        case let .uint(value): try await encode(UInt64(value))
+        case let .bool(value): try await encode(value)
+        case let .string(value): try await encode(value)
+        case let .float(value): try await encode(value)
+        case let .double(value): try await encode(value)
+        case let .array(value): try await encode(value)
+        case let .map(value): try await encode(value)
+        case let .binary(value): try await encode(value)
+        case let .extended(value): try await encode(value)
         }
     }
 }
 
 extension MessagePackWriter {
-    public mutating func encode(_ array: [MessagePack]) throws {
-        try writeArrayHeader(count: array.count)
+    public mutating func encode(_ array: [MessagePack]) async throws {
+        try await writeArrayHeader(count: array.count)
         for item in array {
-            try encode(item)
+            try await encode(item)
         }
     }
 
-    public mutating func encode(_ map: [MessagePack : MessagePack]) throws {
-        try writeMapHeader(count: map.count)
+    public mutating func encode(_ map: [MessagePack : MessagePack]) async throws {
+        try await writeMapHeader(count: map.count)
         for (key, value) in map {
-            try encode(key)
-            try encode(value)
+            try await encode(key)
+            try await encode(value)
         }
     }
 
-    public mutating func encodeArrayItemsCount(_ itemsCount: Int) throws {
-        try writeArrayHeader(count: itemsCount)
+    public mutating func encodeArrayItemsCount(_ itemsCount: Int) async throws {
+        try await writeArrayHeader(count: itemsCount)
     }
 
-    public mutating func encodeMapItemsCount(_ itemsCount: Int) throws {
-        try writeMapHeader(count: itemsCount)
+    public mutating func encodeMapItemsCount(_ itemsCount: Int) async throws {
+        try await writeMapHeader(count: itemsCount)
     }
 
-    public mutating func encodeNil() throws {
-        try write(UInt8(0xc0))
+    public mutating func encodeNil() async throws {
+        try await write(UInt8(0xc0))
     }
 
-    public mutating func encode(_ value: Int) throws {
-        try encode(Int64(value))
+    public mutating func encode(_ value: Int) async throws {
+        try await encode(Int64(value))
     }
 
-    public mutating func encode(_ value: UInt) throws {
-        try encode(UInt64(value))
+    public mutating func encode(_ value: UInt) async throws {
+        try await encode(UInt64(value))
     }
 
-    public mutating func encode(_ value: Bool) throws {
-        try write(UInt8(value ? 0xc3 : 0xc2))
+    public mutating func encode(_ value: Bool) async throws {
+        try await write(UInt8(value ? 0xc3 : 0xc2))
     }
 
-    public mutating func encode(_ value: Float) throws {
-        try write(code: 0xca)
-        try write(value.bitPattern)
+    public mutating func encode(_ value: Float) async throws {
+        try await write(code: 0xca)
+        try await write(value.bitPattern)
     }
 
-    public mutating func encode(_ value: Double) throws {
-        try write(code: 0xcb)
-        try write(value.bitPattern)
+    public mutating func encode(_ value: Double) async throws {
+        try await write(code: 0xcb)
+        try await write(value.bitPattern)
     }
 
-    public mutating func encode(_ value: String) throws {
+    public mutating func encode(_ value: String) async throws {
         let utf8 = Array(value.utf8)
-        try writeStringHeader(count: utf8.count)
-        try write(utf8)
+        try await writeStringHeader(count: utf8.count)
+        try await write(utf8)
     }
 
-    public mutating func encode(_ binary: [UInt8]) throws {
-        try writeBinaryHeader(count: binary.count)
-        try write(binary)
+    public mutating func encode(_ binary: [UInt8]) async throws {
+        try await writeBinaryHeader(count: binary.count)
+        try await write(binary)
     }
 
-    public mutating func encode(_ extended: MessagePack.Extended) throws {
-        try writeExtendedHeader(type: extended.type, count: extended.data.count)
-        try write(extended.data)
+    public mutating func encode(_ extended: MessagePack.Extended) async throws {
+        try await writeExtendedHeader(type: extended.type, count: extended.data.count)
+        try await write(extended.data)
     }
 
-    public mutating func encode(_ value: Int8) throws {
+    public mutating func encode(_ value: Int8) async throws {
         switch value {
         case value where value >= 0:
-            try encode(UInt8(bitPattern: value))
+            try await encode(UInt8(bitPattern: value))
         case value where value >= -0x20:
-            try write(code: 0xe0 + 0x1f & UInt8(bitPattern: value))
+            try await write(code: 0xe0 + 0x1f & UInt8(bitPattern: value))
         default:
-            try write(code: 0xd0)
-            try write(value)
+            try await write(code: 0xd0)
+            try await write(value)
         }
     }
 
-    public mutating func encode(_ value: Int16) throws {
+    public mutating func encode(_ value: Int16) async throws {
         switch value {
         case let value where value >= 0:
-            try encode(UInt16(bitPattern: value))
+            try await encode(UInt16(bitPattern: value))
         case let value where value >= -0x7f:
-            try encode(Int8(truncatingIfNeeded: value))
+            try await encode(Int8(truncatingIfNeeded: value))
         default:
-            try write(code: 0xd1)
-            try write(value)
+            try await write(code: 0xd1)
+            try await write(value)
         }
     }
 
-    public mutating func encode(_ value: Int32) throws {
+    public mutating func encode(_ value: Int32) async throws {
         switch value {
         case let value where value >= 0:
-            try encode(UInt32(bitPattern: value))
+            try await encode(UInt32(bitPattern: value))
         case let value where value >= -0x7fff:
-            try encode(Int16(truncatingIfNeeded: value))
+            try await encode(Int16(truncatingIfNeeded: value))
         default:
-            try write(code: 0xd2)
-            try write(value)
+            try await write(code: 0xd2)
+            try await write(value)
         }
     }
 
-    public mutating func encode(_ value: Int64) throws {
+    public mutating func encode(_ value: Int64) async throws {
         switch value {
         case let value where value >= 0:
-            try encode(UInt64(bitPattern: value))
+            try await encode(UInt64(bitPattern: value))
         case let value where value >= -0x7fff_ffff:
-            try encode(Int32(truncatingIfNeeded: value))
+            try await encode(Int32(truncatingIfNeeded: value))
         default:
-            try write(code: 0xd3)
-            try write(value)
+            try await write(code: 0xd3)
+            try await write(value)
         }
     }
 
-    public mutating func encode(_ value: UInt8) throws {
+    public mutating func encode(_ value: UInt8) async throws {
         switch value {
         case let value where value <= 0x7f:
-            try write(UInt8(value))
+            try await write(UInt8(value))
         default:
-            try write(code: 0xcc)
-            try write(value)
+            try await write(code: 0xcc)
+            try await write(value)
         }
     }
 
-    public mutating func encode(_ value: UInt16) throws {
+    public mutating func encode(_ value: UInt16) async throws {
         switch value {
         case let value where value <= 0xff:
-            try encode(UInt8(truncatingIfNeeded: value))
+            try await encode(UInt8(truncatingIfNeeded: value))
         default:
-            try write(code: 0xcd)
-            try write(value)
+            try await write(code: 0xcd)
+            try await write(value)
         }
     }
 
-    public mutating func encode(_ value: UInt32) throws {
+    public mutating func encode(_ value: UInt32) async throws {
         switch value {
         case let value where value <= 0xffff:
-            try encode(UInt16(truncatingIfNeeded: value))
+            try await encode(UInt16(truncatingIfNeeded: value))
         default:
-            try write(code: 0xce)
-            try write(value)
+            try await write(code: 0xce)
+            try await write(value)
         }
     }
 
-    public mutating func encode(_ value: UInt64) throws {
+    public mutating func encode(_ value: UInt64) async throws {
         switch value {
         case let value where value <= 0xffff_ffff:
-            try encode(UInt32(truncatingIfNeeded: value))
+            try await encode(UInt32(truncatingIfNeeded: value))
         default:
-            try write(code: 0xcf)
-            try write(value)
+            try await write(code: 0xcf)
+            try await write(value)
         }
     }
 
-    public mutating func encode(array: [Bool]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [Bool]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 
-    public mutating func encode(array: [Float]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [Float]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 
-    public mutating func encode(array: [Double]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [Double]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 
-    public mutating func encode(array: [String]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [String]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 
-    public mutating func encode(array: [Int]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [Int]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 
-    public mutating func encode(array: [UInt]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [UInt]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 
-    public mutating func encode(array: [Int8]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [Int8]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 
-    public mutating func encode(array: [UInt8]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [UInt8]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 
-    public mutating func encode(array: [Int16]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [Int16]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 
-    public mutating func encode(array: [UInt16]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [UInt16]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 
-    public mutating func encode(array: [Int32]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [Int32]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 
-    public mutating func encode(array: [UInt32]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [UInt32]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 
-    public mutating func encode(array: [Int64]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [Int64]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 
-    public mutating func encode(array: [UInt64]) throws {
-        try writeArrayHeader(count: array.count)
-        for item in array { try encode(item) }
+    public mutating func encode(array: [UInt64]) async throws {
+        try await writeArrayHeader(count: array.count)
+        for item in array { try await encode(item) }
     }
 }
 
 // Headers
 
 extension MessagePackWriter {
-    mutating func writeStringHeader(count: Int) throws {
+    mutating func writeStringHeader(count: Int) async throws {
         switch count {
         case let count where count <= 0x19:
-            try write(code: 0xa0 | UInt8(count))
+            try await write(code: 0xa0 | UInt8(count))
         case let count where count <= 0xff:
-            try write(code: 0xd9)
-            try write(UInt8(count))
+            try await write(code: 0xd9)
+            try await write(UInt8(count))
         case let count where count <= 0xffff:
-            try write(code: 0xda)
-            try write(UInt16(count))
+            try await write(code: 0xda)
+            try await write(UInt16(count))
         default:
-            try write(code: 0xdb)
-            try write(UInt32(count))
+            try await write(code: 0xdb)
+            try await write(UInt32(count))
         }
     }
 
-    mutating func writeArrayHeader(count: Int) throws {
+    mutating func writeArrayHeader(count: Int) async throws {
         switch count {
         case let count where count <= 0xf:
-            try write(code: 0x90 | UInt8(count))
+            try await write(code: 0x90 | UInt8(count))
         case let count where count <= 0xffff:
-            try write(code: 0xdc)
-            try write(UInt16(count))
+            try await write(code: 0xdc)
+            try await write(UInt16(count))
         default:
-            try write(code: 0xdd)
-            try write(UInt32(count))
+            try await write(code: 0xdd)
+            try await write(UInt32(count))
         }
     }
 
-    mutating func writeMapHeader(count: Int) throws {
+    mutating func writeMapHeader(count: Int) async throws {
         switch count {
         case let count where count <= 0xf:
-            try write(code: 0x80 | UInt8(count))
+            try await write(code: 0x80 | UInt8(count))
         case let count where count <= 0xffff:
-            try write(code: 0xde)
-            try write(UInt16(count))
+            try await write(code: 0xde)
+            try await write(UInt16(count))
         default:
-            try write(code: 0xdf)
-            try write(UInt32(count))
+            try await write(code: 0xdf)
+            try await write(UInt32(count))
         }
     }
 
-    mutating func writeBinaryHeader(count: Int) throws {
+    mutating func writeBinaryHeader(count: Int) async throws {
         switch count {
         case let count where count <= 0xff:
-            try write(code: 0xc4)
-            try write(UInt8(count))
+            try await write(code: 0xc4)
+            try await write(UInt8(count))
         case let count where count <= 0xffff:
-            try write(code: 0xc5)
-            try write(UInt16(count))
+            try await write(code: 0xc5)
+            try await write(UInt16(count))
         default:
-            try write(code: 0xc6)
-            try write(UInt32(count))
+            try await write(code: 0xc6)
+            try await write(UInt32(count))
         }
     }
 
-    mutating func writeExtendedHeader(type: Int8, count: Int) throws {
+    mutating func writeExtendedHeader(type: Int8, count: Int) async throws {
         let type = UInt8(bitPattern: type)
         switch count {
         case 1:
-            try write(code: 0xd4)
+            try await write(code: 0xd4)
         case 2:
-            try write(code: 0xd5)
+            try await write(code: 0xd5)
         case 4:
-            try write(code: 0xd6)
+            try await write(code: 0xd6)
         case 8:
-            try write(code: 0xd7)
+            try await write(code: 0xd7)
         case 16:
-            try write(code: 0xd8)
+            try await write(code: 0xd8)
         case let count where count <= 0xff:
-            try write(code: 0xc7)
-            try write(UInt8(count))
+            try await write(code: 0xc7)
+            try await write(UInt8(count))
         case let count where count <= 0xffff:
-            try write(code: 0xc8)
-            try write(UInt16(count))
+            try await write(code: 0xc8)
+            try await write(UInt16(count))
         default:
-            try write(code: 0xc9)
-            try write(UInt32(count))
+            try await write(code: 0xc9)
+            try await write(UInt32(count))
         }
-        try write(type)
+        try await write(type)
     }
 }

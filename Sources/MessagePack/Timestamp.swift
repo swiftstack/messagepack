@@ -13,8 +13,8 @@ public struct Timestamp: Equatable {
 extension MessagePackReader {
     public mutating func decode(
         _ type: Timestamp.Type
-    ) throws -> Timestamp {
-        let `extension` = try decode(MessagePack.Extended.self)
+    ) async throws -> Timestamp {
+        let `extension` = try await decode(MessagePack.Extended.self)
         guard `extension`.type == -1 else {
             throw Error.invalidData
         }
@@ -67,8 +67,8 @@ extension MessagePackReader {
 
     public mutating func decode(
         _ type: Date.Type
-    ) throws -> Date {
-        let timestamp = try decode(Timestamp.self)
+    ) async throws -> Date {
+        let timestamp = try await decode(Timestamp.self)
         let timeInterval = Double(timestamp.seconds) +
             Double(timestamp.nanoseconds) / 1_000_000_000
         return Date(timeIntervalSince1970: timeInterval)
@@ -76,7 +76,7 @@ extension MessagePackReader {
 }
 
 extension MessagePackWriter {
-    public mutating func encode(_ timestamp: Timestamp) throws {
+    public mutating func encode(_ timestamp: Timestamp) async throws {
         var `extension` = MessagePack.Extended(type: -1, data: [])
 
         if timestamp.seconds >> 34 == 0 {
@@ -129,14 +129,14 @@ extension MessagePackWriter {
 
             `extension`.data = data
         }
-        try encode(`extension`)
+        try await encode(`extension`)
     }
 
-    public mutating func encode(_ date: Date) throws {
+    public mutating func encode(_ date: Date) async throws {
         let timeInterval = date.timeIntervalSince1970
         let seconds = Int(timeInterval)
         let nanoseconds = Int(
             timeInterval.truncatingRemainder(dividingBy: 1) * 1_000_000_000)
-        try encode(Timestamp(seconds: seconds, nanoseconds: nanoseconds))
+        try await encode(Timestamp(seconds: seconds, nanoseconds: nanoseconds))
     }
 }
