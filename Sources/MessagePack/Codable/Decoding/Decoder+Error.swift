@@ -1,5 +1,3 @@
-// TODO: rename the file to Decoder+Error.swift for the next Swift release
-
 extension Decoder {
     enum Error: Swift.Error {
         enum ContainerType {
