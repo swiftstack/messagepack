@@ -62,7 +62,7 @@ test.case("UIntMaxToInt") {
     let expected = UInt.max
     let encoded = try await MessagePack.encode(.uint(expected))
     var reader = MessagePackReader(InputByteStream(encoded))
-    expect(throws: MessagePack.Error.invalidData) {
+    await expect(throws: MessagePack.Error.invalidData) {
         try await reader.decode(Int.self)
     }
 }

@@ -4,7 +4,7 @@ import MessagePack
 
 test.case("InvalidData") {
     let bytes: [UInt8] = [0xc1]
-    expect(throws: MessagePack.Error.invalidData) {
+    await expect(throws: MessagePack.Error.invalidData) {
         try await MessagePack.decode(bytes: bytes)
     }
 }
@@ -15,7 +15,7 @@ test.case("IntegerInsufficientData") {
         [0xcc], [0xcd], [0xde], [0xdf]
     ]
     for bytes in testCollection {
-        expect(throws: StreamError.insufficientData) {
+        await expect(throws: StreamError.insufficientData) {
             try await MessagePack.decode(bytes: bytes)
         }
     }
@@ -26,7 +26,7 @@ test.case("FloatInsufficientData") {
         [0xca], [0xcb]
     ]
     for bytes in testCollection {
-        expect(throws: StreamError.insufficientData) {
+        await expect(throws: StreamError.insufficientData) {
             try await MessagePack.decode(bytes: bytes)
         }
     }
@@ -45,7 +45,7 @@ test.case("StringInsufficientData") {
         [0xdb, 0x00, 0x00, 0x00, 0x01]
     ]
     for bytes in testCollection {
-        expect(throws: StreamError.insufficientData) {
+        await expect(throws: StreamError.insufficientData) {
             try await MessagePack.decode(bytes: bytes)
         }
     }
@@ -61,7 +61,7 @@ test.case("ArrayInsufficientData") {
         [0xdd, 0x00, 0x00, 0x00, 0x01]
     ]
     for bytes in testCollection {
-        expect(throws: StreamError.insufficientData) {
+        await expect(throws: StreamError.insufficientData) {
             try await MessagePack.decode(bytes: bytes)
         }
     }
@@ -77,7 +77,7 @@ test.case("MapInsufficientData") {
         [0xdf, 0x00, 0x00, 0x00, 0x01]
     ]
     for bytes in testCollection {
-        expect(throws: StreamError.insufficientData) {
+        await expect(throws: StreamError.insufficientData) {
             try await MessagePack.decode(bytes: bytes)
         }
     }
@@ -93,7 +93,7 @@ test.case("BinaryInsufficientData") {
         [0xc6, 0x00, 0x00, 0x00, 0x01]
     ]
     for bytes in testCollection {
-        expect(throws: StreamError.insufficientData) {
+        await expect(throws: StreamError.insufficientData) {
             try await MessagePack.decode(bytes: bytes)
         }
     }
@@ -111,7 +111,7 @@ test.case("ExtendedInsufficientData") {
         [0xc9, 0x00, 0x00, 0x00, 0x01]
     ]
     for bytes in testCollection {
-        expect(throws: StreamError.insufficientData) {
+        await expect(throws: StreamError.insufficientData) {
             try await MessagePack.decode(bytes: bytes)
         }
     }
