@@ -19,6 +19,7 @@ let package = Package(
             name: "MessagePack",
             dependencies: ["Codable", "Stream", .product(name: "Hex", package: "Radix")],
             swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-disable-availability-checking"]),
                 .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
             ]),
     ]
@@ -75,6 +76,7 @@ func addTest(target: String, name: String) {
             dependencies: ["MessagePack", "Test"],
             path: "Tests/\(target)/\(name)",
             swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-disable-availability-checking"]),
                 .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
             ]))
 }
