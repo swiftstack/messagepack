@@ -12,7 +12,7 @@ export DYLD_LIBRARY_PATH=/Library/Developer/Toolchains/swift-latest.xctoolchain/
 .build/debug/Tests/Codable/UnkeyedDecodingContainer
 .build/debug/Tests/Codable/UnkeyedEncodingContainer
 
-#.build/debug/Tests/Coding/Array #[concurrency] crash
+.build/debug/Tests/Coding/Array
 .build/debug/Tests/Coding/Binary
 .build/debug/Tests/Coding/Bool
 .build/debug/Tests/Coding/Decode
@@ -24,7 +24,7 @@ export DYLD_LIBRARY_PATH=/Library/Developer/Toolchains/swift-latest.xctoolchain/
 .build/debug/Tests/Coding/Integer
 .build/debug/Tests/Coding/InvalidHeader
 .build/debug/Tests/Coding/ManualHeaders
-#.build/debug/Tests/Coding/Map #[concurrency] crash
+.build/debug/Tests/Coding/Map
 .build/debug/Tests/Coding/Nil
 .build/debug/Tests/Coding/String
 .build/debug/Tests/Coding/StringEncoding
