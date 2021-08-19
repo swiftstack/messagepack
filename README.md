@@ -5,7 +5,7 @@
 ## Package.swift
 
 ```swift
-.package(url: "https://github.com/swift-stack/messagepack.git", .branch("dev"))
+.package(url: "https://github.com/swiftstack/messagepack.git", .branch("dev"))
 ```
 
 ## Memo
@@ -37,7 +37,7 @@ public enum MessagePack {
 
 ## Usage
 
-You can find this code and more in [examples](https://github.com/swift-stack/examples).
+You can find this code and more in [examples](https://github.com/swiftstack/examples).
 
 ### Basic API
 
