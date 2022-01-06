@@ -17,11 +17,7 @@ let package = Package(
     targets: [
         .target(
             name: "MessagePack",
-            dependencies: ["Codable", "Stream", .product(name: "Hex", package: "Radix")],
-            swiftSettings: [
-                .unsafeFlags(["-Xfrontend", "-disable-availability-checking"]),
-                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
-            ]),
+            dependencies: ["Codable", "Stream", .product(name: "Hex", package: "Radix")]),
     ]
 )
 
@@ -74,11 +70,7 @@ func addTest(target: String, name: String) {
         .executableTarget(
             name: "Tests/\(target)/\(name)",
             dependencies: ["MessagePack", "Test"],
-            path: "Tests/\(target)/\(name)",
-            swiftSettings: [
-                .unsafeFlags(["-Xfrontend", "-disable-availability-checking"]),
-                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
-            ]))
+            path: "Tests/\(target)/\(name)"))
 }
 
 // MARK: - custom package source
