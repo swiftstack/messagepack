@@ -6,13 +6,13 @@ let package = Package(
     products: [
         .library(
             name: "MessagePack",
-            targets: ["MessagePack"])
+            targets: ["MessagePack"]),
     ],
     dependencies: [
         .package(name: "Codable"),
         .package(name: "Stream"),
         .package(name: "Radix"),
-        .package(name: "Test")
+        .package(name: "Test"),
     ],
     targets: [
         .target(
