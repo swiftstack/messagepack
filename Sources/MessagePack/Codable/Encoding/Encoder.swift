@@ -5,7 +5,7 @@ typealias Encoder = MessagePack.Encoder
 extension MessagePack {
     public final class Encoder: Swift.Encoder {
         public var codingPath: [CodingKey] { return [] }
-        public var userInfo: [CodingUserInfoKey : Any] { return [:] }
+        public var userInfo: [CodingUserInfoKey: Any] { return [:] }
 
         public init() {}
 
@@ -37,8 +37,8 @@ extension MessagePack {
         }
 
         public func container<Key>(
-            keyedBy type: Key.Type) -> KeyedEncodingContainer<Key>
-        {
+            keyedBy type: Key.Type
+        ) -> KeyedEncodingContainer<Key> {
             let container: TypeErasedContainer
             switch self.container {
             case .some(let existing):

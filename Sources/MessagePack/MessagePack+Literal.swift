@@ -51,6 +51,6 @@ extension MessagePack: ExpressibleByArrayLiteral {
 
 extension MessagePack: ExpressibleByDictionaryLiteral {
     public init(dictionaryLiteral elements: (MessagePack, MessagePack)...) {
-        self = .map([MessagePack : MessagePack](uniqueKeysWithValues: elements))
+        self = .map([MessagePack: MessagePack](uniqueKeysWithValues: elements))
     }
 }

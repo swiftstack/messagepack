@@ -22,8 +22,8 @@ extension Decoder {
 extension Decoder.Error {
     static func typeMismatch(
         requested: Decodable.Type,
-        actual: Any) -> Decoder.Error
-    {
+        actual: Any
+    ) -> Decoder.Error {
         return .typeMismatch(
             forKey: nil,
             requested: requested,

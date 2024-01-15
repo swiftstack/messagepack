@@ -44,7 +44,8 @@ test("ArrayEquality") {
 }
 
 test("MapEquality") {
-    let array: [MessagePack: MessagePack] = ["zero": 0, "one": 1, "two": 2, "three": 3]
+    let array: [MessagePack: MessagePack] =
+        ["zero": 0, "one": 1, "two": 2, "three": 3]
     expect(MessagePack.map(array) == MessagePack.map(array))
 }
 

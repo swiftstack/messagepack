@@ -9,9 +9,9 @@ extension Decoder {
         }
 
         @inline(__always)
-        private func inlinedDecode<T>(_ type: T.Type) throws -> T
-            where T: MessagePackInitializable & Decodable
-        {
+        private func inlinedDecode<T>(
+            _ type: T.Type
+        ) throws -> T where T: MessagePackInitializable & Decodable {
             guard let value = T(self.value) else {
                 throw Error.typeMismatch(requested: type, actual: self.value)
             }

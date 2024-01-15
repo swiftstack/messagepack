@@ -39,7 +39,8 @@ test("EncodeBin32") {
 test("DecodeBin32") {
     let raw = [UInt8](repeating: 0x45, count: Int(UInt16.max)+1)
     let expected = MessagePack.binary(raw)
-    let decoded = try await MessagePack.decode(bytes: [0xc6, 0x00, 0x01, 0x00, 0x00] + raw)
+    let decoded = try await MessagePack
+        .decode(bytes: [0xc6, 0x00, 0x01, 0x00, 0x00] + raw)
     expect(decoded == expected)
 }
 

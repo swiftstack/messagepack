@@ -140,7 +140,7 @@ extension UInt: MessagePackInitializable {
     @available(*, deprecated, message: "use .unsignedValue")
     public init?(_ value: MessagePack) {
         switch value {
-        case let .int(value) where value >= 0 : self.init(value)
+        case let .int(value) where value >= 0: self.init(value)
         case let .uint(value): self.init(value)
         default: return nil
         }
@@ -210,7 +210,6 @@ extension MessagePack.Extended: MessagePackInitializable {
         self = data
     }
 }
-
 
 extension Array where Element == UInt8 {
     @available(*, deprecated, message: "use .binaryValue")

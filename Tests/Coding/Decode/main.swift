@@ -84,7 +84,7 @@ test("Array") {
 }
 
 test("Map") {
-    typealias Map = [MessagePack : MessagePack]
+    typealias Map = [MessagePack: MessagePack]
     let expected: Map = [.string("Hello"): .string("World")]
     let encoded = try await MessagePack.encode(.map(expected))
     var reader = MessagePackReader(InputByteStream(encoded))

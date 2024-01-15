@@ -3,7 +3,8 @@ import MessagePack
 
 test("EncodeFixArray") {
     let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
-    let encoded = try await MessagePack.encode(.array([.int(1), .int(2), .int(3)]))
+    let encoded = try await MessagePack.encode(
+        .array([.int(1), .int(2), .int(3)]))
     expect(encoded == expected)
 }
 
@@ -14,26 +15,37 @@ test("DecodeFixarray") {
 }
 
 test("EncodeArray16") {
-    let expected = [0xdc, 0xff, 0xff] + [UInt8](repeating: 0xc0, count: Int(UInt16.max))
-    let encoded = try await MessagePack.encode(.array([MessagePack](repeating: nil, count: Int(UInt16.max))))
+    let expected =
+        [0xdc, 0xff, 0xff] + [UInt8](repeating: 0xc0, count: Int(UInt16.max))
+    let encoded = try await MessagePack.encode(
+        .array([MessagePack](repeating: nil, count: Int(UInt16.max))))
     expect(encoded == expected)
 }
 
 test("DecodeArray16") {
-    let expected = MessagePack.array([MessagePack](repeating: nil, count: Int(UInt16.max)))
-    let decoded = try await MessagePack.decode(bytes: [0xdc, 0xff, 0xff] + [UInt8](repeating: 0xc0, count: Int(UInt16.max)))
+    let expected = MessagePack.array(
+        [MessagePack](repeating: nil, count: Int(UInt16.max)))
+    let decoded = try await MessagePack.decode(
+        bytes: [0xdc, 0xff, 0xff]
+            + [UInt8](repeating: 0xc0, count: Int(UInt16.max)))
     expect(decoded == expected)
 }
 
 test("EncodeArray32") {
-    let expected = [0xdd, 0x00, 0x01, 0x00, 0x00] + [UInt8](repeating: 0xc0, count: Int(UInt16.max)+1)
-    let encoded = try await MessagePack.encode(.array([MessagePack](repeating: nil, count: Int(UInt16.max)+1)))
+    let expected =
+        [0xdd, 0x00, 0x01, 0x00, 0x00] +
+            [UInt8](repeating: 0xc0, count: Int(UInt16.max)+1)
+    let encoded = try await MessagePack.encode(
+        .array([MessagePack](repeating: nil, count: Int(UInt16.max)+1)))
     expect(encoded == expected)
 }
 
 test("DecodeArray32") {
-    let expected = MessagePack.array([MessagePack](repeating: nil, count: Int(UInt16.max)+1))
-    let decoded = try await MessagePack.decode(bytes: [0xdd, 0x00, 0x01, 0x00, 0x00] + [UInt8](repeating: 0xc0, count: Int(UInt16.max)+1))
+    let expected = MessagePack.array(
+        [MessagePack](repeating: nil, count: Int(UInt16.max)+1))
+    let decoded = try await MessagePack.decode(
+        bytes: [0xdd, 0x00, 0x01, 0x00, 0x00] +
+            [UInt8](repeating: 0xc0, count: Int(UInt16.max)+1))
     expect(decoded == expected)
 }
 

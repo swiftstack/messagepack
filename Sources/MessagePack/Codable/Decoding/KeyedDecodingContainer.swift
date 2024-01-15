@@ -1,14 +1,14 @@
 extension Decoder {
-    struct KeyedContainer<Key : CodingKey>: KeyedDecodingContainerProtocol {
+    struct KeyedContainer<Key: CodingKey>: KeyedDecodingContainerProtocol {
         var codingPath: [CodingKey] { return [] }
 
         var allKeys: [Key] {
             return dictionary.keys.compactMap(Key.init)
         }
 
-        private let dictionary: [MessagePack : MessagePack]
+        private let dictionary: [MessagePack: MessagePack]
 
-        init(_ dictionary: [MessagePack : MessagePack]) {
+        init(_ dictionary: [MessagePack: MessagePack]) {
             self.dictionary = dictionary
         }
 
@@ -19,9 +19,8 @@ extension Decoder {
         @inline(__always)
         private func _decode<T>(
             _ type: T.Type,
-            forKey key: Key) throws -> T
-            where T: MessagePackInitializable & Decodable
-        {
+            forKey key: Key
+        ) throws -> T where T: MessagePackInitializable & Decodable {
             guard let value = dictionary[key] else {
                 throw Error.keyNotFound(key)
             }
@@ -37,9 +36,8 @@ extension Decoder {
         @inline(__always)
         private func _decodeIfPresent<T>(
             _ type: T.Type,
-            forKey key: Key) throws -> T?
-            where T: MessagePackInitializable & Decodable
-        {
+            forKey key: Key
+        ) throws -> T? where T: MessagePackInitializable & Decodable {
             guard let value = dictionary[key] else {
                 return nil
             }
@@ -118,9 +116,7 @@ extension Decoder {
             return try _decode(type, forKey: key)
         }
 
-        func decode<T>(_ type: T.Type, forKey key: Key) throws -> T
-            where T: Decodable
-        {
+        func decode<T: Decodable>(_ type: T.Type, forKey key: Key) throws -> T {
             guard let value = dictionary[key] else {
                 throw Error.keyNotFound(key)
             }
@@ -128,65 +124,108 @@ extension Decoder {
             return try T(from: decoder)
         }
 
-        func decodeIfPresent(_ type: Bool.Type, forKey key: Key) throws -> Bool? {
+        func decodeIfPresent(
+            _ type: Bool.Type,
+            forKey key: Key
+        ) throws -> Bool? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent(_ type: Int.Type, forKey key: Key) throws -> Int? {
+        func decodeIfPresent(
+            _ type: Int.Type,
+            forKey key: Key
+        ) throws -> Int? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent(_ type: Int8.Type, forKey key: Key) throws -> Int8? {
+        func decodeIfPresent(
+            _ type: Int8.Type,
+            forKey key: Key
+        ) throws -> Int8? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent(_ type: Int16.Type, forKey key: Key) throws -> Int16? {
+        func decodeIfPresent(
+            _ type: Int16.Type,
+            forKey key: Key
+        ) throws -> Int16? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent(_ type: Int32.Type, forKey key: Key) throws -> Int32? {
+        func decodeIfPresent(
+            _ type: Int32.Type,
+            forKey key: Key
+        ) throws -> Int32? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent(_ type: Int64.Type, forKey key: Key) throws -> Int64? {
+        func decodeIfPresent(
+            _ type: Int64.Type,
+            forKey key: Key
+        ) throws -> Int64? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent(_ type: UInt.Type, forKey key: Key) throws -> UInt? {
+        func decodeIfPresent(
+            _ type: UInt.Type,
+            forKey key: Key
+        ) throws -> UInt? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent(_ type: UInt8.Type, forKey key: Key) throws -> UInt8? {
+        func decodeIfPresent(
+            _ type: UInt8.Type,
+            forKey key: Key
+        ) throws -> UInt8? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent(_ type: UInt16.Type, forKey key: Key) throws -> UInt16? {
+        func decodeIfPresent(
+            _ type: UInt16.Type,
+            forKey key: Key
+        ) throws -> UInt16? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent(_ type: UInt32.Type, forKey key: Key) throws -> UInt32? {
+        func decodeIfPresent(
+            _ type: UInt32.Type,
+            forKey key: Key
+        ) throws -> UInt32? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent(_ type: UInt64.Type, forKey key: Key) throws -> UInt64? {
+        func decodeIfPresent(
+            _ type: UInt64.Type,
+            forKey key: Key
+        ) throws -> UInt64? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent(_ type: Float.Type, forKey key: Key) throws -> Float? {
+        func decodeIfPresent(
+            _ type: Float.Type,
+            forKey key: Key
+        ) throws -> Float? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent(_ type: Double.Type, forKey key: Key) throws -> Double? {
+        func decodeIfPresent(
+            _ type: Double.Type,
+            forKey key: Key
+        ) throws -> Double? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent(_ type: String.Type, forKey key: Key) throws -> String? {
+        func decodeIfPresent(
+            _ type: String.Type,
+            forKey key: Key
+        ) throws -> String? {
             return try _decodeIfPresent(type, forKey: key)
         }
 
-        func decodeIfPresent<T>(_ type: T.Type, forKey key: Key) throws -> T?
-            where T: Decodable
-        {
+        func decodeIfPresent<T>(
+            _ type: T.Type,
+            forKey key: Key
+        ) throws -> T? where T: Decodable {
             guard let value = dictionary[key] else {
                 return nil
             }
@@ -196,8 +235,8 @@ extension Decoder {
 
         func nestedContainer<NestedKey>(
             keyedBy type: NestedKey.Type,
-            forKey key: Key) throws -> KeyedDecodingContainer<NestedKey>
-        {
+            forKey key: Key
+        ) throws -> KeyedDecodingContainer<NestedKey> {
             guard let container = dictionary[key] else {
                 throw Error.keyNotFound(key)
             }
@@ -210,9 +249,9 @@ extension Decoder {
             return KeyedDecodingContainer(keyedContainer)
         }
 
-        func nestedUnkeyedContainer(forKey key: Key) throws
-            -> UnkeyedDecodingContainer
-        {
+        func nestedUnkeyedContainer(
+            forKey key: Key
+        ) throws -> UnkeyedDecodingContainer {
             guard let container = dictionary[key] else {
                 throw Error.keyNotFound(key)
             }

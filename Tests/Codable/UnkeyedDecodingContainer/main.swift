@@ -41,7 +41,7 @@ test("UnkeyedContainer") {
     expect(try container.decode(Double.self) == 3.14)
     expect(try container.decode(String.self) == "hello")
     expect(try container.decode([Int].self) == [1, 2])
-    expect(try container.decode([Int : Int].self) == [1 : 2])
+    expect(try container.decode([Int: Int].self) == [1: 2])
 }
 
 test("NestedKeyedContainer") {

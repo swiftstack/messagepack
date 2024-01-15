@@ -81,16 +81,15 @@ extension Encoder {
             values.append(.string(value))
         }
 
-        func encode<T>(_ value: T) throws where T : Encodable {
+        func encode<T>(_ value: T) throws where T: Encodable {
             let encoder = Encoder()
             try value.encode(to: encoder)
             values.append(encoder.value)
         }
 
         func nestedContainer<NestedKey>(
-            keyedBy keyType: NestedKey.Type)
-            -> KeyedEncodingContainer<NestedKey>
-        {
+            keyedBy keyType: NestedKey.Type
+        ) -> KeyedEncodingContainer<NestedKey> {
             let container = TypeErasedContainer()
             let keyedContainer = KeyedContainer<NestedKey>(
                 encoder: encoder, container: container)

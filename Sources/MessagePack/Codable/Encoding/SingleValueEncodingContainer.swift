@@ -64,7 +64,7 @@ extension MessagePack.Encoder {
             self.value = .string(value)
         }
 
-        func encode<T>(_ value: T) throws where T : Encodable {
+        func encode<T>(_ value: T) throws where T: Encodable {
             let encoder = Encoder()
             try value.encode(to: encoder)
             self.value = encoder.value

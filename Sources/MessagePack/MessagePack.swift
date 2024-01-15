@@ -8,7 +8,7 @@ public enum MessagePack: Equatable, Hashable {
     case string(String)
     case binary([UInt8])
     case array([MessagePack])
-    case map([MessagePack : MessagePack])
+    case map([MessagePack: MessagePack])
     case extended(Extended)
 
     public struct Extended: Equatable, Hashable {

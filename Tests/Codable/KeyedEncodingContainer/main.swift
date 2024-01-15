@@ -60,7 +60,7 @@ test("KeyedContainer") {
     try container.encode(Double(3.14), forKey: .double)
     try container.encode("hello", forKey: .string)
     try container.encode([1, 2], forKey: .array)
-    try container.encode([1 : 2], forKey: .map)
+    try container.encode([1: 2], forKey: .map)
 
     expect(encoder.value == expected)
 }

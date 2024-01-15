@@ -63,7 +63,7 @@ extension MessagePack {
         self = .array(value)
     }
 
-    public init(_ value: [MessagePack : MessagePack]) {
+    public init(_ value: [MessagePack: MessagePack]) {
         self = .map(value)
     }
 

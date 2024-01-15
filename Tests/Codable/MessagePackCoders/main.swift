@@ -13,7 +13,7 @@ test("Encodable") {
         .string("array"): .array([.int(1), .int(2)])
     ])
 
-    let model = Model(int: 42, string: "hello", array: [1,2])
+    let model = Model(int: 42, string: "hello", array: [1, 2])
     let encoder = Encoder()
     try model.encode(to: encoder)
     expect(encoder.value == expected)
@@ -36,7 +36,7 @@ test("Decodable") {
 
     expect(decoded.int == 42)
     expect(decoded.string == "hello")
-    expect(decoded.array == [1,2])
+    expect(decoded.array == [1, 2])
 }
 
 await run()

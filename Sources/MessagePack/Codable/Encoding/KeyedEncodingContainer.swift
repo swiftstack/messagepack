@@ -2,17 +2,16 @@ extension Encoder {
     // shared between different keyed
     // containers, e.g. super encoder
     final class TypeErasedContainer {
-        var values: [MessagePack : Container] = [:]
+        var values: [MessagePack: Container] = [:]
 
         var value: MessagePack {
-            return .map(values.mapValues{ $0.rawValue })
+            return .map(values.mapValues { $0.rawValue })
         }
     }
 }
 
 extension Encoder {
-    final class KeyedContainer<Key : CodingKey>: KeyedEncodingContainerProtocol
-    {
+    final class KeyedContainer<Key: CodingKey>: KeyedEncodingContainerProtocol {
         var codingPath: [CodingKey] { return [] }
 
         let encoder: Encoder
@@ -91,8 +90,8 @@ extension Encoder {
 
         func nestedContainer<NestedKey>(
             keyedBy keyType: NestedKey.Type,
-            forKey key: Key) -> KeyedEncodingContainer<NestedKey>
-        {
+            forKey key: Key
+        ) -> KeyedEncodingContainer<NestedKey> {
             let container = TypeErasedContainer()
             let keyedContainer = KeyedContainer<NestedKey>(
                 encoder: encoder,
@@ -102,8 +101,8 @@ extension Encoder {
         }
 
         func nestedUnkeyedContainer(
-            forKey key: Key) -> UnkeyedEncodingContainer
-        {
+            forKey key: Key
+        ) -> UnkeyedEncodingContainer {
             let container = UnkeyedContainer(encoder)
             self.container.values[.init(key)] = .unkeyed(container)
             return container

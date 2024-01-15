@@ -47,7 +47,7 @@ test("Conversions") {
 }
 
 test("Binary") {
-    let expected: [UInt8] = [1,2,3]
+    let expected: [UInt8] = [1, 2, 3]
     let encoded = MessagePack.binary(expected)
     expect(encoded.isBinary)
     expect(encoded.binaryValue == expected)
@@ -61,14 +61,14 @@ test("Array") {
 }
 
 test("Dictionary") {
-    let expected: [MessagePack : MessagePack] = [1:2, 3:4]
+    let expected: [MessagePack: MessagePack] = [1: 2, 3: 4]
     let encoded = MessagePack.map(expected)
     expect(encoded.isDictionary)
     expect(encoded.dictionaryValue == expected)
 }
 
 test("Extended") {
-    let expected = MessagePack.Extended(type: 42, data: [1,2,3])
+    let expected = MessagePack.Extended(type: 42, data: [1, 2, 3])
     let encoded = MessagePack.extended(expected)
     expect(encoded.isExtended)
     expect(encoded.extendedValue == expected)

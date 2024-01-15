@@ -60,7 +60,7 @@ test("KeyedContainer") {
     expect(try container.decode(Double.self, forKey: .double) == 3.14)
     expect(try container.decode(String.self, forKey: .string) == "hi")
     expect(try container.decode([Int].self, forKey: .array) == [1, 2])
-    expect(try container.decode([Int:Int].self, forKey: .map) == [1:2])
+    expect(try container.decode([Int: Int].self, forKey: .map) == [1: 2])
 }
 
 test("NestedKeyedContainer") {

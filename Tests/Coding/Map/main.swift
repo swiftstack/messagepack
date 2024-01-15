@@ -90,7 +90,7 @@ test("EmptyMap") {
 }
 
 test("FixMapSize") {
-    var items = [MessagePack : MessagePack]()
+    var items = [MessagePack: MessagePack]()
     for i in 1...15 {
         items[.int(i)] = .int(i)
     }

@@ -22,9 +22,9 @@ extension Decoder {
         }
 
         @inline(__always)
-        private func _decode<T>(_ type: T.Type) throws -> T
-            where T: MessagePackInitializable & Decodable
-        {
+        private func _decode<T>(
+            _ type: T.Type
+        ) throws -> T where T: MessagePackInitializable & Decodable {
             let value = array[currentIndex]
             guard let rawValue = T(value) else {
                 throw Error.typeMismatch(requested: type, actual: value)
@@ -34,9 +34,9 @@ extension Decoder {
         }
 
         @inline(__always)
-        private func _decodeIfPresent<T>(_ type: T.Type) throws -> T?
-            where T: MessagePackInitializable & Decodable
-        {
+        private func _decodeIfPresent<T>(
+            _ type: T.Type
+        ) throws -> T? where T: MessagePackInitializable & Decodable {
             let value = array[currentIndex]
             guard let rawValue = T(value) else {
                 if case .nil = value {
@@ -179,9 +179,9 @@ extension Decoder {
             return value
         }
 
-        func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type) throws ->
-            KeyedDecodingContainer<NestedKey>
-        {
+        func nestedContainer<NestedKey>(
+            keyedBy type: NestedKey.Type
+        ) throws -> KeyedDecodingContainer<NestedKey> {
             let value = array[currentIndex]
             guard case .map(let dictionary) = value else {
                 throw Error.containerTypeMismatch(
@@ -211,11 +211,11 @@ extension Decoder {
 }
 
 extension Decoder.UnkeyedContainer: Swift.Decoder {
-    var userInfo: [CodingUserInfoKey : Any] { return [:] }
+    var userInfo: [CodingUserInfoKey: Any] { return [:] }
 
-    func container<Key>(keyedBy type: Key.Type) throws
-        -> KeyedDecodingContainer<Key>
-    {
+    func container<Key>(
+        keyedBy type: Key.Type
+    ) throws -> KeyedDecodingContainer<Key> {
         // can't convert unkeyed to keyed
         throw Decoder.Error.containerTypeMismatch(
             requested: .keyed(by: type),

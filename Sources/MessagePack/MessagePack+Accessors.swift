@@ -122,7 +122,7 @@ extension MessagePack {
 
     public var unsignedValue: UInt? {
         switch self {
-        case let .int(value) where value >= 0 : return UInt(value)
+        case let .int(value) where value >= 0: return UInt(value)
         case let .uint(value): return value
         default: return nil
         }
@@ -142,7 +142,7 @@ extension MessagePack {
         }
     }
 
-    public var dictionaryValue: [MessagePack : MessagePack]? {
+    public var dictionaryValue: [MessagePack: MessagePack]? {
         switch self {
         case let .map(value): return value
         default: return nil

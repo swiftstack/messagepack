@@ -41,7 +41,7 @@ test("UnkeyedContainer") {
     try container.encode(Double(3.14))
     try container.encode("hello")
     try container.encode([1, 2])
-    try container.encode([1 : 2])
+    try container.encode([1: 2])
 
     expect(encoder.value == expected)
 }

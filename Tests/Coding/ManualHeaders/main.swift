@@ -29,8 +29,8 @@ test("DecodeArray") {
 }
 
 test("EncodeMap") {
-    let items: [MessagePack : MessagePack] =
-        ["one" : 1, "two" : 2, "three" : 3]
+    let items: [MessagePack: MessagePack] =
+        ["one": 1, "two": 2, "three": 3]
     let expected = try await MessagePack.encode(.map(items))
     let stream = OutputByteStream()
     var writer = MessagePackWriter(stream)
@@ -43,11 +43,11 @@ test("EncodeMap") {
 }
 
 test("DecodeMap") {
-    let expected = ["one" : 1, "two" : 2, "three" : 3]
+    let expected = ["one": 1, "two": 2, "three": 3]
     let encoded = try await MessagePack.encode(
-        .map(["one" : 1, "two" : 2, "three" : 3]))
+        .map(["one": 1, "two": 2, "three": 3]))
     var reader = MessagePackReader(InputByteStream(encoded))
-    var result = [String : Int]()
+    var result = [String: Int]()
     let itemsCount = try await reader.decodeMapItemsCount()
     for _ in 0..<itemsCount {
         let key = try await reader.decode(String.self)

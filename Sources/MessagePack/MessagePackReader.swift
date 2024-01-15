@@ -9,7 +9,8 @@ public struct MessagePackReader {
         self.stream = stream
     }
 
-    mutating func read<T: FixedWidthInteger>(_ type: T.Type) async throws -> T {
+    mutating
+    func read<T: FixedWidthInteger>(_ type: T.Type) async throws -> T {
         return try await stream.read(type)
     }
 
@@ -83,7 +84,9 @@ extension MessagePackReader {
         return array
     }
 
-    mutating func readMap(code: UInt8) async throws -> [MessagePack: MessagePack] {
+    mutating func readMap(
+        code: UInt8
+    ) async throws -> [MessagePack: MessagePack] {
         let count = try await readMapHeader(code: code)
         var dictionary = [MessagePack: MessagePack]()
 
@@ -101,7 +104,9 @@ extension MessagePackReader {
         return [UInt8](try await read(count: count))
     }
 
-    mutating func readExtended(code: UInt8) async throws -> MessagePack.Extended {
+    mutating func readExtended(
+        code: UInt8
+    ) async throws -> MessagePack.Extended {
         let count = try await readExtendedHeader(code: code)
 
         let type = try await read(Int8.self)
@@ -289,8 +294,8 @@ extension MessagePackReader {
     }
 
     public mutating func decode(
-        _ type: [MessagePack : MessagePack].Type
-    ) async throws -> [MessagePack : MessagePack] {
+        _ type: [MessagePack: MessagePack].Type
+    ) async throws -> [MessagePack: MessagePack] {
         let code = try await readCode()
         switch code {
         case 0x80...0x8f: fallthrough

@@ -52,7 +52,9 @@ extension MessagePackWriter {
         }
     }
 
-    public mutating func encode(_ map: [MessagePack : MessagePack]) async throws {
+    public mutating func encode(
+        _ map: [MessagePack: MessagePack]
+    ) async throws {
         try await writeMapHeader(count: map.count)
         for (key, value) in map {
             try await encode(key)
@@ -106,7 +108,9 @@ extension MessagePackWriter {
     }
 
     public mutating func encode(_ extended: MessagePack.Extended) async throws {
-        try await writeExtendedHeader(type: extended.type, count: extended.data.count)
+        try await writeExtendedHeader(
+            type: extended.type,
+            count: extended.data.count)
         try await write(extended.data)
     }
 
