@@ -21,7 +21,7 @@ func makeEncodedMapData(
     return bytes
 }
 
-test.case("EncodeFixMap") {
+test("EncodeFixMap") {
     let expected: [UInt8] = [
         0x81, 0xa5, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xa5,
         0x77, 0x6f, 0x72, 0x6c, 0x64]
@@ -30,7 +30,7 @@ test.case("EncodeFixMap") {
     expect(encoded == expected)
 }
 
-test.case("DecodeFixMap") {
+test("DecodeFixMap") {
     let expected = MessagePack.map([.string("hello"): .string("world")])
     let decoded = try await MessagePack.decode(bytes: [
         0x81, 0xa5, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0xa5,
@@ -38,7 +38,7 @@ test.case("DecodeFixMap") {
     expect(decoded == expected)
 }
 
-test.case("EncodeMap16") {
+test("EncodeMap16") {
     let header: [UInt8] = [0xde, 0x01, 0x00]
     let expected = header + (try await makeEncodedMapData(
         repeating: .nil, count: Int(UInt8.max) + 1))
@@ -48,7 +48,7 @@ test.case("EncodeMap16") {
     expect(encoded.sorted() == expected.sorted())
 }
 
-test.case("DecodeMap16") {
+test("DecodeMap16") {
     let expected = MessagePack.map(
         makeMap(repeating: nil, count: Int(UInt8.max) + 1))
     let decoded = try await MessagePack.decode(
@@ -57,7 +57,7 @@ test.case("DecodeMap16") {
     expect(decoded == expected)
 }
 
-test.case("EncodeMap32") {
+test("EncodeMap32") {
     let expected: [UInt8] = [0xdf, 0x00, 0x01, 0x00, 0x00] +
         (try await makeEncodedMapData(
             repeating: .nil,
@@ -68,7 +68,7 @@ test.case("EncodeMap32") {
     expect(encoded.sorted() == expected.sorted())
 }
 
-test.case("DecodeMap32") {
+test("DecodeMap32") {
     let expected = MessagePack.map(
         makeMap(repeating: nil, count: Int(UInt16.max) + 1))
     let decoded = try await MessagePack.decode(
@@ -77,7 +77,7 @@ test.case("DecodeMap32") {
     expect(decoded == expected)
 }
 
-test.case("EmptyMap") {
+test("EmptyMap") {
     let mapArray: [[UInt8]] = [
         [0x80],
         [0xde, 0x00, 0x00],
@@ -89,7 +89,7 @@ test.case("EmptyMap") {
     }
 }
 
-test.case("FixMapSize") {
+test("FixMapSize") {
     var items = [MessagePack : MessagePack]()
     for i in 1...15 {
         items[.int(i)] = .int(i)
@@ -98,4 +98,4 @@ test.case("FixMapSize") {
     expect(bytes.count == 31)
 }
 
-test.run()
+await run()

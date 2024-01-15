@@ -1,7 +1,7 @@
 import Test
 import MessagePack
 
-test.case("HasValue") {
+test("HasValue") {
     let nilValue = MessagePack.nil
     expect(!nilValue.hasValue)
     expect(MessagePack.int(0).hasValue)
@@ -15,4 +15,4 @@ test.case("HasValue") {
         MessagePack.Extended(type: 0, data: [])).hasValue)
 }
 
-test.run()
+await run()

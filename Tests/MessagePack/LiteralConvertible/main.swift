@@ -1,13 +1,13 @@
 import Test
 import MessagePack
 
-test.case("NilLiteralConvertible") {
+test("NilLiteralConvertible") {
     let expected = MessagePack.nil
     let value: MessagePack = nil
     expect(value == expected)
 }
 
-test.case("BooleanLiteralConvertible") {
+test("BooleanLiteralConvertible") {
     let trueExpected = MessagePack.bool(true)
     let falseExpected = MessagePack.bool(false)
     let trueValue: MessagePack = true
@@ -16,7 +16,7 @@ test.case("BooleanLiteralConvertible") {
     expect(falseValue == falseExpected)
 }
 
-test.case("SignedIntegerLiteralConvertible") {
+test("SignedIntegerLiteralConvertible") {
     let expected = MessagePack.int(-123)
     let value: MessagePack = -123
     expect(value == expected)
@@ -26,7 +26,7 @@ test.case("SignedIntegerLiteralConvertible") {
     }
 }
 
-test.case("UnsignedIntegerLiteralConvertible") {
+test("UnsignedIntegerLiteralConvertible") {
     let expected = MessagePack.uint(123)
     let value: MessagePack = 123
     expect(value == expected)
@@ -36,19 +36,19 @@ test.case("UnsignedIntegerLiteralConvertible") {
     }
 }
 
-test.case("FloatLiteralConvertible") {
+test("FloatLiteralConvertible") {
     let expected = MessagePack.double(1.618)
     let value: MessagePack = 1.618
     expect(value == expected)
 }
 
-test.case("StringLiteralConvertible") {
+test("StringLiteralConvertible") {
     let expected = MessagePack.string("Hello, World!")
     let value: MessagePack = "Hello, World!"
     expect(value == expected)
 }
 
-test.case("ArrayLiteralConvertible") {
+test("ArrayLiteralConvertible") {
     let expected: MessagePack = [-1, 0, 1, 2]
     let value = MessagePack.array([
         MessagePack.int(-1),
@@ -58,9 +58,9 @@ test.case("ArrayLiteralConvertible") {
     expect(value == expected)
 }
 
-test.case("DictionaryLiteralConvertible") {
+test("DictionaryLiteralConvertible") {
     let expected = MessagePack.map([.string("Hello"): .string("World")])
     let value: MessagePack = ["Hello": "World"]
     expect(value == expected)
 }
-test.run()
+await run()

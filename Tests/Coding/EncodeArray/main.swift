@@ -2,7 +2,7 @@ import Test
 import Stream
 import MessagePack
 
-test.case("EncodeBoolArray") {
+test("EncodeBoolArray") {
     let booleans: [Bool] = [true, false]
     let expected: [UInt8] = [0x92, 0xc3, 0xc2]
 
@@ -13,7 +13,7 @@ test.case("EncodeBoolArray") {
     expect(stream.bytes == expected)
 }
 
-test.case("EncodeUIntArray") {
+test("EncodeUIntArray") {
     let bytes: [UInt] = [0x01, 0x02, 0x03]
     let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
@@ -24,7 +24,7 @@ test.case("EncodeUIntArray") {
     expect(stream.bytes == expected)
 }
 
-test.case("EncodeUInt8Array") {
+test("EncodeUInt8Array") {
     let bytes: [UInt8] = [0x01, 0x02, 0x03]
     let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
@@ -35,7 +35,7 @@ test.case("EncodeUInt8Array") {
     expect(stream.bytes == expected)
 }
 
-test.case("EncodeUInt16Array") {
+test("EncodeUInt16Array") {
     let bytes: [UInt16] = [0x01, 0x02, 0x03]
     let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
@@ -46,7 +46,7 @@ test.case("EncodeUInt16Array") {
     expect(stream.bytes == expected)
 }
 
-test.case("EncodeUInt32Array") {
+test("EncodeUInt32Array") {
     let bytes: [UInt32] = [0x01, 0x02, 0x03]
     let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
@@ -57,7 +57,7 @@ test.case("EncodeUInt32Array") {
     expect(stream.bytes == expected)
 }
 
-test.case("EncodeUInt64Array") {
+test("EncodeUInt64Array") {
     let bytes: [UInt64] = [0x01, 0x02, 0x03]
     let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
@@ -68,7 +68,7 @@ test.case("EncodeUInt64Array") {
     expect(stream.bytes == expected)
 }
 
-test.case("EncodeIntArray") {
+test("EncodeIntArray") {
     let bytes: [Int] = [0x01, 0x02, 0x03]
     let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
@@ -79,7 +79,7 @@ test.case("EncodeIntArray") {
     expect(stream.bytes == expected)
 }
 
-test.case("EncodeInt8Array") {
+test("EncodeInt8Array") {
     let bytes: [Int8] = [0x01, 0x02, 0x03]
     let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
@@ -90,7 +90,7 @@ test.case("EncodeInt8Array") {
     expect(stream.bytes == expected)
 }
 
-test.case("EncodeInt16Array") {
+test("EncodeInt16Array") {
     let bytes: [Int16] = [0x01, 0x02, 0x03]
     let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
@@ -101,7 +101,7 @@ test.case("EncodeInt16Array") {
     expect(stream.bytes == expected)
 }
 
-test.case("EncodeInt32Array") {
+test("EncodeInt32Array") {
     let bytes: [Int32] = [0x01, 0x02, 0x03]
     let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
@@ -112,7 +112,7 @@ test.case("EncodeInt32Array") {
     expect(stream.bytes == expected)
 }
 
-test.case("EncodeInt64Array") {
+test("EncodeInt64Array") {
     let bytes: [Int64] = [0x01, 0x02, 0x03]
     let expected: [UInt8] = [0x93, 0x01, 0x02, 0x03]
 
@@ -123,4 +123,4 @@ test.case("EncodeInt64Array") {
     expect(stream.bytes == expected)
 }
 
-test.run()
+await run()

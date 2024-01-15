@@ -1,35 +1,35 @@
 import Test
 import MessagePack
 
-test.case("EnglishString") {
+test("EnglishString") {
     let original = MessagePack.string("Hello, World!")
     let encoded = try await MessagePack.encode(original)
     let result = try await MessagePack.decode(bytes: encoded)
     expect(result == original)
 }
 
-test.case("SwedishString") {
+test("SwedishString") {
     let original = MessagePack.string("Hellö, Wörld!")
     let encoded = try await MessagePack.encode(original)
     let result = try await MessagePack.decode(bytes: encoded)
     expect(result == original)
 }
 
-test.case("JapaneseString") {
+test("JapaneseString") {
     let original = MessagePack.string("こんにちは世界！")
     let encoded = try await MessagePack.encode(original)
     let result = try await MessagePack.decode(bytes: encoded)
     expect(result == original)
 }
 
-test.case("RussianString") {
+test("RussianString") {
     let original = MessagePack.string("Привет, Мир!")
     let encoded = try await MessagePack.encode(original)
     let result = try await MessagePack.decode(bytes: encoded)
     expect(result == original)
 }
 
-test.case("ASCIIString") {
+test("ASCIIString") {
     let string = MessagePack.string("Hello, World!")
 
     let bytes: [UInt8] = [
@@ -44,4 +44,4 @@ test.case("ASCIIString") {
     expect(decoded == string)
 }
 
-test.run()
+await run()

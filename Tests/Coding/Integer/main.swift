@@ -1,19 +1,19 @@
 import Test
 import MessagePack
 
-test.case("EncodeNegativeIntToFixInt") {
+test("EncodeNegativeIntToFixInt") {
     let expected: [UInt8] = [0xff]
     let encoded = try await MessagePack.encode(.int(-1))
     expect(encoded == expected)
 }
 
-test.case("EncodePositiveIntToFixInt") {
+test("EncodePositiveIntToFixInt") {
     let expected: [UInt8] = [0x01]
     let encoded = try await MessagePack.encode(.uint(1))
     expect(encoded == expected)
 }
 
-test.case("EncodeInt") {
+test("EncodeInt") {
     let expected: [UInt8] = MemoryLayout<Int>.size == MemoryLayout<Int64>.size ?
         [0xd3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]:
         [0xd2, 0x80, 0x00, 0x00, 0x00]
@@ -22,7 +22,7 @@ test.case("EncodeInt") {
     expect(encoded == expected)
 }
 
-test.case("EncodeUInt") {
+test("EncodeUInt") {
     let expected: [UInt8] = MemoryLayout<Int>.size == MemoryLayout<Int64>.size ?
         [0xcf, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff]:
         [0xce, 0xff, 0xff, 0xff, 0xff]
@@ -31,7 +31,7 @@ test.case("EncodeUInt") {
     expect(encoded == expected)
 }
 
-test.case("DecodeNegativeFixInt") {
+test("DecodeNegativeFixInt") {
     let expected = MessagePack.int(-1)
     let decoded = try await MessagePack.decode(bytes: [0xff])
     expect(decoded == expected)
@@ -41,7 +41,7 @@ test.case("DecodeNegativeFixInt") {
     }
 }
 
-test.case("DecodePositiveFixInt") {
+test("DecodePositiveFixInt") {
     let expected = MessagePack.uint(1)
     let decoded = try await MessagePack.decode(bytes: [0x01])
     expect(decoded == expected)
@@ -51,7 +51,7 @@ test.case("DecodePositiveFixInt") {
     }
 }
 
-test.case("DecodeNegativeInt8") {
+test("DecodeNegativeInt8") {
     let expected = MessagePack(Int8.min)
     let decoded = try await MessagePack.decode(bytes: [0xd0, 0x80])
     expect(decoded == expected)
@@ -61,7 +61,7 @@ test.case("DecodeNegativeInt8") {
     }
 }
 
-test.case("DecodeNegativeInt16") {
+test("DecodeNegativeInt16") {
     let expected = MessagePack(Int16.min)
     let decoded = try await MessagePack.decode(bytes: [0xd1, 0x80, 0x00])
     expect(decoded == expected)
@@ -71,7 +71,7 @@ test.case("DecodeNegativeInt16") {
     }
 }
 
-test.case("DecodeNegativeInt32") {
+test("DecodeNegativeInt32") {
     let expected = MessagePack(Int32.min)
     let decoded = try await MessagePack.decode(
         bytes: [0xd2, 0x80, 0x00, 0x00, 0x00])
@@ -82,7 +82,7 @@ test.case("DecodeNegativeInt32") {
     }
 }
 
-test.case("DecodeNegativeInt64") {
+test("DecodeNegativeInt64") {
     let expected = MessagePack(Int64.min)
     let decoded = try await MessagePack.decode(
         bytes: [0xd3, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00])
@@ -93,7 +93,7 @@ test.case("DecodeNegativeInt64") {
     }
 }
 
-test.case("DecodeUInt8") {
+test("DecodeUInt8") {
     let expected = MessagePack(UInt8.max)
     let decoded = try await MessagePack.decode(bytes: [0xcc, 0xff])
     expect(decoded == expected)
@@ -103,7 +103,7 @@ test.case("DecodeUInt8") {
     }
 }
 
-test.case("DecodeUInt16") {
+test("DecodeUInt16") {
     let expected = MessagePack(UInt16.max)
     let decoded = try await MessagePack.decode(bytes: [0xcd, 0xff, 0xff])
     expect(decoded == expected)
@@ -113,7 +113,7 @@ test.case("DecodeUInt16") {
     }
 }
 
-test.case("DecodeUInt32") {
+test("DecodeUInt32") {
     let expected = MessagePack(UInt32.max)
     let decoded = try await MessagePack.decode(
         bytes: [0xce, 0xff, 0xff, 0xff, 0xff])
@@ -124,7 +124,7 @@ test.case("DecodeUInt32") {
     }
 }
 
-test.case("DecodeUInt64") {
+test("DecodeUInt64") {
     let expected = MessagePack(UInt64.max)
     let decoded = try await MessagePack.decode(
         bytes: [0xcf, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff])
@@ -135,4 +135,4 @@ test.case("DecodeUInt64") {
     }
 }
 
-test.run()
+await run()

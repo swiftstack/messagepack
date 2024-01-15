@@ -1,7 +1,7 @@
 import Test
 @testable import MessagePack
 
-test.case("KeyedContainer") {
+test("KeyedContainer") {
     let encoded: MessagePack = .map([
         .string("nil"): .nil,
         .string("int"): .int(-1),
@@ -63,7 +63,7 @@ test.case("KeyedContainer") {
     expect(try container.decode([Int:Int].self, forKey: .map) == [1:2])
 }
 
-test.case("NestedKeyedContainer") {
+test("NestedKeyedContainer") {
     let encoded: MessagePack = .map([
         .string("one"): .int(1),
         .string("nested"): .map([
@@ -93,7 +93,7 @@ test.case("NestedKeyedContainer") {
     expect(try container.decode(Int.self, forKey: .three) == 3)
 }
 
-test.case("NestedUnkeyedContainer") {
+test("NestedUnkeyedContainer") {
     let encoded: MessagePack = .map([
         .string("one"): .int(1),
         .string("nested"): .array([.int(2)]),
@@ -120,4 +120,4 @@ test.case("NestedUnkeyedContainer") {
     expect(try container.decode(Int.self, forKey: .three) == 3)
 }
 
-test.run()
+await run()

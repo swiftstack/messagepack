@@ -2,7 +2,7 @@ import Test
 import Stream
 @testable import MessagePack
 
-test.case("StringHeader") {
+test("StringHeader") {
     let header: [UInt8] = [0xff]
     var reader = MessagePackReader(InputByteStream(header))
     await expect(throws: MessagePack.Error.invalidData) {
@@ -10,7 +10,7 @@ test.case("StringHeader") {
     }
 }
 
-test.case("ArrayHeader") {
+test("ArrayHeader") {
     let header: [UInt8] = [0xff]
     var reader = MessagePackReader(InputByteStream(header))
     await expect(throws: MessagePack.Error.invalidData) {
@@ -18,7 +18,7 @@ test.case("ArrayHeader") {
     }
 }
 
-test.case("MapHeader") {
+test("MapHeader") {
     let header: [UInt8] = [0xff]
     var reader = MessagePackReader(InputByteStream(header))
     await expect(throws: MessagePack.Error.invalidData) {
@@ -26,7 +26,7 @@ test.case("MapHeader") {
     }
 }
 
-test.case("BinaryHeader") {
+test("BinaryHeader") {
     let header: [UInt8] = [0xff]
     var reader = MessagePackReader(InputByteStream(header))
     await expect(throws: MessagePack.Error.invalidData) {
@@ -34,7 +34,7 @@ test.case("BinaryHeader") {
     }
 }
 
-test.case("ExtendedHeader") {
+test("ExtendedHeader") {
     let header: [UInt8] = [0xff]
     var reader = MessagePackReader(InputByteStream(header))
     await expect(throws: MessagePack.Error.invalidData) {
@@ -42,4 +42,4 @@ test.case("ExtendedHeader") {
     }
 }
 
-test.run()
+await run()

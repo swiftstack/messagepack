@@ -1,7 +1,7 @@
 import Test
 @testable import MessagePack
 
-test.case("Encodable") {
+test("Encodable") {
     struct Model: Encodable {
         let int: Int
         let string: String
@@ -19,7 +19,7 @@ test.case("Encodable") {
     expect(encoder.value == expected)
 }
 
-test.case("Decodable") {
+test("Decodable") {
     struct Model: Decodable {
         let int: Int
         let string: String
@@ -39,4 +39,4 @@ test.case("Decodable") {
     expect(decoded.array == [1,2])
 }
 
-test.run()
+await run()

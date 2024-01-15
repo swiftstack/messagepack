@@ -2,14 +2,14 @@ import Test
 import Stream
 import MessagePack
 
-test.case("InvalidData") {
+test("InvalidData") {
     let bytes: [UInt8] = [0xc1]
     await expect(throws: MessagePack.Error.invalidData) {
         try await MessagePack.decode(bytes: bytes)
     }
 }
 
-test.case("IntegerInsufficientData") {
+test("IntegerInsufficientData") {
     let testCollection: [[UInt8]] = [
         [0xd0], [0xd1], [0xd2], [0xd3],
         [0xcc], [0xcd], [0xde], [0xdf]
@@ -21,7 +21,7 @@ test.case("IntegerInsufficientData") {
     }
 }
 
-test.case("FloatInsufficientData") {
+test("FloatInsufficientData") {
     let testCollection: [[UInt8]] = [
         [0xca], [0xcb]
     ]
@@ -32,7 +32,7 @@ test.case("FloatInsufficientData") {
     }
 }
 
-test.case("StringInsufficientData") {
+test("StringInsufficientData") {
     let testCollection: [[UInt8]] = [
         // fixstr
         [0xa1], [0xa2], [0xa3], [0xa4], [0xa5], [0xa6], [0xa7],
@@ -51,7 +51,7 @@ test.case("StringInsufficientData") {
     }
 }
 
-test.case("ArrayInsufficientData") {
+test("ArrayInsufficientData") {
     let testCollection: [[UInt8]] = [
         // fixarr
         [0x91], [0x92], [0x93], [0x94], [0x95], [0x96], [0x97],
@@ -67,7 +67,7 @@ test.case("ArrayInsufficientData") {
     }
 }
 
-test.case("MapInsufficientData") {
+test("MapInsufficientData") {
     let testCollection: [[UInt8]] = [
         // no data
         [0x81], [0x82], [0x83], [0x84], [0x85], [0x86], [0x87],
@@ -83,7 +83,7 @@ test.case("MapInsufficientData") {
     }
 }
 
-test.case("BinaryInsufficientData") {
+test("BinaryInsufficientData") {
     let testCollection: [[UInt8]] = [
         // no size, no data
         [0xc4], [0xc5], [0xc6],
@@ -99,7 +99,7 @@ test.case("BinaryInsufficientData") {
     }
 }
 
-test.case("ExtendedInsufficientData") {
+test("ExtendedInsufficientData") {
     let testCollection: [[UInt8]] = [
         // no ext type, no data
         [0xd4], [0xd5], [0xd6], [0xd7], [0xd8],
@@ -117,4 +117,4 @@ test.case("ExtendedInsufficientData") {
     }
 }
 
-test.run()
+await run()

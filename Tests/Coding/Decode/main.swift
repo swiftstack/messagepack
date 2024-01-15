@@ -2,7 +2,7 @@ import Test
 import Stream
 import MessagePack
 
-test.case("Bool") {
+test("Bool") {
     let expected = true
     let encoded = try await MessagePack.encode(.bool(expected))
     var reader = MessagePackReader(InputByteStream(encoded))
@@ -10,7 +10,7 @@ test.case("Bool") {
     expect(decoded == expected)
 }
 
-test.case("Float") {
+test("Float") {
     let expected = Float(1.618)
     let encoded = try await MessagePack.encode(.float(expected))
     var reader = MessagePackReader(InputByteStream(encoded))
@@ -18,7 +18,7 @@ test.case("Float") {
     expect(decoded == expected)
 }
 
-test.case("Double") {
+test("Double") {
     let expected = Double(1.618)
     let encoded = try await MessagePack.encode(.double(expected))
     var reader = MessagePackReader(InputByteStream(encoded))
@@ -26,7 +26,7 @@ test.case("Double") {
     expect(decoded == expected)
 }
 
-test.case("String") {
+test("String") {
     let expected = "Hello, World!"
     let encoded = try await MessagePack.encode(.string(expected))
     var reader = MessagePackReader(InputByteStream(encoded))
@@ -34,7 +34,7 @@ test.case("String") {
     expect(decoded == expected)
 }
 
-test.case("Int") {
+test("Int") {
     let expected = Int.min
     let encoded = try await MessagePack.encode(.int(expected))
     var reader = MessagePackReader(InputByteStream(encoded))
@@ -42,7 +42,7 @@ test.case("Int") {
     expect(decoded == expected)
 }
 
-test.case("UInt") {
+test("UInt") {
     let expected = UInt.max
     let encoded = try await MessagePack.encode(.uint(expected))
     var reader = MessagePackReader(InputByteStream(encoded))
@@ -50,7 +50,7 @@ test.case("UInt") {
     expect(decoded == expected)
 }
 
-test.case("UIntToInt") {
+test("UIntToInt") {
     let expected: UInt = 1
     let encoded = try await MessagePack.encode(.uint(expected))
     var reader = MessagePackReader(InputByteStream(encoded))
@@ -58,7 +58,7 @@ test.case("UIntToInt") {
     expect(UInt(decoded) == expected)
 }
 
-test.case("UIntMaxToInt") {
+test("UIntMaxToInt") {
     let expected = UInt.max
     let encoded = try await MessagePack.encode(.uint(expected))
     var reader = MessagePackReader(InputByteStream(encoded))
@@ -67,7 +67,7 @@ test.case("UIntMaxToInt") {
     }
 }
 
-test.case("Binary") {
+test("Binary") {
     let expected: [UInt8] = [0x01, 0x02, 0x03]
     let encoded = try await MessagePack.encode(.binary(expected))
     var reader = MessagePackReader(InputByteStream(encoded))
@@ -75,7 +75,7 @@ test.case("Binary") {
     expect(decoded == expected)
 }
 
-test.case("Array") {
+test("Array") {
     let expected: [MessagePack] = [.string("Hello"), .string("World")]
     let encoded = try await MessagePack.encode(.array(expected))
     var reader = MessagePackReader(InputByteStream(encoded))
@@ -83,7 +83,7 @@ test.case("Array") {
     expect(decoded == expected)
 }
 
-test.case("Map") {
+test("Map") {
     typealias Map = [MessagePack : MessagePack]
     let expected: Map = [.string("Hello"): .string("World")]
     let encoded = try await MessagePack.encode(.map(expected))
@@ -92,7 +92,7 @@ test.case("Map") {
     expect(decoded == expected)
 }
 
-test.case("Extended") {
+test("Extended") {
     let expected = MessagePack.Extended(
         type: 1, data: [0x01, 0x02, 0x03])
     let encoded = try await MessagePack.encode(.extended(expected))
@@ -101,4 +101,4 @@ test.case("Extended") {
     expect(decoded == expected)
 }
 
-test.run()
+await run()

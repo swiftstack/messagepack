@@ -2,7 +2,7 @@ import Test
 import Stream
 import MessagePack
 
-test.case("EncodeArray") {
+test("EncodeArray") {
     let expected = try await MessagePack.encode(
         .array(["one", "two", "three"]))
     let stream = OutputByteStream()
@@ -15,7 +15,7 @@ test.case("EncodeArray") {
     expect(stream.bytes == expected)
 }
 
-test.case("DecodeArray") {
+test("DecodeArray") {
     let expected = ["one", "two", "three"]
     let encoded = try await MessagePack.encode(
         .array(["one", "two", "three"]))
@@ -28,7 +28,7 @@ test.case("DecodeArray") {
     expect(result == expected)
 }
 
-test.case("EncodeMap") {
+test("EncodeMap") {
     let items: [MessagePack : MessagePack] =
         ["one" : 1, "two" : 2, "three" : 3]
     let expected = try await MessagePack.encode(.map(items))
@@ -42,7 +42,7 @@ test.case("EncodeMap") {
     expect(stream.bytes == expected)
 }
 
-test.case("DecodeMap") {
+test("DecodeMap") {
     let expected = ["one" : 1, "two" : 2, "three" : 3]
     let encoded = try await MessagePack.encode(
         .map(["one" : 1, "two" : 2, "three" : 3]))
@@ -57,4 +57,4 @@ test.case("DecodeMap") {
     expect(result == expected)
 }
 
-test.run()
+await run()

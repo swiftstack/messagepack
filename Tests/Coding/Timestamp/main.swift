@@ -2,7 +2,7 @@ import Test
 import Stream
 import MessagePack
 
-test.case("Encode4") {
+test("Encode4") {
     let expected: [UInt8] = [
         0xd6, UInt8(bitPattern: -1),
         0x00, 0x00, 0x00, 0x01]
@@ -15,7 +15,7 @@ test.case("Encode4") {
     expect(stream.bytes == expected)
 }
 
-test.case("Encode8") {
+test("Encode8") {
     let expected: [UInt8] = [
         0xd7, UInt8(bitPattern: -1),
         0xff, 0xff, 0xff, 0xff,
@@ -31,7 +31,7 @@ test.case("Encode8") {
     expect(stream.bytes == expected)
 }
 
-test.case("Encode12") {
+test("Encode12") {
     let expected: [UInt8] = [
         0xc7, 12, UInt8(bitPattern: -1),
         0x00, 0x00, 0x00, 0x01,
@@ -45,7 +45,7 @@ test.case("Encode12") {
     expect(stream.bytes == expected)
 }
 
-test.case("Decode4") {
+test("Decode4") {
     let expected = Timestamp(seconds: 1, nanoseconds: 0)
 
     let encoded: [UInt8] = [
@@ -57,7 +57,7 @@ test.case("Decode4") {
     expect(decoded == expected)
 }
 
-test.case("Decode8") {
+test("Decode8") {
     let expected = Timestamp(
         seconds: 0x0003_ffff_ffff,
         nanoseconds: 0x3fff_ffff)
@@ -72,7 +72,7 @@ test.case("Decode8") {
     expect(decoded == expected)
 }
 
-test.case("Decode12") {
+test("Decode12") {
     let expected = Timestamp(seconds: 1, nanoseconds: 1)
 
     let encoded: [UInt8] = [
@@ -85,4 +85,4 @@ test.case("Decode12") {
     expect(decoded == expected)
 }
 
-test.run()
+await run()
